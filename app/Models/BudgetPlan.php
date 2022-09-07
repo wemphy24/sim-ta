@@ -41,4 +41,9 @@ class BudgetPlan extends Model
     {
         return $this->belongsTo('App\Models\User', 'users_id', 'id');
     }
+
+    public function bill_material()
+    {
+        return $this->hasMany('App\Models\BillMaterial', 'budget_plans_id');
+    }
 }

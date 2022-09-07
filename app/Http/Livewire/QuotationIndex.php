@@ -97,7 +97,7 @@ class QuotationIndex extends Component
             BudgetPlan::create([
                 'quotations_id' => $getQuotationId->id,
                 'budget_plan_code' => $this->budget_plan_code,
-                'description' => NULL,
+                'description' => 'Menunggu pembuatan RABP',
                 // Ambil tanggal sekarang dari method showQuotationModal
                 'date' => $this->currentDate,
                 'status_id' => 1,

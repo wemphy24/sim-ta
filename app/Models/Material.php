@@ -36,4 +36,9 @@ class Material extends Model
     {
         return $this->belongsTo('App\Models\Measurement', 'measurements_id', 'id');
     }
+
+    public function bill_material()
+    {
+        return $this->hasMany('App\Models\BillMaterial', 'materials_id');
+    }
 }

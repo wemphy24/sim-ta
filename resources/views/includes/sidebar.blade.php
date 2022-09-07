@@ -1,12 +1,12 @@
 <div class="sidebar">
-    <div class="bg-slate-50 w-64 hidden lg:block h-screen">
+    <div class="bg-slate-50 w-64 hidden lg:block h-screen border-r border-gray-300/50">
         <div class="flex flex-col">
             <a
-                class="hover:border-l-4 hover:border-purple-900 group"
+                class="hover:border-r-4 hover:border-purple-900 group"
                 href=""
             >
                 <div
-                    class="flex items-center text-gray-400 p-4 mx-2 rounded-xl text-lg font-medium hover:text-black hover:bg-purple-50"
+                    class="flex items-center text-gray-400 p-3 mx-2 rounded-xl text-lg font-medium hover:text-black hover:bg-purple-50"
                 >
                     <svg
                         class="w-6 h-6 mr-6 group-hover:text-purple-900"
@@ -26,11 +26,11 @@
                 </div>
             </a>
             <a
-                class="hover:border-l-4 hover:border-purple-900 group"
+                class="hover:border-r-4 hover:border-purple-900 group"
                 href=""
             >
                 <div
-                    class="flex items-center text-gray-400 p-4 mx-2 rounded-xl text-lg font-medium hover:text-black hover:bg-purple-50"
+                    class="flex items-center text-gray-400 p-3 mx-2 rounded-xl text-lg font-medium hover:text-black hover:bg-purple-50"
                 >
                     <svg
                         class="w-6 h-6 mr-6 group-hover:text-purple-900"
@@ -50,11 +50,11 @@
                 </div>
             </a>
             <a
-                class="hover:border-l-4 hover:border-purple-900 group"
+                class="hover:border-r-4 hover:border-purple-900 group"
                 href=""
             >
                 <div
-                    class="flex items-center text-gray-400 p-4 mx-2 rounded-xl text-lg font-medium hover:text-black hover:bg-purple-50"
+                    class="flex items-center text-gray-400 p-3 mx-2 rounded-xl text-lg font-medium hover:text-black hover:bg-purple-50"
                 >
                     <svg
                         class="w-6 h-6 mr-6 group-hover:text-purple-900"
@@ -74,11 +74,11 @@
                 </div>
             </a>
             <a
-                class="hover:border-l-4 hover:border-purple-900 group"
+                class="hover:border-r-4 hover:border-purple-900 group"
                 href=""
             >
                 <div
-                    class="flex items-center text-gray-400 p-4 mx-2 rounded-xl text-lg font-medium hover:text-black hover:bg-purple-50"
+                    class="flex items-center text-gray-400 p-3 mx-2 rounded-xl text-lg font-medium hover:text-black hover:bg-purple-50"
                 >
                     <svg
                         class="w-6 h-6 mr-6 group-hover:text-purple-900"
@@ -98,11 +98,11 @@
                 </div>
             </a>
             <a
-                class="hover:border-l-4 hover:border-purple-900 group"
+                class="hover:border-r-4 hover:border-purple-900 group"
                 href=""
             >
                 <div
-                    class="flex items-center text-gray-400 p-4 mx-2 rounded-xl text-lg font-medium hover:text-black hover:bg-purple-50"
+                    class="flex items-center text-gray-400 p-3 mx-2 rounded-xl text-lg font-medium hover:text-black hover:bg-purple-50"
                 >
                     <svg
                         class="w-6 h-6 mr-6 group-hover:text-purple-900"
@@ -122,11 +122,11 @@
                 </div>
             </a>
             <a
-                class="hover:border-l-4 hover:border-purple-900 group"
+                class="hover:border-r-4 hover:border-purple-900 group"
                 href=""
             >
                 <div
-                    class="flex items-center text-gray-400 p-4 mx-2 rounded-xl text-lg font-medium hover:text-black hover:bg-purple-50"
+                    class="flex items-center text-gray-400 p-3 mx-2 rounded-xl text-lg font-medium hover:text-black hover:bg-purple-50"
                 >
                     <svg
                         class="w-6 h-6 mr-6 group-hover:text-purple-900"
@@ -146,11 +146,11 @@
                 </div>
             </a>
             <a
-                class="hover:border-l-4 hover:border-purple-900 group"
+                class="hover:border-r-4 hover:border-purple-900 group"
                 href=""
             >
                 <div
-                    class="flex items-center text-gray-400 p-4 mx-2 rounded-xl text-lg font-medium hover:text-black hover:bg-purple-50"
+                    class="flex items-center text-gray-400 p-3 mx-2 rounded-xl text-lg font-medium hover:text-black hover:bg-purple-50"
                 >
                     <svg
                         class="w-6 h-6 mr-6 group-hover:text-purple-900"
@@ -173,11 +173,11 @@
                 </div>
             </a>
             <a
-                class="hover:border-l-4 hover:border-purple-900 group"
+                class="hover:border-r-4 hover:border-purple-900 group"
                 href=""
             >
                 <div
-                    class="flex items-center text-gray-400 p-4 mx-2 rounded-xl text-lg font-medium hover:text-black hover:bg-purple-50"
+                    class="flex items-center text-gray-400 p-3 mx-2 rounded-xl text-lg font-medium hover:text-black hover:bg-purple-50"
                 >
                     <svg
                         class="w-6 h-6 mr-6 group-hover:text-purple-900"
@@ -197,11 +197,11 @@
                 </div>
             </a>
             <a
-                class="hover:border-l-4 hover:border-purple-900 group"
+                class="hover:border-r-4 hover:border-purple-900 group"
                 href=""
             >
                 <div
-                    class="flex items-center text-gray-400 p-4 mx-2 rounded-xl text-lg font-medium hover:text-black hover:bg-purple-50"
+                    class="flex items-center text-gray-400 p-3 mx-2 rounded-xl text-lg font-medium hover:text-black hover:bg-purple-50"
                 >
                     <svg
                         class="w-6 h-6 mr-6 group-hover:text-purple-900"

@@ -24,7 +24,7 @@
                                 name="email"
                                 id="email"
                                 type="email"
-                                class="border border-gray-300/50 rounded-lg w-full p-2.5 bg-indigo-50 shadow-sm mt-1 text-sm"
+                                class="border border-gray-300/50 rounded-lg w-full p-2.5 bg-gray-100 shadow-sm mt-1 text-sm"
                                 placeholder="Email"
                                 required
                                 autofocus
@@ -41,7 +41,7 @@
                                 name="password"
                                 id="password"
                                 type="password"
-                                class="border border-gray-300/50 rounded-lg w-full p-2.5 bg-indigo-50 shadow-sm mt-1 text-sm"
+                                class="border border-gray-300/50 rounded-lg w-full p-2.5 bg-gray-100 shadow-sm mt-1 text-sm"
                                 placeholder="Password"
                                 required
                                 autocomplete="current-password"
