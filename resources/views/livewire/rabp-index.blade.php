@@ -269,8 +269,16 @@
                                             </tr>
                                         @endforeach
                                             <tr>
+                                                <td colspan="4" class="text-right font-bold">Total RAP</td>
+                                                <td class="py-1.5 px-6">Rp. {{ number_format($totalRap) }}</td>
+                                            </tr>
+                                            <tr>
                                                 <td colspan="4" class="text-right font-bold">Biaya Overhead</td>
-                                                <td class="py-1.5 px-6">Rp. 1,000,000</td>
+                                                <td class="py-1.5 px-6">Rp. {{ number_format($overhead_cost) }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="4" class="text-right font-bold">Biaya Prelim</td>
+                                                <td class="py-1.5 px-6">Rp. {{ number_format($preliminary_cost) }}</td>
                                             </tr>
                                             <tr>
                                                 <td colspan="4" class="text-right font-bold">Profit</td>
@@ -278,11 +286,11 @@
                                             </tr>
                                             <tr>
                                                 <td colspan="4" class="text-right font-bold">PPN</td>
-                                                <td class="py-1.5 px-6">Rp. 1,000,000</td>
+                                                <td class="py-1.5 px-6">Rp. {{ number_format($totalPPN) }}</td>
                                             </tr>
                                             <tr>
                                                 <td colspan="4" class="text-right font-bold">Total RABP</td>
-                                                <td class="py-1.5 px-6">Rp. 1,000,000</td>
+                                                <td class="py-1.5 px-6">Rp. {{ number_format($totalRabp) }}</td>
                                             </tr>
                                     </tbody>
                                 </table>
@@ -318,98 +326,146 @@
                     </div>
                     
                     <div class="border black w-full mt-4"></div>
-
-                    <div class="h-[500px] overflow-y-auto overflow-x-hidden pr-4">
-                        <div class="mt-4">
-                            <table class="w-full text-sm text-left text-gray-600">
-                                <thead class="bg-gray-50">
-                                    <tr>
-                                        <th scope="col" class="py-3 px-6">Material</th>
-                                        <th scope="col" class="py-3 px-6">Qty</th>
-                                        {{-- <th scope="col" class="py-3 px-6">Satuan</th> --}}
-                                        <th scope="col" class="py-3 px-6">Harga</th>
-                                        <th scope="col" class="py-3 px-6">Harga Total</th>
-                                        <th scope="col" class="py-3 px-6">Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($bill_materials as $bm)
-                                        <tr class="bg-white hover:bg-gray-50 hover:text-black font-medium">
-                                            <td class="py-2 px-6">{{ $bm->material['name'] }}</td>
-                                            <td class="py-2 px-6">{{ $bm->quantity }}</td>
-                                            {{-- <td class="py-2 px-6">{{ $bm->material->measurement['name'] }}</td> --}}
-                                            <td class="py-2 px-6">Rp. {{ number_format($bm->price) }}</td>
-                                            <td class="py-2 px-6">Rp. {{ number_format($bm->total_price) }}</td>
-                                            <td class="py-2 px-6">
-                                                <button disabled>
-                                                    <svg
-                                                        class="w-5 h-5 text-red-500"
-                                                        fill="none"
-                                                        stroke="currentColor"
-                                                        viewBox="0 0 24 24"
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                    >
-                                                        <path
-                                                        stroke-linecap="round"
-                                                        stroke-linejoin="round"
-                                                        stroke-width="2"
-                                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                                                        ></path>
-                                                    </svg>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                                <tfoot>
-                                    <tr class="font-medium">
-                                        <input wire:model="budget_plans_id" type="hidden" />
-                                        <td class="py-2 px-2">
-                                            <select
-                                                wire:model="materials_id"
-                                                class="border-gray-300/50 rounded-xl text-sm w-36 text-center"
-                                            >
-                                                @foreach ($materials as $material)
-                                                <option value="{{ $material->id }}">{{ $material->name }}</option>
-                                                @endforeach
-                                            </select>
-                                        </td>
-                                        <td class="py-2 px-2">
-                                            <input
-                                                wire:model="quantity"
-                                                class="border-gray-300/50 rounded-xl text-sm w-20 text-center"
-                                                type="number"
-                                                min="1"
-                                            />
-                                        </td>
-                                        {{-- <td class="py-2 px-2">
-                                            <input
-                                                wire:model="measurements_id"
-                                                class="border-gray-300/50  rounded-xl bg-gray-100 text-sm w-36 text-center"
-                                                type="text"
-                                                disabled
-                                            />
-                                        </td> --}}
-                                        <td class="py-2 px-2">
-                                            <input
-                                                wire:model="price"
-                                                class="border-gray-300/50  rounded-xl bg-gray-100 text-sm w-36 text-center"
-                                                type="number"
-                                                disabled
-                                            />
-                                        </td>
-                                        <td class="py-2 px-2">
-                                            <input
-                                                wire:model="total_price"
-                                                class="border-gray-300/50  rounded-xl bg-gray-100 text-sm w-36 text-center"
-                                                type="number"
-                                                disabled
-                                            />
-                                        </td>
-                                    </tr>
-                                </tfoot>
-                            </table>
+                    
+                    <div class="my-4">
+                        <div class="flex items-center gap-4">
+                            <div class="p-1">
+                                <div class="flex items-center">
+                                    <h1 class="w-24">Overhead</h1>
+                                    <input
+                                        type="number"
+                                        wire:model="overhead_cost"
+                                        class="border border-gray-300/50 rounded-xl p-2 text-sm"
+                                    />
+                                </div>
+                            </div>  
+                            <div class="p-1">
+                                <div class="flex items-center">
+                                    <h1 class="w-20">Profit</h1>
+                                    <input
+                                        type="number"
+                                        wire:model="profit"
+                                        class="w-16 border border-gray-300/50 rounded-xl p-2 text-sm"
+                                    />
+                                    <span class="py-2 w-6 text-right">%</span>
+                                </div>
+                            </div>  
+                        </div>            
+                        <div class="flex items-center gap-4">
+                            <div class="p-1">
+                                <div class="flex items-center">
+                                    <h1 class="w-24 items-center">Preliminary</h1>
+                                    <input
+                                        type="number"
+                                        wire:model="preliminary_cost"
+                                        class="border border-gray-300/50 rounded-xl p-2 text-sm"
+                                    />
+                                </div>
+                            </div>  
+                            <div class="p-1">
+                                <div class="flex items-center">
+                                    <h1 class="w-20">PPN</h1>
+                                    <input
+                                        type="number"
+                                        wire:model="ppn"
+                                        class="w-16 border border-gray-300/50 rounded-xl p-2 text-sm bg-gray-100 text-center"
+                                        disabled
+                                    />
+                                    <span class="py-2 w-6 text-right">%</span>
+                                </div>
+                            </div>  
                         </div>
+                    </div>            
+
+                    <div class="h-[400px] overflow-y-auto overflow-x-hidden pr-4">
+                        <table class="w-full text-sm text-left text-gray-600">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th scope="col" class="py-3 px-6">Material</th>
+                                    <th scope="col" class="py-3 px-6">Qty</th>
+                                    {{-- <th scope="col" class="py-3 px-6">Satuan</th> --}}
+                                    <th scope="col" class="py-3 px-6">Harga</th>
+                                    <th scope="col" class="py-3 px-6">Harga Total</th>
+                                    <th scope="col" class="py-3 px-6">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($bill_materials as $bm)
+                                    <tr class="bg-white hover:bg-gray-50 hover:text-black font-medium">
+                                        <td class="py-2 px-6">{{ $bm->material['name'] }}</td>
+                                        <td class="py-2 px-6">{{ $bm->quantity }}</td>
+                                        {{-- <td class="py-2 px-6">{{ $bm->material->measurement['name'] }}</td> --}}
+                                        <td class="py-2 px-6">Rp. {{ number_format($bm->price) }}</td>
+                                        <td class="py-2 px-6">Rp. {{ number_format($bm->total_price) }}</td>
+                                        <td class="py-2 px-6">
+                                            <button disabled>
+                                                <svg
+                                                    class="w-5 h-5 text-red-500"
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    viewBox="0 0 24 24"
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                >
+                                                    <path
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    stroke-width="2"
+                                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                                                    ></path>
+                                                </svg>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                            <tfoot>
+                                <tr class="font-medium">
+                                    <input wire:model="budget_plans_id" type="hidden" />
+                                    <td class="py-2 px-2">
+                                        <select
+                                            wire:model="materials_id"
+                                            class="border-gray-300/50 rounded-xl text-sm w-46"
+                                        >
+                                            @foreach ($materials as $material)
+                                            <option value="{{ $material->id }}">{{ $material->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </td>
+                                    <td class="py-2 px-2">
+                                        <input
+                                            wire:model="quantity"
+                                            class="border-gray-300/50 rounded-xl text-sm w-20 text-center"
+                                            type="number"
+                                            min="1"
+                                        />
+                                    </td>
+                                    {{-- <td class="py-2 px-2">
+                                        <input
+                                            wire:model="measurements_id"
+                                            class="border-gray-300/50  rounded-xl bg-gray-100 text-sm w-36 text-center"
+                                            type="text"
+                                            disabled
+                                        />
+                                    </td> --}}
+                                    <td class="py-2 px-2">
+                                        <input
+                                            wire:model="price"
+                                            class="border-gray-300/50  rounded-xl bg-gray-100 text-sm w-36 text-center"
+                                            type="number"
+                                            disabled
+                                        />
+                                    </td>
+                                    <td class="py-2 px-2">
+                                        <input
+                                            wire:model="total_price"
+                                            class="border-gray-300/50  rounded-xl bg-gray-100 text-sm w-36 text-center"
+                                            type="number"
+                                            disabled
+                                        />
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
                     </div>
 
                     <div class="border black w-full mt-4"></div>

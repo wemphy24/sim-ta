@@ -19,6 +19,7 @@ class DetailBillMaterial extends Model
         'bill_materials_id', 
         'total_price_rap', 
         'overhead_cost', 
+        'preliminary_cost', 
         'profit', 
         'ppn', 
         'total_price_rabp', 

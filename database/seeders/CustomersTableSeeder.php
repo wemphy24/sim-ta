@@ -40,6 +40,14 @@ class CustomersTableSeeder extends Seeder
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
             ],
+            [
+                'name' => 'PT. United Tractor',
+                'email' => 'unitedtractor@gmail.com',
+                'phone' => '081772936543',
+                'address' => 'Jakarta',
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
+            ],
         ];
         Customer::insert($customers);
     }

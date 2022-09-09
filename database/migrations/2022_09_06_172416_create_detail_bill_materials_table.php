@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('bill_materials_id')->index('fk_detail_bill_materials_to_bill_materials');
             $table->integer('total_price_rap');
             $table->integer('overhead_cost');
+            $table->integer('preliminary_cost');
             $table->integer('profit');
             $table->integer('ppn');
             $table->integer('total_price_rabp');

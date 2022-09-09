@@ -25,19 +25,21 @@ class RabpIndex extends Component
     public $isEditMode = false;
     public $budget_plan_code, $description, $quotations_id, $status_id, $users_id;
 
-    public $quotation_code;
-
     public $rabp;
     public $currentDate;
 
     // Rabp material
     public $budget_plans_id, $materials_id, $price, $quantity, $total_price;
-    public $calculateTotalRap;
+    public $overhead_cost, $preliminary_cost, $ppn, $profit;
+
+    // Detail Rabp material
+    public $totalRap, $totalProfit, $totalPPN, $totalRabp;
 
     public function mount()
     {
         // Set default value untuk fitur tampilkan halaman
         $this->showPage = 5;
+        $this->ppn = 11;
     }
 
     public function render()
@@ -130,6 +132,13 @@ class RabpIndex extends Component
         $this->status_id = $this->rabp->status['name'];
         $this->users_id = $this->rabp->user['name'];
 
+        $this->totalRap = DetailBillMaterial::where('bill_materials_id','=',$id)->first(['total_price_rap'])->total_price_rap;
+        // $this->totalProfit = $calculateProfit;
+        $this->totalPPN = ($this->ppn * 0.01) * ($this->totalRap);
+        $this->overhead_cost = DetailBillMaterial::where('bill_materials_id','=',$id)->first(['overhead_cost'])->overhead_cost;
+        $this->preliminary_cost = DetailBillMaterial::where('bill_materials_id','=',$id)->first(['preliminary_cost'])->preliminary_cost;
+        $this->totalRabp = DetailBillMaterial::where('bill_materials_id','=',$id)->first(['total_price_rabp'])->total_price_rabp;
+
         $this->showingDetailRabpModal = true;
     }
 
@@ -151,12 +160,16 @@ class RabpIndex extends Component
         $this->price = Material::where('id', '=', $this->materials_id)->first(['price'])->price;
         $this->total_price = Material::where('id', '=', $this->materials_id)->first(['price'])->price;
 
+        // Save value nilai detail rabp material jika ada
+        $this->overhead_cost = DetailBillMaterial::where("bill_materials_id", '=', $id)->first(['overhead_cost'])->overhead_cost;
+        $this->preliminary_cost = DetailBillMaterial::where("bill_materials_id", '=', $id)->first(['preliminary_cost'])->preliminary_cost;
+        $this->profit = DetailBillMaterial::where("bill_materials_id", '=', $id)->first(['profit'])->profit;
+
         $this->showingRabpMaterialModal = true;
     }
 
     public function storeRabpMaterial()
     {
-        // $this->calculateTotalRap = BillMaterial::where('budget_plans_id','=',$this->budget_plans_id)->sum('total_price');
         DB::transaction(function() {
             $getBillMaterialId = BillMaterial::create([
                 'budget_plans_id' => $this->budget_plans_id,
@@ -166,19 +179,28 @@ class RabpIndex extends Component
                 'total_price' => $this->total_price,
             ]);
 
-            // DetailBillMaterial::create([
-            //     'bill_materials_id' => $getBillMaterialId->id,
-            //     'total_price_rap' => $this->calculateTotalRap,
-            //     'overhead_cost' => ?,
-            //     'profit' => ?,
-            //     'ppn' => ?,
-            //     'total_price_rabp' => ?,
-            // ]);
+            $calculateTotalRap = BillMaterial::where('budget_plans_id','=',$this->budget_plans_id)->sum('total_price');
+            $calculateProfit = ($this->profit * 0.01) * ($calculateTotalRap);
+            $calculatePPN = ($this->ppn * 0.01) * ($calculateTotalRap);
+            // dd($getBillMaterialId->budget_plans_id);
+
+            // // dd($checkExist = DetailBillMaterial::where('bill_materials_id', '=', $this->budget_plans_id)->first('bill_materials_id')->bill_materials_id);
+            $checkExist = DetailBillMaterial::select('bill_materials_id')->where('bill_materials_id',$this->budget_plans_id)->exists();
+            if($checkExist == false) {
+                DetailBillMaterial::create([
+                    'bill_materials_id' => $getBillMaterialId->budget_plans_id,
+                    'total_price_rap' => $calculateTotalRap,
+                    'overhead_cost' => $this->overhead_cost,
+                    'preliminary_cost' => $this->preliminary_cost,
+                    'profit' => $this->profit,
+                    'ppn' => $this->ppn,
+                    'total_price_rabp' => ($calculateTotalRap + $this->overhead_cost + $this->preliminary_cost) + ($calculateProfit) + ($calculatePPN),
+                ]);
+            };
         });
 
-        
-
         $this->dispatchBrowserEvent('store-success');
+        $this->materials_id = 1;
         $this->quantity = 1;
         $this->price = Material::where('id', '=', $this->materials_id)->first(['price'])->price;
         $this->total_price = Material::where('id', '=', $this->materials_id)->first(['price'])->price;
@@ -187,7 +209,6 @@ class RabpIndex extends Component
     // Realtime update value input
     public function updated($key, $value)
     {
-        
         if (in_array($key,['quantity','price','materials_id'])) {
             $this->price = Material::where('id', '=', $this->materials_id)->first(['price'])->price;
             $this->total_price = $this->quantity * $this->price;
