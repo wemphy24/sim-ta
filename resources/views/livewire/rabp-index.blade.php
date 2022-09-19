@@ -11,7 +11,7 @@
                     </a>
                     <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"></path></svg>
                     <a href="#">
-                        <div class="font-medium text-lg">Rancangan Anggaran Belanja Penawaran (RABP)</div>
+                        <div class="font-medium text-lg">Rancangan Anggaran Biaya Penawaran (RABP)</div>
                     </a>
                 </div>
             </div>
@@ -47,7 +47,7 @@
                 <table class="w-full text-sm text-left text-gray-600">
                     <thead class="bg-gray-50">
                         <tr>
-                            <th scope="col" class="py-3 px-6">No</th>
+                            <th scope="col" class="py-3 px-6">#</th>
                             <th scope="col" class="py-3 px-6">Kode RABP</th>
                             <th scope="col" class="py-3 px-6">Kode Penawaran</th>
                             <th scope="col" class="py-3 px-6">Nama</th>
@@ -75,17 +75,20 @@
                             </td>
                             <td class="py-4 px-6">
                                 <div class="flex items-center gap-4">
-                                    <button title="detail" wire:click="detailRabp({{ $rabp->id }})">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 21h7a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v11m0 5l4.879-4.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242z"></path></svg>
+                                    <button title="Approve" wire:click="approveRabp({{ $rabp->id }})">
+                                        <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                                     </button>
-                                    <button title="edit" wire:click="showRabpEditModal( {{ $rabp->id }} )">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+                                    <button title="Edit" wire:click="showRabpEditModal({{ $rabp->id }})">
+                                        <svg class="w-5 h-5 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
                                     </button>
-                                    <button title="tambah" wire:click="showRabpMaterial({{ $rabp->id }})">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+                                    <button title="Tambah" wire:click="showRabpMaterial({{ $rabp->id }})">
+                                        <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
                                     </button>
-                                    <button wire:click="deleteRabp({{ $rabp->id }})">
-                                        <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                    <button title="Detail" wire:click="detailRabp({{ $rabp->id }})">
+                                        <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 21h7a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v11m0 5l4.879-4.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242z"></path></svg>
+                                    </button>
+                                    <button disabled title="Hapus" wire:click="deleteRabp({{ $rabp->id }})">
+                                        <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                                     </button>
                                 </div>
                             </td>
@@ -105,7 +108,7 @@
                 <div class="bg-white p-4 rounded-xl shadow-md">
                     <div class="flex justify-between items-center">
                         @if($isEditMode === true)
-                            <h1 class="font-medium text-xl">Update RABP</h1>
+                            <h1 class="font-medium text-xl">Edit RABP</h1>
                         @else
                             <h1 class="font-medium text-xl">Add RABP</h1>
                         @endif
@@ -281,11 +284,15 @@
                                                 <td class="py-1.5 px-6">Rp. {{ number_format($preliminary_cost) }}</td>
                                             </tr>
                                             <tr>
-                                                <td colspan="4" class="text-right font-bold">Profit</td>
-                                                <td class="py-1.5 px-6">Rp. 1,000,000</td>
+                                                <td colspan="4" class="text-right font-bold">Profit ({{ $profit }}%)</td>
+                                                <td class="py-1.5 px-6">Rp. {{ number_format($totalProfit) }}</td>
                                             </tr>
                                             <tr>
-                                                <td colspan="4" class="text-right font-bold">PPN</td>
+                                                <td colspan="4" class="text-right font-bold">Sub Total</td>
+                                                <td class="py-1.5 px-6">Rp. {{ number_format($subTotal) }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="4" class="text-right font-bold">PPN ({{ $ppn }}%)</td>
                                                 <td class="py-1.5 px-6">Rp. {{ number_format($totalPPN) }}</td>
                                             </tr>
                                             <tr>
@@ -336,6 +343,8 @@
                                         type="number"
                                         wire:model="overhead_cost"
                                         class="border border-gray-300/50 rounded-xl p-2 text-sm"
+                                        min="1"
+                                        required
                                     />
                                 </div>
                             </div>  
@@ -346,6 +355,8 @@
                                         type="number"
                                         wire:model="profit"
                                         class="w-16 border border-gray-300/50 rounded-xl p-2 text-sm"
+                                        min="1"
+                                        required
                                     />
                                     <span class="py-2 w-6 text-right">%</span>
                                 </div>
@@ -359,6 +370,8 @@
                                         type="number"
                                         wire:model="preliminary_cost"
                                         class="border border-gray-300/50 rounded-xl p-2 text-sm"
+                                        min="1"
+                                        required
                                     />
                                 </div>
                             </div>  
@@ -369,6 +382,7 @@
                                         type="number"
                                         wire:model="ppn"
                                         class="w-16 border border-gray-300/50 rounded-xl p-2 text-sm bg-gray-100 text-center"
+                                        min="1"
                                         disabled
                                     />
                                     <span class="py-2 w-6 text-right">%</span>
@@ -420,7 +434,7 @@
                             </tbody>
                             <tfoot>
                                 <tr class="font-medium">
-                                    <input wire:model="budget_plans_id" type="hidden" />
+                                    <input wire:model="budget_plan_costs_id" type="hidden" />
                                     <td class="py-2 px-2">
                                         <select
                                             wire:model="materials_id"
@@ -441,7 +455,7 @@
                                     </td>
                                     {{-- <td class="py-2 px-2">
                                         <input
-                                            wire:model="measurements_id"
+                                            wire:model="measurement"
                                             class="border-gray-300/50  rounded-xl bg-gray-100 text-sm w-36 text-center"
                                             type="text"
                                             disabled
@@ -463,20 +477,63 @@
                                             disabled
                                         />
                                     </td>
+                                    <td class="py-2 px-6">
+                                        <button wire:click="storeRabpMaterial">
+                                            <svg class="w-5 h-5 text-purple-900" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                            </svg>
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <input 
+                                        wire:model="keyword" 
+                                        {{-- wire:keydown="updateKeyword" --}}
+                                        class="border-gray-300/50  rounded-xl text-sm w-36 text-center"
+                                        type="text"
+                                        />
+                                        @if (strlen($keyword) > 2)
+                                            <div class="absolute text-sm">
+                                                @if ($results->count() > 0)
+                                                    <ul>
+                                                        @foreach ($results as $result)
+                                                            <li class="border border-hray-300/50 w-36 px-2 py-2 rounded-xl cursor-pointer">
+                                                                {{ $result->name }}
+                                                            </li>
+                                                        @endforeach
+                                                    </ul>
+                                                @else
+                                                    <ul>
+                                                        <li class="border border-hray-300/50 w-36 px-2 py-2 rounded-xl">
+                                                            <span class="ml-2">No Result</span>
+                                                        </li>
+                                                    </ul>
+                                                @endif
+                                            </div>
+                                        @endif
+                                    </td>
                                 </tr>
                             </tfoot>
                         </table>
                     </div>
 
                     <div class="border black w-full mt-4"></div>
-                    
+
                     <div class="flex justify-end mt-4">
-                        <button
-                            wire:click="storeRabpMaterial"
-                            class="text-white bg-purple-900 py-2 px-6 rounded-xl"
-                        >
-                            Submit
-                        </button>
+                        @if ($overhead_cost == NULL || $preliminary_cost == NULL || $profit == NULL || $checkExistBillMaterial <= 0)
+                            <button
+                                disabled
+                                wire:click="storeRabpCostMaterial"
+                                class="text-white bg-gray-100 py-2 px-6 rounded-xl"
+                            >
+                                Submit
+                            </button>
+                        @else
+                            <button
+                                wire:click="storeRabpCostMaterial"
+                                class="text-white bg-purple-900 py-2 px-6 rounded-xl"
+                            >
+                                Submit
+                            </button>
+                        @endif
                     </div>   
                 </div>
             </div>

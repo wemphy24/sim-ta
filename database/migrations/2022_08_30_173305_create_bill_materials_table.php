@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('bill_materials', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('budget_plans_id')->index('fk_bill_materials_to_budget_plans');
+            $table->foreignId('budget_plan_costs_id')->index('fk_bill_materials_to_budget_plan_costs');
             $table->foreignId('materials_id')->index('fk_bill_materials_to_materials');
             $table->integer('quantity');
             $table->integer('price');

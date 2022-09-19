@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('bill_materials', function (Blueprint $table) {
-            $table->foreign('budget_plans_id', 'fk_bill_materials_to_budget_plans')->references('id')->on('budget_plans')->onUpdate('CASCADE');
+            $table->foreign('budget_plan_costs_id', 'fk_bill_materials_to_budget_plan_costs')->references('id')->on('budget_plan_costs')->onUpdate('CASCADE');
             $table->foreign('materials_id', 'fk_bill_materials_to_materials')->references('id')->on('materials')->onUpdate('CASCADE');
         });
     }
@@ -27,7 +27,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('bill_materials', function (Blueprint $table) {
-            $table->dropForeign('fk_bill_materials_to_budget_plans');
+            $table->dropForeign('fk_bill_materials_to_budget_plan_costs');
             $table->dropForeign('fk_bill_materials_to_materials');
         });
     }

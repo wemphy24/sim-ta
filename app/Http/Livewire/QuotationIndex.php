@@ -3,7 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Customer;
-use App\Models\BudgetPlan;
+use App\Models\BudgetPlanCost;
 use App\Models\Quotation;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -43,6 +43,12 @@ class QuotationIndex extends Component
         ])->layout('layouts.admin');
     }
 
+    public function closeModal()
+    {
+        $this->showingQuotationModal = false;
+        $this->showingDetailQuotationModal = false;
+    }
+
     public function showQuotationModal()
     {
         $this->reset();
@@ -53,29 +59,23 @@ class QuotationIndex extends Component
         $countQO = Quotation::count();
         $getTimeNow = Carbon::now();
         if($countQO == 0) {
-            $this->quotation_code = 'QO.' . ($getTimeNow->day) . 0 . ($getTimeNow->month) . ($getTimeNow->year) . '.' . 1001;
+            $this->quotation_code = 'QO.' . ($getTimeNow->day) . ".0" . ($getTimeNow->month) . "." . ($getTimeNow->year) . '.' . 1001;
         } else {
             $getLastQO = Quotation::all()->last();
             $convertQO = (int)substr($getLastQO->quotation_code, -4) + 1;
-            $this->quotation_code = 'QO.' . ($getTimeNow->day) . 0 . ($getTimeNow->month) . ($getTimeNow->year) . '.' . $convertQO;
+            $this->quotation_code = 'QO.' . ($getTimeNow->day) . ".0" . ($getTimeNow->month) . "." . ($getTimeNow->year) . '.' . $convertQO;
         }
 
         // Membuat kode RABP
-        $countRabp = BudgetPlan::count();
+        $countRabp = BudgetPlanCost::count();
         $getTimeNow = Carbon::now();
         if($countRabp == 0) {
-            $this->budget_plan_code = 'RABP.' . ($getTimeNow->day) . 0 . ($getTimeNow->month) . ($getTimeNow->year) . '.' . 1001;
+            $this->budget_plan_code = 'RABP.' . ($getTimeNow->day) . ".0" . ($getTimeNow->month) . "." . ($getTimeNow->year) . '.' . 1001;
         } else {
-            $getLastRabp = BudgetPlan::all()->last();
+            $getLastRabp = BudgetPlanCost::all()->last();
             $convertRabp = (int)substr($getLastRabp->budget_plan_code, -4) + 1;
-            $this->budget_plan_code = 'RABP.' . ($getTimeNow->day) . 0 . ($getTimeNow->month) . ($getTimeNow->year) . '.' . $convertRabp;
+            $this->budget_plan_code = 'RABP.' . ($getTimeNow->day) . ".0" . ($getTimeNow->month) . "." . ($getTimeNow->year) . '.' . $convertRabp;
         }
-    }
-
-    public function closeModal()
-    {
-        $this->showingQuotationModal = false;
-        $this->showingDetailQuotationModal = false;
     }
 
     public function storeQuotation()
@@ -94,9 +94,10 @@ class QuotationIndex extends Component
                 'users_id' => Auth::user()->id,
             ]);
 
-            BudgetPlan::create([
+            BudgetPlanCost::create([
                 'quotations_id' => $getQuotationId->id,
                 'budget_plan_code' => $this->budget_plan_code,
+                'budget_cost_code' => NULL,
                 'description' => 'Menunggu pembuatan RABP',
                 // Ambil tanggal sekarang dari method showQuotationModal
                 'date' => $this->currentDate,

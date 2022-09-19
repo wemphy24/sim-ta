@@ -2,6 +2,7 @@
 
     @section('title', 'Quotation')
 
+        {{-- PAGE TITLE --}}
         <div class="m-6">
             <div class="flex justify-between">
                 <div class="flex items-center gap-4">
@@ -10,92 +11,63 @@
                     </a>
                     <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"></path></svg>
                     <a href="#">
-                        <div class="font-medium text-lg">Quotation</div>
+                        <div class="font-medium text-lg">List Penawaran</div>
                     </a>
                 </div>
             </div>
         </div>
         
+        {{-- TABLE DATA --}}
         <div class="m-6">
-            <div
-                class="overflow-x-auto shadow-sm sm:rounded-xl border border-gray-300/50"
-            >
-            <div class="bg-white border-b-2 py-3 px-6 flex justify-between gap-4">
-                <div class="flex items-center gap-4">
-                    <select wire:model="showPage" class="border-gray-300/50 rounded-xl shadow-sm text-sm">
-                        <option value="5">5</option>
-                        <option value="15">15</option>
-                        <option value="20">20</option>
-                    </select>
-                    <input wire:model="search" class="w-96 border-gray-300/50 rounded-xl p-2 shadow-sm text-sm" type="text" placeholder="Search">
+            <div class="overflow-x-auto shadow-sm sm:rounded-xl border border-gray-300/50">
+                <div class="bg-white border-b-2 py-3 px-6 flex justify-between gap-4">
+                    <div class="flex items-center gap-4">
+                        <select wire:model="showPage" class="border-gray-300/50 rounded-xl shadow-sm text-sm">
+                            <option value="5">5</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                        </select>
+                        <input wire:model="search" class="w-96 border-gray-300/50 rounded-xl p-2 shadow-sm text-sm" type="text" placeholder="Search">
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <button class="py-2 px-4 text-center rounded-xl border hover:bg-purple-900 hover:text-white">
+                            <div class="flex items-center gap-1">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"></path></svg>
+                                <span>Download CSV</span>
+                            </div> 
+                        </button>
+                        <button wire:click="showQuotationModal" class="py-2 px-4 text-center text-white rounded-xl border bg-purple-900">
+                            <div class="flex items-center gap-1">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                                <span>Buat Penawaran</span>
+                            </div>
+                        </button>   
+                    </div>        
                 </div>
-                <div class="flex items-center gap-4">
-                    <button class="py-2 px-4 text-center rounded-xl border hover:bg-purple-900 hover:text-white">
-                        <div class="flex items-center gap-1">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"></path></svg>
-                            <span>Download CSV</span>
-                        </div> 
-                    </button>
-                    <button wire:click="showQuotationModal" class="py-2 px-4 text-center text-white rounded-xl border bg-purple-900">
-                        <div class="flex items-center gap-1">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
-                            <span>Add Quotation</span>
-                        </div>
-                    </button>   
-                </div>        
-            </div>
                 <table class="w-full text-sm text-left text-gray-600">
                     <thead class="bg-gray-50">
                         <tr>
-                            <th scope="col" class="py-3 px-6">No</th>
-                            <th scope="col" class="py-3 px-6">
-                                Quotation Code
-                            </th>
-                            <th scope="col" class="py-3 px-6">
-                                Name
-                            </th>
-                            <th scope="col" class="py-3 px-6">
-                                Project
-                            </th>
-                            <th scope="col" class="py-3 px-6">
-                                Date
-                            </th>
-                            <th scope="col" class="py-3 px-6">
-                                Customer
-                            </th>
-                            <th scope="col" class="py-3 px-6">
-                                Status
-                            </th>
-                            <th scope="col" class="py-3 px-6">
-                                Action
-                            </th>
+                            <th scope="col" class="py-3 px-6">#</th>
+                            <th scope="col" class="py-3 px-6">Kode Penawaran</th>
+                            <th scope="col" class="py-3 px-6">Nama</th>
+                            <th scope="col" class="py-3 px-6">Proyek</th>
+                            <th scope="col" class="py-3 px-6">Tanggal</th>
+                            <th scope="col" class="py-3 px-6">Customer</th>
+                            <th scope="col" class="py-3 px-6">Status</th>
+                            <th scope="col" class="py-3 px-6">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($quotations as $quotation)
-                        <tr
-                            class="bg-white border-b hover:bg-gray-50 hover:text-black font-medium"
-                        >
+                        <tr class="bg-white border-b hover:bg-gray-50 hover:text-black font-medium">
                             <td class="py-4 px-6">{{ ($quotations ->currentpage()-1) * $quotations ->perpage() + $loop->index + 1 }}</td>
+                            <td class="py-4 px-6">{{ $quotation->quotation_code }}</td>
+                            <td class="py-4 px-6">{{ $quotation->name }}</td>
+                            <td class="py-4 px-6">{{ $quotation->project }}</td>
+                            <td class="py-4 px-6">{{ $quotation->date }}</td>
+                            <td class="py-4 px-6">{{ $quotation->customer['name'] }}</td>
                             <td class="py-4 px-6">
-                                {{ $quotation->quotation_code }}
-                            </td>
-                            <td class="py-4 px-6">
-                                {{ $quotation->name }}
-                            </td>
-                            <td class="py-4 px-6">
-                                {{ $quotation->project }}
-                            </td>
-                            <td class="py-4 px-6">
-                                {{ $quotation->date }}
-                            </td>
-                            <td class="py-4 px-6">
-                                {{ $quotation->customer['name'] }}
-                            </td>
-                            <td class="py-4 px-6">
-                                <div
-                                    class="bg-red-200 w-24 py-1.5 rounded-full font-medium text-center"
-                                >
+                                <div class="bg-red-200 w-24 py-1.5 rounded-full font-medium text-center">
                                     {{ $quotation->status['name'] }}
                                 </div>
                             </td>
@@ -120,14 +92,11 @@
             <div class="rounded-lg mt-6">
                 {{ $quotations->links() }}
             </div>
-            
         </div>
 
-        {{-- Default bernilai false --}}
+        {{-- QUOTATION MODAL --}}
         @if ($showingQuotationModal === true)
-            <div
-                class="bg-black bg-opacity-50 fixed inset-0 flex justify-center items-center"
-            >
+            <div class="bg-black bg-opacity-50 fixed inset-0 flex justify-center items-center">
                 <div class="bg-white p-4 rounded-xl shadow-md">
                     <div class="flex justify-between items-center">
                         @if($isEditMode === true)
@@ -152,7 +121,9 @@
                             </svg>
                         </button>
                     </div>
+
                     <div class="border black w-full mt-4"></div>
+
                     <div class="mt-4">
                         <div class="flex items-center gap-8 justify-between p-1">
                             <h1>Quotation Code</h1>
@@ -200,21 +171,22 @@
                             <h1>Customer</h1>
                             <select
                                 @if($isEditMode)
-                                disabled
-                                class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm bg-gray-100"
-                                wire:model="customers_id"
+                                    class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm"
+                                    wire:model="customers_id"
                                 @else
-                                class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm"
-                                wire:model="customers_id"
+                                    class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm"
+                                    wire:model="customers_id"
                                 @endif
                             >
                                 <option value="">Choose Customer</option>
                                 @foreach ($customers as $customer)
-                                <option value="{{ $customer->id }}">{{ $customer->name }}</option>
+                                    <option value="{{ $customer->id }}">{{ $customer->name }}</option>
                                 @endforeach
                             </select>
                         </div>
+
                         <div class="border black w-full mt-4"></div>
+
                         <div class="mt-4">
                             <div class="flex justify-end">
                                 @if($isEditMode == true)
@@ -239,6 +211,7 @@
             </div>
         @endif
         
+        {{-- EDIT QUOTATION MODAL --}}
         @if ($showingDetailQuotationModal == true)
             <div class="bg-black bg-opacity-50 fixed inset-0 flex justify-center items-center">
                 <div class="bg-white p-4 rounded-xl shadow-md">

@@ -16,7 +16,7 @@ class BillMaterial extends Model
     ];
 
     protected $fillable = [
-        'budget_plans_id', 
+        'budget_plan_costs_id', 
         'materials_id', 
         'quantity', 
         'price', 
@@ -25,7 +25,7 @@ class BillMaterial extends Model
 
     public function budget_plan()
     {
-        return $this->belongsTo('App\Models\BudgetPlan', 'budget_plans_id', 'id');
+        return $this->belongsTo('App\Models\BudgetPlanCost', 'budget_plan_costs_id', 'id');
     }
 
     public function material()

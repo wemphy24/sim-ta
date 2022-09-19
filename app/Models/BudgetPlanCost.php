@@ -5,10 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class BudgetPlan extends Model
+class BudgetPlanCost extends Model
 {
     // use HasFactory;
-    public $table = 'budget_plans';
+    public $table = 'budget_plan_costs';
 
     protected $dates = [
         'updated_at',
@@ -18,6 +18,7 @@ class BudgetPlan extends Model
     protected $fillable = [
         'quotations_id', 
         'budget_plan_code', 
+        'budget_cost_code', 
         'description', 
         'date', 
         'quotations_id', 
@@ -44,6 +45,6 @@ class BudgetPlan extends Model
 
     public function bill_material()
     {
-        return $this->hasMany('App\Models\BillMaterial', 'budget_plans_id');
+        return $this->hasMany('App\Models\BillMaterial', 'budget_plan_costs_id');
     }
 }
