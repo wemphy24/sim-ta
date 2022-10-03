@@ -30,4 +30,9 @@ class Status extends Model
     {
         return $this->hasMany('App\Models\BudgetPlan', 'status_id');
     }
+
+    public function inquiry()
+    {
+        return $this->hasMany('App\Models\Inquiry', 'status_id');
+    }
 }

@@ -68,4 +68,9 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Models\BudgetPlan', 'users_id');
     }
+
+    public function inquiry()
+    {
+        return $this->hasMany('App\Models\Inquiry', 'users_id');
+    }
 }

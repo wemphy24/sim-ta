@@ -28,4 +28,9 @@ class Customer extends Model
     {
         return $this->hasMany('App\Models\Quotation', 'customers_id');
     }
+
+    public function inquiry()
+    {
+        return $this->hasMany('App\Models\Inquiry', 'customers_id');
+    }
 }

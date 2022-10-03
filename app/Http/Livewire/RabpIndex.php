@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\BillMaterial;
 use App\Models\BudgetPlanCost;
+use App\Models\Category;
 use App\Models\DetailBillMaterial;
 use App\Models\Material;
 use App\Models\Measurement;
@@ -30,14 +31,16 @@ class RabpIndex extends Component
     public $currentDate;
     public $getDateNow;
 
-    // Rabp material
+    // RABP material
+    public $catchRabpId;
     public $budget_plan_costs_id, $materials_id, $price, $quantity, $total_price;
     public $overhead_cost, $preliminary_cost, $ppn, $profit;
 
     public $checkExistBillMaterial;
     public $measurement;
 
-    // Detail Rabp material
+    // Detail RABP material
+    public $checkExistData;
     public $totalRap, $totalProfit, $totalPPN, $subTotal, $totalRabp;
 
     // public $keyword = "";
@@ -66,11 +69,11 @@ class RabpIndex extends Component
         $this->checkExistBillMaterial = BillMaterial::count();
 
         return view('livewire.rabp-index', [
-            // 'rabps' => BudgetPlanCost::where('budget_plan_code', '!=', NULL)->latest()->paginate(5),
-            'rabps' => BudgetPlanCost::latest()->paginate(5),
+            'rabps' => BudgetPlanCost::where('budget_plan_code', '!=', NULL)->latest()->paginate(5),
+            // 'rabps' => BudgetPlanCost::latest()->paginate(5),
             'quotations' => Quotation::all(),
             'materials' => Material::all(),
-            'bill_materials' => BillMaterial::all(),
+            'bill_materials' => BillMaterial::where("budget_plan_costs_id", "=", $this->catchRabpId)->get(),
         ])->layout('layouts.admin');
     }
 
@@ -80,42 +83,6 @@ class RabpIndex extends Component
         $this->showingDetailRabpModal = false;
         $this->showingRabpMaterialModal = false;
     }
-
-    // --- RABP ---
-    // public function showRabpModal()
-    // {
-    //     $this->reset();
-    //     $this->showingRabpModal = true;
-
-    //     $this->currentDate = Carbon::now()->format('Y-m-d');
-
-    //     $countRabp = BudgetPlan::count();
-    //     $getTimeNow = Carbon::now();
-    //     if($countRabp == 0) {
-    //         $this->budget_plan_code = 'RABP.' . ($getTimeNow->day) . 0 . ($getTimeNow->month) . ($getTimeNow->year) . '.' . 1001;
-    //     } else {
-    //         $getLastRabp = BudgetPlan::all()->last();
-    //         $convertRabp = (int)substr($getLastRabp->budget_plan_code, -4) + 1;
-    //         $this->budget_plan_code = 'RABP.' . ($getTimeNow->day) . 0 . ($getTimeNow->month) . ($getTimeNow->year) . '.' . $convertRabp;
-    //     }
-    // }
-
-    // public function storeRabp()
-    // {
-    //     BudgetPlan::create([
-    //         'budget_plan_code' => $this->budget_plan_code,
-    //         'description' => $this->description,
-    //         'date' => $this->currentDate,
-    //         'quotations_id' => $this->quotations_id,
-    //         'status_id' => 1,
-    //         'users_id' => Auth::user()->id,
-    //     ]);
-
-    //     $this->reset();
-    //     $this->showingRabpModal = false;
-
-    //     $this->dispatchBrowserEvent('store-success');
-    // }
 
     public function showRabpEditModal($id) 
     {
@@ -148,6 +115,9 @@ class RabpIndex extends Component
 
     public function detailRabp($id)
     {
+        // Tampilkan daftar bill material
+        $this->catchRabpId = $id;
+
         $this->showingDetailRabpModal = true;
 
         $this->rabp = BudgetPlanCost::findOrFail($id);
@@ -162,7 +132,6 @@ class RabpIndex extends Component
         $this->status_id = $this->rabp->status['name'];
         $this->users_id = $this->rabp->user['name'];
 
-        // $this->totalRap = DetailBillMaterial::where('bill_materials_id','=',$id)->first(['total_price_rap'])->total_price_rap;
         $this->totalRap = BillMaterial::where('budget_plan_costs_id','=',$id)->sum('total_price');
         $this->overhead_cost = DetailBillMaterial::where('bill_materials_id','=',$id)->first(['overhead_cost'])->overhead_cost;
         $this->preliminary_cost = DetailBillMaterial::where('bill_materials_id','=',$id)->first(['preliminary_cost'])->preliminary_cost;
@@ -183,12 +152,20 @@ class RabpIndex extends Component
     // --- MATERIAL RABP ---
     public function showRabpMaterial($id)
     {
+        // Tampilkan daftar bill material
+        $this->catchRabpId = $id;
 
-        // Set default Rabp material
+        // Set default RABP material
         $this->budget_plan_costs_id = $id;
         $this->materials_id = 1;
         $this->quantity = 1;
-        $this->measurement = "MM";
+
+        $getCategoryId = Material::where('id', '=', $this->materials_id)->first(['measurements_id'])->measurements_id;
+        $this->category = Category::where('id', '=', $getCategoryId)->first(['name'])->name;
+
+        $getMeasurementId = Material::where('id', '=', $this->materials_id)->first(['measurements_id'])->measurements_id;
+        $this->measurement = Measurement::where('id', '=', $getMeasurementId)->first(['name'])->name;
+        
         $this->price = Material::where('id', '=', $this->materials_id)->first(['price'])->price;
         $this->total_price = Material::where('id', '=', $this->materials_id)->first(['price'])->price;
 
@@ -229,8 +206,8 @@ class RabpIndex extends Component
         $calculatePPN = ($this->ppn * 0.01) * ($calculateTotalRap + $calculateProfit + $this->overhead_cost + $this->preliminary_cost);
 
         // Cek jika kolom detail_materials_id sudah ada isinya
-        $checkExistData = DetailBillMaterial::select('bill_materials_id')->where('bill_materials_id',$this->budget_plan_costs_id)->exists();
-        if($checkExistData == false) {
+        $this->checkExistData = DetailBillMaterial::select('bill_materials_id')->where('bill_materials_id',$this->budget_plan_costs_id)->exists();
+        if($this->checkExistData == false) {
             DetailBillMaterial::create([
                 'bill_materials_id' => $this->budget_plan_costs_id,
                 'total_price_rap' => $calculateTotalRap,
@@ -259,8 +236,14 @@ class RabpIndex extends Component
 
     public function approveRabp($id)
     {
+        $this->changeStatus = BudgetPlanCost::findOrFail($id);
         $this->getRabpId = $id;
         DB::transaction(function() {
+            // Ubah status RABP ke Complete
+            $this->changeStatus->update([
+                'status_id' => 3,
+                'description' => "Sudah Deal",
+            ]);
             // Membuat kode RAP
             $getTimeNow = Carbon::now();
             $getRabpCode = substr(BudgetPlanCost::where('quotations_id', '=', $this->getRabpId)->first(['budget_plan_code'])->budget_plan_code, -4);
@@ -276,7 +259,7 @@ class RabpIndex extends Component
                 'users_id' => Auth::user()->id,
             ]);
 
-            // Membuat bill material untuk Rap berdasarkan Rabp
+            // Membuat bill material untuk RAP berdasarkan RABP
             $getBillMaterialRabp = BillMaterial::all();
             foreach ($getBillMaterialRabp as $bmrap) {
                     BillMaterial::create([
@@ -288,7 +271,7 @@ class RabpIndex extends Component
                 ]);
             }
             
-            // Membuat detail bill material untuk Rap berdasarkan Rabp
+            // Membuat detail bill material untuk RAP berdasarkan RABP
             DetailBillMaterial::create([
                 'bill_materials_id' => $getRapId->id,
                 'total_price_rap' => DetailBillMaterial:: where('bill_materials_id', '=', $this->getRabpId)->first(['total_price_rap'])->total_price_rap,
@@ -303,12 +286,19 @@ class RabpIndex extends Component
         $this->dispatchBrowserEvent('store-success');
     }
 
-    // Realtime update value perhitungan Rabp material
     public function updated($key, $value)
     {
+        // Realtime update value perhitungan RABP material masuk database
         if (in_array($key,['quantity','price','materials_id'])) {
             $this->price = Material::where('id', '=', $this->materials_id)->first(['price'])->price;
             $this->total_price = $this->quantity * $this->price;
+
+            // Realtime update value tanpa masuk database
+            $getCategoryId = Material::where('id', '=', $this->materials_id)->first(['measurements_id'])->measurements_id;
+            $this->category = Category::where('id', '=', $getCategoryId)->first(['name'])->name;
+            
+            $getMeasurementId = Material::where('id', '=', $this->materials_id)->first(['measurements_id'])->measurements_id;
+            $this->measurement = Measurement::where('id', '=', $getMeasurementId)->first(['name'])->name;
         }
     }
 
