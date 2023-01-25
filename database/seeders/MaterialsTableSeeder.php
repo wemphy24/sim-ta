@@ -19,6 +19,7 @@ class MaterialsTableSeeder extends Seeder
             [
                 'categories_id' => 1,
                 'measurements_id' => 1,
+                'material_code' => 'BB.00'. 1,
                 'name' => 'MCB 40A',
                 'stock' => 30,
                 'price' => 285000,
@@ -30,6 +31,7 @@ class MaterialsTableSeeder extends Seeder
             [
                 'categories_id' => 2,
                 'measurements_id' => 2,
+                'material_code' => 'BP.00'. 2,
                 'name' => 'Pilot Lamp',
                 'stock' => 50,
                 'price' => 48000,
@@ -41,6 +43,7 @@ class MaterialsTableSeeder extends Seeder
             [
                 'categories_id' => 1,
                 'measurements_id' => 1,
+                'material_code' => 'BB.00'. 3,
                 'name' => 'Stoper Terminal Block',
                 'stock' => 70,
                 'price' => 3000,

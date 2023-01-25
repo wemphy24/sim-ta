@@ -13,15 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('materials', function (Blueprint $table) {
+        Schema::create('detail_rabps', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('categories_id')->index('fk_materials_to_categories');
-            $table->foreignId('measurements_id')->index('fk_materials_to_measurements');
-            $table->string('name');
-            $table->integer('stock');
+            $table->foreignId('rabps_id')->constrained('rabps')->onUpdate('CASCADE');
+            $table->foreignId('set_goods_id')->constrained('set_goods')->onUpdate('CASCADE');
+            $table->integer('qty')->nullable();
             $table->integer('price')->nullable();
-            $table->integer('min_stock')->nullable();;
-            $table->integer('max_stock')->nullable();;
             $table->timestamps();
         });
     }
@@ -33,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('materials');
+        Schema::dropIfExists('detail_rabps');
     }
 };

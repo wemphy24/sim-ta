@@ -19,7 +19,7 @@
         
         {{-- TABLE DATA --}}
         <div class="m-6">
-            <div class="overflow-x-auto shadow-sm sm:rounded-xl border border-gray-300/50">
+            <div class="overflow-x-auto shadow-sm sm:rounded-lg border border-gray-300/50">
                 <div class="bg-white border-b-2 py-3 px-6 flex justify-end gap-4">
                     <button class="py-2 px-4 text-center rounded-lg border hover:bg-purple-900 hover:text-white">
                         <div class="flex items-center gap-1">
@@ -74,7 +74,7 @@
         {{-- MEASUREMENT MODAL --}}
         @if ($showingMeasurementModal === true)
             <div class="bg-black bg-opacity-50 fixed inset-0 flex justify-center items-center">
-                <div class="bg-white p-4 rounded-xl shadow-md">
+                <div class="bg-white p-4 rounded-lg shadow-md">
                     <div class="flex justify-between items-center">
                         @if($isEditMode === true)
                             <h1 class="font-medium text-xl">Edit Satuan</h1>
@@ -100,7 +100,7 @@
                     </div>
                     <div class="mt-4">
                         <div class="flex items-center gap-8 justify-between p-1">
-                            <h1>Name</h1>
+                            <h1>Nama</h1>
                             <input
                                 type="text"
                                 wire:model="name"
@@ -112,14 +112,14 @@
                                 @if($isEditMode == true)
                                     <button
                                         wire:click="updateMeasurement"
-                                        class="text-white bg-purple-900 py-2 px-6 rounded-xl"
+                                        class="text-white bg-purple-900 py-2 px-6 rounded-lg"
                                     >
                                         Update
                                     </button>
                                 @else
                                     <button
                                         wire:click="storeMeasurement"
-                                        class="text-white bg-purple-900 py-2 px-6 rounded-xl"
+                                        class="text-white bg-purple-900 py-2 px-6 rounded-lg"
                                     >
                                         Submit
                                     </button>
@@ -130,4 +130,5 @@
                 </div>
             </div>
         @endif
+
 </div>

@@ -52,9 +52,7 @@
                             $count = 0;
                         @endphp
                         @foreach ($customers as $customer)
-                            <tr
-                                class="bg-white border-b hover:bg-gray-100 hover:text-black font-medium"
-                            >
+                            <tr class="bg-white border-b hover:bg-gray-100 hover:text-black font-medium">
                                 <td class="py-4 px-6">{{ $count+=1 }}</td>
                                 <td class="py-4 px-6">{{ $customer->name }}</td>
                                 <td class="py-4 px-6">{{ $customer->email }}</td>
@@ -85,7 +83,7 @@
                 <div class="bg-white p-4 rounded-xl shadow-md">
                     <div class="flex justify-between items-center">
                         @if($isEditMode === true)
-                            <h1 class="font-medium text-xl">Update Customer</h1>
+                            <h1 class="font-medium text-xl">Edit Customer</h1>
                         @else
                             <h1 class="font-medium text-xl">Tambah Customer</h1>
                         @endif

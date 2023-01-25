@@ -19,24 +19,24 @@
         
         {{-- TABLE DATA --}}
         <div class="m-6">
-            <div class="overflow-x-auto shadow-sm sm:rounded-xl border border-gray-300/50">
-                <div class="bg-white border-b-2 py-3 px-6 flex justify-between gap-4">
+            <div class="overflow-x-auto shadow-sm sm:rounded-lg border border-gray-300/50">
+                <div class="bg-white border-b-2 py-3 px-6 flex justify-between">
                     <div class="flex items-center gap-4">
-                        <select wire:model="showPage" class="border-gray-300/50 rounded-xl shadow-sm text-sm">
+                        <select wire:model="showPage" class="border-gray-300/50 rounded-lg shadow-sm text-sm">
                             <option value="5">5</option>
                             <option value="15">15</option>
                             <option value="20">20</option>
                         </select>
-                        <input wire:model="search" class="w-96 border-gray-300/50 rounded-xl p-2 shadow-sm text-sm" type="text" placeholder="Search">
+                        <input wire:model="search" class="w-96 border-gray-300/50 rounded-lg p-2 shadow-sm text-sm" type="text" placeholder="Search">
                     </div>
                     <div class="flex items-center gap-4">
-                        <button class="py-2 px-4 text-center rounded-xl border hover:bg-purple-900 hover:text-white">
+                        <button class="py-2 px-4 text-center rounded-lg border hover:bg-purple-900 hover:text-white">
                             <div class="flex items-center gap-1">
                                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"></path></svg>
                                 <span>Download CSV</span>
                             </div> 
                         </button>
-                        <button wire:click="showQuotationModal" class="py-2 px-4 text-center text-white rounded-xl border bg-purple-900">
+                        <button wire:click="showQuotationModal" class="py-2 px-4 text-center text-white rounded-lg border bg-purple-900">
                             <div class="flex items-center gap-1">
                                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
                                 <span>Buat Penawaran</span>
@@ -49,7 +49,7 @@
                         <tr>
                             <th scope="col" class="py-3 px-6">#</th>
                             <th scope="col" class="py-3 px-6">Kode Penawaran</th>
-                            <th scope="col" class="py-3 px-6">Nama</th>
+                            <th scope="col" class="py-3 px-6">Nama Penawaran</th>
                             <th scope="col" class="py-3 px-6">Proyek</th>
                             <th scope="col" class="py-3 px-6">Tanggal</th>
                             <th scope="col" class="py-3 px-6">Customer</th>
@@ -97,12 +97,12 @@
         {{-- QUOTATION MODAL --}}
         @if ($showingQuotationModal === true)
             <div class="bg-black bg-opacity-50 fixed inset-0 flex justify-center items-center">
-                <div class="bg-white p-4 rounded-xl shadow-md">
+                <div class="bg-white p-4 rounded-lg shadow-md">
                     <div class="flex justify-between items-center">
                         @if($isEditMode === true)
-                            <h1 class="font-medium text-xl">Update Quotation</h1>
+                            <h1 class="font-medium text-xl">Edit Penawaran</h1>
                         @else
-                            <h1 class="font-medium text-xl">Add Quotation</h1>
+                            <h1 class="font-medium text-xl">Tambah Penawaran</h1>
                         @endif
                         <button wire:click="closeModal">
                             <svg
@@ -126,7 +126,19 @@
 
                     <div class="mt-4">
                         <div class="flex items-center gap-8 justify-between p-1">
-                            <h1>Quotation Code</h1>
+                        <h1>Nama Inquiry</h1>
+                        <select
+                            class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm"
+                            wire:model="inquiries_id"
+                        >
+                            <option value="">Pilih Inquiry</option>
+                            @foreach ($inquiries as $inquiry)
+                                <option value="{{ $inquiry->id }}">{{ $inquiry->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                        <div class="flex items-center gap-8 justify-between p-1">
+                            <h1>Kode Penawaran</h1>
                             <input
                                 disabled
                                 type="text"
@@ -135,7 +147,7 @@
                             />
                         </div>
                         <div class="flex items-center gap-8 justify-between p-1">
-                            <h1>Name</h1>
+                            <h1>Nama Penawaran</h1>
                             <input
                                 type="text"
                                 wire:model="name"
@@ -143,7 +155,7 @@
                             />
                         </div>
                         <div class="flex items-center gap-8 justify-between p-1">
-                            <h1>Project</h1>
+                            <h1>Proyek</h1>
                             <input
                                 type="text"
                                 wire:model="project"
@@ -151,7 +163,7 @@
                             />
                         </div>
                         <div class="flex items-center gap-8 justify-between p-1">
-                            <h1>Date</h1>
+                            <h1>Tanggal</h1>
                             <input
                                 disabled
                                 type="date"
@@ -160,7 +172,7 @@
                             />
                         </div>
                         <div class="flex items-center gap-8 justify-between p-1">
-                            <h1>Location</h1>
+                            <h1>Lokasi</h1>
                             <input
                                 type="text"
                                 wire:model="location"
@@ -169,37 +181,37 @@
                         </div>
                         <div class="flex items-center gap-8 justify-between p-1">
                             <h1>Customer</h1>
-                            <select
+                            <select disabled
                                 @if($isEditMode)
-                                    class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm"
+                                    class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm bg-gray-100"
                                     wire:model="customers_id"
                                 @else
-                                    class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm"
+                                    class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm bg-gray-100"
                                     wire:model="customers_id"
                                 @endif
                             >
-                                <option value="">Choose Customer</option>
+                                <option value="">Pilih Customer</option>
                                 @foreach ($customers as $customer)
                                     <option value="{{ $customer->id }}">{{ $customer->name }}</option>
                                 @endforeach
                             </select>
                         </div>
 
-                        <div class="border black w-full mt-4"></div>
+                        {{-- <div class="border black w-full mt-4"></div> --}}
 
                         <div class="mt-4">
                             <div class="flex justify-end">
                                 @if($isEditMode == true)
                                     <button
                                         wire:click="updateQuotation"
-                                        class="text-white bg-purple-900 py-2 px-6 rounded-xl"
+                                        class="text-white bg-purple-900 py-2 px-6 rounded-lg"
                                     >
                                         Update
                                     </button>
                                 @else
                                     <button
                                         wire:click="storeQuotation"
-                                        class="text-white bg-purple-900 py-2 px-6 rounded-xl"
+                                        class="text-white bg-purple-900 py-2 px-6 rounded-lg"
                                     >
                                         Submit
                                     </button>
@@ -211,12 +223,12 @@
             </div>
         @endif
         
-        {{-- EDIT QUOTATION MODAL --}}
+        {{-- DETAIL QUOTATION MODAL --}}
         @if ($showingDetailQuotationModal == true)
             <div class="bg-black bg-opacity-50 fixed inset-0 flex justify-center items-center">
-                <div class="bg-white p-4 rounded-xl shadow-md">
-                    <div class="flex justify-between">
-                        <h1 class="font-medium text-xl">Detail Quotation</h1>
+                <div class="bg-white p-4 rounded-lg shadow-md">
+                    <div class="flex justify-between w-[1000px]">
+                        <h1 class="font-medium text-xl">Detail Penawaran</h1>
                         <button wire:click="closeModal">
                             <svg
                                 class="w-6 h-6"
@@ -234,33 +246,116 @@
                             </svg>
                         </button>
                     </div>
+
                     <div class="border black w-full mt-4"></div>
-                    <div class="mt-4 flex gap-6 justify-between">
-                        <h1 class="font-medium">Quotation Code</h1>
+
+                    <div class="mt-4">
+                        <div class="mt-1">
+                            <h1 class="font-medium">Nama Inquiry :</h1>
+                            <input
+                                disabled
+                                type="text"
+                                wire:model="inquiries_id"
+                                class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-gray-50"
+                            />
+                        </div>
+                        <div class="mt-1">
+                            <h1 class="font-medium">Kode Penawaran :</h1>
+                            <input
+                                disabled
+                                type="text"
+                                wire:model="quotation_code"
+                                class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-gray-50"
+                            />
+                        </div>
+                        <div class="mt-1">
+                            <h1 class="font-medium">Nama Penawaran :</h1>
+                            <input
+                                disabled
+                                type="text"
+                                wire:model="name"
+                                class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-gray-50"
+                            />
+                        </div>
+                        <div class="mt-1">
+                            <h1 class="font-medium">Tanggal :</h1>
+                            <input
+                                disabled
+                                type="text"
+                                wire:model="currentDate"
+                                class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-gray-50"
+                            />
+                        </div>
+                        <div class="mt-1">
+                            <h1 class="font-medium">Lokasi :</h1>
+                            <input
+                                disabled
+                                type="text"
+                                wire:model="location"
+                                class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-gray-50"
+                            />
+                        </div>
+                        <div class="mt-1">
+                            <h1 class="font-medium">Customer :</h1>
+                            <input
+                                disabled
+                                type="text"
+                                wire:model="customers_id"
+                                class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-gray-50"
+                            />
+                        </div>
+                        <div class="mt-1">
+                            <h1 class="font-medium">Status :</h1>
+                            <input
+                                disabled
+                                type="text"
+                                wire:model="status_id"
+                                class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-gray-50"
+                            />       
+                        </div>
+                        <div class="mt-1">
+                            <h1 class="font-medium">Dibuat Oleh :</h1>
+                            <input
+                                disabled
+                                type="text"
+                                wire:model="users_id"
+                                class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-gray-50"
+                            />
+                        </div>
+                    </div>
+
+                    {{-- <div class="mt-4 flex gap-6 justify-between">
+                        <h1 class="font-medium">Nama Inquiry</h1>
+                        <div class="w-[400px]">
+                            <p>: {{ $inquiries_id }}</p>
+                        </div>
+                    </div>
+                    <div class="mt-1 flex gap-6 justify-between">
+                        <h1 class="font-medium">Kode Penawaran</h1>
                         <div class="w-[400px]">
                             <p>: {{ $quotation_code }}</p>
                         </div>
                     </div>
                     <div class="mt-1 flex gap-6 justify-between">
-                        <h1 class="font-medium">Name</h1>
+                        <h1 class="font-medium">Nama Penawaran</h1>
                         <div class="w-[400px]">
                             <p>: {{ $name }}</p>
                         </div>
                     </div>
                     <div class="mt-1 flex gap-6 justify-between">
-                        <h1 class="font-medium">Project</h1>
+                        <h1 class="font-medium">Proyek</h1>
                         <div class="w-[400px]">
                             <p>: {{ $project }}</p>
                         </div>
                     </div>
                     <div class="mt-1 flex gap-6 justify-between">
-                        <h1 class="font-medium">Date</h1>
+                        <h1 class="font-medium">Tanggal</h1>
                         <div class="w-[400px]">
                             <p>: {{ $currentDate }}</p>
                         </div>
                     </div>
                     <div class="mt-1 flex gap-6 justify-between">
-                        <h1 class="font-medium">Location</h1>
+                        <h1 class="font-medium">Lokasi</h1>
                         <div class="w-[400px]">
                             <p>: {{ $location }}</p>
                         </div>
@@ -274,16 +369,17 @@
                     <div class="mt-1 flex gap-6 justify-between">
                         <h1 class="font-medium">Status</h1>
                         <div class="w-[400px]">
-                            <p>: {{ $status_id }}</p>
+                            <p>: <span class="text-red-600">{{ $status_id }}</span></p>
                         </div>
                     </div>
                     <div class="mt-1 flex gap-6 justify-between">
-                        <h1 class="font-medium">Created By</h1>
+                        <h1 class="font-medium">Dibuat Oleh</h1>
                         <div class="w-[400px]">
                             <p>: {{ $users_id }}</p>
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
         @endif
+        
 </div>

@@ -18,10 +18,11 @@ return new class extends Migration
             $table->string('name');
             $table->longText('inquiry_file');
             $table->longText('purchase_order_file')->nullable();
+            $table->string('description')->nullable();
             $table->date('date');
-            $table->foreignId('customers_id')->index('fk_inquiries_to_customers');
-            $table->foreignId('status_id')->index('fk_inquiries_to_status');
-            $table->foreignId('users_id')->index('fk_inquiries_to_users');
+            $table->foreignId('customers_id')->constrained('customers')->onUpdate('CASCADE');
+            $table->foreignId('status_id')->constrained('status')->onUpdate('CASCADE');
+            $table->foreignId('users_id')->constrained('users')->onUpdate('CASCADE');
             $table->timestamps();
         });
     }

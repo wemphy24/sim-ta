@@ -13,13 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('bill_materials', function (Blueprint $table) {
+        Schema::create('rabp_costs', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('budget_plan_costs_id')->index('fk_bill_materials_to_budget_plan_costs');
-            $table->foreignId('materials_id')->index('fk_bill_materials_to_materials');
-            $table->integer('quantity');
-            $table->integer('price');
-            $table->integer('total_price');
+            $table->foreignId('rabps_id')->constrained('rabps')->onUpdate('CASCADE');
+            $table->integer('overhead')->nullable();
+            $table->integer('preliminary')->nullable();
+            $table->integer('profit')->nullable();
+            $table->integer('ppn')->nullable();
+            $table->integer('total_price')->nullable();
             $table->timestamps();
         });
     }
@@ -31,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('bill_materials');
+        Schema::dropIfExists('rabp_costs');
     }
 };

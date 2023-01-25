@@ -5,10 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class BudgetPlanCost extends Model
+class Rabp extends Model
 {
     // use HasFactory;
-    public $table = 'budget_plan_costs';
+    public $table = 'rabps';
 
     protected $dates = [
         'updated_at',
@@ -17,8 +17,8 @@ class BudgetPlanCost extends Model
 
     protected $fillable = [
         'quotations_id', 
-        'budget_plan_code', 
-        'budget_cost_code', 
+        'rabp_code', 
+        'name', 
         'description', 
         'date', 
         'status_id', 
@@ -42,8 +42,13 @@ class BudgetPlanCost extends Model
         return $this->belongsTo('App\Models\User', 'users_id', 'id');
     }
 
-    public function bill_material()
+    public function detail_rabp()
     {
-        return $this->hasMany('App\Models\BillMaterial', 'budget_plan_costs_id');
+        return $this->hasMany('App\Models\DetailRabp', 'rabps_id');
+    }
+
+    public function rabp_cost()
+    {
+        return $this->hasMany('App\Models\RabpCost', 'rabps_id');
     }
 }

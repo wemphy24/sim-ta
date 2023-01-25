@@ -16,6 +16,7 @@ class Quotation extends Model
     ];
 
     protected $fillable = [
+        'inquiries_id', 
         'quotation_code', 
         'name', 
         'project', 
@@ -43,9 +44,32 @@ class Quotation extends Model
         return $this->belongsTo('App\Models\User', 'users_id', 'id');
     }
 
-    // tabel budget_plans hanya mempunyai 1 quotations_id
-    public function budget_plan()
+    public function inquiry()
     {
-        return $this->hasOne('App\Models\BudgetPlan', 'quotations_id');
+        return $this->belongsTo('App\Models\Inquiry', 'inquiries_id', 'id');
     }
+    
+
+    // tabel budget_plans hanya mempunyai 1 quotations_id
+    // public function budget_plan()
+    // {
+    //     return $this->hasOne('App\Models\BudgetPlan', 'quotations_id');
+    // }
+
+    // tabel contract hanya mempunyai 1 quotations_id
+    public function contract()
+    {
+        return $this->hasOne('App\Models\Contract', 'quotations_id');
+    }
+
+    public function planning_cost()
+    {
+        return $this->hasMany('App\Models\PlanningCost', 'quotations_id');
+    }
+
+    public function rabp()
+    {
+        return $this->hasMany('App\Models\Rabp', 'quotations_id');
+    }
+    
 }

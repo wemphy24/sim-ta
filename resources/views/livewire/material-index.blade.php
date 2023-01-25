@@ -19,7 +19,7 @@
         
         {{-- TABLE DATA --}}
         <div class="m-6">
-            <div class="overflow-x-auto shadow-sm sm:rounded-xl border border-gray-300/50">
+            <div class="overflow-x-auto shadow-sm sm:rounded-lg border border-gray-300/50">
                 <div class="bg-white border-b-2 py-3 px-6 flex justify-end gap-4">
                     <button class="py-2 px-4 text-center rounded-lg border hover:bg-purple-900 hover:text-white">
                         <div class="flex items-center gap-1">
@@ -38,6 +38,7 @@
                     <thead class="bg-white text-black">
                         <tr>
                             <th scope="col" class="py-3 px-6">#</th>
+                            <th scope="col" class="py-3 px-6">Kode Material</th>
                             <th scope="col" class="py-3 px-6">Nama</th>
                             <th scope="col" class="py-3 px-6">Kategori</th>
                             <th scope="col" class="py-3 px-6">Harga</th>
@@ -45,7 +46,7 @@
                             <th scope="col" class="py-3 px-6">Min Stok</th>
                             <th scope="col" class="py-3 px-6">Max Stok</th>
                             <th scope="col" class="py-3 px-6">Satuan</th>
-                            <th scope="col" class="py-3 px-6">Dibuat</th>
+                            {{-- <th scope="col" class="py-3 px-6">Dibuat</th> --}}
                             <th scope="col" class="py-3 px-6">Diperbarui</th>
                             <th scope="col" class="py-3 px-6">Aksi</th>
                         </tr>
@@ -57,6 +58,7 @@
                         @foreach ($materials as $material)
                             <tr class="bg-white border-b hover:bg-gray-100 hover:text-black font-medium">
                                 <td class="py-4 px-6">{{ $count+=1 }}</td>
+                                <td class="py-4 px-6">{{ $material->material_code }}</td>
                                 <td class="py-4 px-6">{{ $material->name }}</td>
                                 <td class="py-4 px-6">{{ $material->category['name'] }}</td>
                                 <td class="py-4 px-6">Rp. {{ number_format($material->price) }}</td>
@@ -64,7 +66,7 @@
                                 <td class="py-4 px-6">{{ $material->min_stock }}</td>
                                 <td class="py-4 px-6">{{ $material->max_stock }}</td>
                                 <td class="py-4 px-6">{{ $material->measurement['name'] }}</td>
-                                <td class="py-4 px-6">{{ $material->created_at->format('m/d/Y') }}</td>
+                                {{-- <td class="py-4 px-6">{{ $material->created_at->format('m/d/Y') }}</td> --}}
                                 <td class="py-4 px-6">{{ $material->updated_at->format('m/d/Y') }}</td>
                                 <td class="py-4 px-6">
                                     <div class="flex items-center gap-4">
@@ -86,7 +88,7 @@
         {{-- MATERIAL MODAL --}}
         @if ($showingMaterialModal === true)
             <div class="bg-black bg-opacity-50 fixed inset-0 flex justify-center items-center">
-                <div class="bg-white p-4 rounded-xl shadow-md">
+                <div class="bg-white p-4 rounded-lg shadow-md">
                     <div class="flex justify-between items-center">
                         @if($isEditMode === true)
                             <h1 class="font-medium text-xl">Edit Material</h1>
@@ -111,6 +113,14 @@
                         </button>
                     </div>
                     <div class="mt-4">
+                        <div class="flex items-center gap-8 justify-between p-1">
+                            <h1>Kode Material</h1>
+                            <input
+                                type="text"
+                                wire:model="material_code"
+                                class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm bg-gray-100"
+                            />
+                        </div>
                         <div class="flex items-center gap-8 justify-between p-1">
                             <h1>Nama</h1>
                             <input
@@ -180,14 +190,14 @@
                                 @if($isEditMode == true)
                                     <button
                                         wire:click="updateMaterial"
-                                        class="text-white bg-purple-900 py-2 px-6 rounded-xl"
+                                        class="text-white bg-purple-900 py-2 px-6 rounded-lg"
                                     >
                                         Update
                                     </button>
                                 @else
                                     <button
                                         wire:click="storeMaterial"
-                                        class="text-white bg-purple-900 py-2 px-6 rounded-xl"
+                                        class="text-white bg-purple-900 py-2 px-6 rounded-lg"
                                     >
                                         Submit
                                     </button>
@@ -198,4 +208,5 @@
                 </div>
             </div>
         @endif
+        
 </div>

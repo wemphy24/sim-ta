@@ -5,10 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Material extends Model
+class SetGood extends Model
 {
     // use HasFactory;
-    public $table = 'materials';
+    public $table = 'set_goods';
 
     protected $dates = [
         'updated_at',
@@ -18,12 +18,10 @@ class Material extends Model
     protected $fillable = [
         'categories_id', 
         'measurements_id', 
-        'material_code', 
+        'set_goods_code', 
         'name', 
-        'stock', 
+        'qty', 
         'price', 
-        'min_stock', 
-        'max_stock', 
         'updated_at',
         'created_at',
     ];
@@ -38,13 +36,13 @@ class Material extends Model
         return $this->belongsTo('App\Models\Measurement', 'measurements_id', 'id');
     }
 
-    public function bill_material()
-    {
-        return $this->hasMany('App\Models\BillMaterial', 'materials_id');
-    }
-
     public function set_bill_material()
     {
-        return $this->hasMany('App\Models\SetBillMaterial', 'materials_id');
+        return $this->hasOne('App\Models\SetBillMaterial', 'set_goods_id');
+    }
+
+    public function detail_rabp()
+    {
+        return $this->hasMany('App\Models\DetailRabp', 'set_goods_id');
     }
 }

@@ -68,7 +68,7 @@ class SupplierIndex extends Component
         ]);
 
         $this->reset();
-        $this->showingMeasurementModal = false;
+        $this->showingSupplierModal = false;
 
         $this->dispatchBrowserEvent('update-success');
     }

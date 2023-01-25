@@ -19,15 +19,15 @@
         
         {{-- TABLE DATA --}}
         <div class="m-6">
-            <div class="overflow-x-auto shadow-sm sm:rounded-xl border border-gray-300/50">
+            <div class="overflow-x-auto shadow-sm sm:rounded-lg border border-gray-300/50">
                 <div class="bg-white border-b-2 py-3 px-6 flex justify-end gap-4">
-                    <button class="py-2 px-4 text-center rounded-xl border hover:bg-purple-900 hover:text-white">
+                    <button class="py-2 px-4 text-center rounded-lg border hover:bg-purple-900 hover:text-white">
                         <div class="flex items-center gap-1">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"></path></svg>
                             <span>Download CSV</span>
                         </div> 
                     </button>
-                    <button wire:click="showCategoryModal" class="py-2 px-4 text-center text-white rounded-xl border bg-purple-900">
+                    <button wire:click="showCategoryModal" class="py-2 px-4 text-center text-white rounded-lg border bg-purple-900">
                         <div class="flex items-center gap-1">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
                             <span>Tambah Kategori</span>
@@ -74,7 +74,7 @@
         {{-- CATEGORY MODAL --}}
         @if ($showingCategoryModal === true)
             <div class="bg-black bg-opacity-50 fixed inset-0 flex justify-center items-center">
-                <div class="bg-white p-4 rounded-xl shadow-md">
+                <div class="bg-white p-4 rounded-lg shadow-md">
                     <div class="flex justify-between items-center">
                         @if($isEditMode === true)
                             <h1 class="font-medium text-xl">Edit Kategori</h1>
@@ -99,7 +99,7 @@
                         </button>
                     </div>
 
-                    <div class="border black w-full mt-4"></div>
+                    {{-- <div class="border black w-full mt-4"></div> --}}
 
                     <div class="mt-4">
                         <div class="flex items-center gap-8 justify-between p-1">
@@ -112,21 +112,21 @@
                         </div>
                     </div>
 
-                    <div class="border black w-full mt-4"></div>
+                    {{-- <div class="border black w-full mt-4"></div> --}}
 
                     <div class="mt-4">
                         <div class="flex justify-end">
                             @if($isEditMode == true)
                                 <button
                                     wire:click="updateCategory"
-                                    class="text-white bg-purple-900 py-2 px-6 rounded-xl"
+                                    class="text-white bg-purple-900 py-2 px-6 rounded-lg"
                                 >
                                     Update
                                 </button>
                             @else
                                 <button
                                     wire:click="storeCategory"
-                                    class="text-white bg-purple-900 py-2 px-6 rounded-xl"
+                                    class="text-white bg-purple-900 py-2 px-6 rounded-lg"
                                 >
                                     Submit
                                 </button>
@@ -137,4 +137,5 @@
                 </div>
             </div>
         @endif
+
 </div>

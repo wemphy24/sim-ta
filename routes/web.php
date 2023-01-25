@@ -5,11 +5,15 @@ use App\Http\Livewire\LoginIndex;
 use App\Http\Livewire\DashboardIndex;
 use App\Http\Livewire\QuotationIndex;
 use App\Http\Livewire\RabpIndex;
+use App\Http\Livewire\InquiryIndex;
 
 use App\Http\Livewire\CategoryIndex;
 use App\Http\Livewire\MeasurementIndex;
 use App\Http\Livewire\MaterialIndex;
 use App\Http\Livewire\CustomerIndex;
+use App\Http\Livewire\DetailSetGoodIndex;
+use App\Http\Livewire\PlanningCostIndex;
+use App\Http\Livewire\SetGoodIndex;
 use App\Http\Livewire\SupplierIndex;
 use Illuminate\Support\Facades\Route;
 
@@ -32,7 +36,10 @@ Route::get('/', [LoginIndex::class, 'render']);
 
 Route::group(['middleware' => ['auth:sanctum',config('jetstream.auth_session'), 'verified']], function() {
     Route::get('/general', DashboardIndex::class)->name('general');
+    Route::get('/inquiry', InquiryIndex::class)->name('inquiry');
     Route::get('/quotation', QuotationIndex::class)->name('quotation');
+    Route::get('/setgood', SetGoodIndex::class)->name('setgood');
+    Route::get('/planning', PlanningCostIndex::class)->name('planning');
     Route::get('/rabp', RabpIndex::class)->name('rabp');
 });
 

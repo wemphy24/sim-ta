@@ -64,13 +64,28 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\Quotation', 'users_id');
     }
 
-    public function budget_plan()
-    {
-        return $this->hasMany('App\Models\BudgetPlan', 'users_id');
-    }
+    // public function budget_plan()
+    // {
+    //     return $this->hasMany('App\Models\BudgetPlan', 'users_id');
+    // }
 
     public function inquiry()
     {
         return $this->hasMany('App\Models\Inquiry', 'users_id');
+    }
+
+    public function contract()
+    {
+        return $this->hasMany('App\Models\Contract', 'users_id');
+    }
+
+    public function planning_cost()
+    {
+        return $this->hasMany('App\Models\PlanningCost', 'users_id');
+    }
+
+    public function rabp()
+    {
+        return $this->hasMany('App\Models\Rabp', 'users_id');
     }
 }

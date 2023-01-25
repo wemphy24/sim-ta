@@ -25,4 +25,14 @@ class Measurement extends Model
     {
         return $this->hasMany('App\Models\Material', 'measurements_id');
     }
+
+    public function finish_good()
+    {
+        return $this->hasMany('App\Models\FinishGood', 'measurements_id');
+    }
+
+    public function set_good()
+    {
+        return $this->hasMany('App\Models\SetGood', 'measurements_id');
+    }
 }

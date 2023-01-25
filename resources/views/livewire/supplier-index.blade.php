@@ -83,7 +83,7 @@
                 <div class="bg-white p-4 rounded-xl shadow-md">
                     <div class="flex justify-between items-center">
                         @if($isEditMode === true)
-                            <h1 class="font-medium text-xl">Update Supplier</h1>
+                            <h1 class="font-medium text-xl">Edit Supplier</h1>
                         @else
                             <h1 class="font-medium text-xl">Tambah Supplier</h1>
                         @endif

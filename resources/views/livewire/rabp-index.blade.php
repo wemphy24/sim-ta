@@ -1,7 +1,9 @@
-<div class="main-content bg-gray-50 flex-1">
+<div class="main-content bg-gray-50 flex-1 ml-64 h-screen">
 
     @section('title', 'RABP')
 
+        @if ($showingMainPage)
+        
         {{-- PAGE TITLE --}}
         <div class="m-6">
             <div class="flex justify-between">
@@ -36,6 +38,12 @@
                                 <span>Download CSV</span>
                             </div> 
                         </button>
+                        <button wire:click="showRabp" class="py-2 px-4 text-center text-white rounded-lg border bg-purple-900">
+                            <div class="flex items-center gap-1">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                                <span>Buat RABP</span>
+                            </div>
+                    </button> 
                     </div>        
                 </div>
                 <table class="w-full text-sm text-left text-gray-600">
@@ -57,9 +65,9 @@
                             class="bg-white border-b hover:bg-gray-50 hover:text-black font-medium"
                         >
                             <td class="py-4 px-6">{{ ($rabps ->currentpage()-1) * $rabps ->perpage() + $loop->index + 1 }}</td>
-                            <td class="py-4 px-6">{{ $rabp->budget_plan_code }}</td>
+                            <td class="py-4 px-6 font-bold">{{ $rabp->rabp_code }}</td>
                             <td class="py-4 px-6">{{ $rabp->quotation['quotation_code'] }}</td>
-                            <td class="py-4 px-6">{{ $rabp->quotation['name'] }}</td>
+                            <td class="py-4 px-6">{{ $rabp->name }}</td>
                             <td class="py-4 px-6">{{ $rabp->description }}</td>
                             <td class="py-4 px-6">{{ $rabp->date }}</td>
                             <td class="py-4 px-6">
@@ -75,38 +83,8 @@
                             </td>
                             <td class="py-4 px-6">
                                 <div class="flex items-center gap-4">
-                                    {{-- @if ($checkExistData == false)
-                                        <button disabled>
-                                            <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                                        </button>
-                                    @else --}}
-                                        <button title="Approve" wire:click="approveRabp({{ $rabp->id }})">
-                                            <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                                        </button>
-                                    {{-- @endif --}}
-                                    <button title="Edit" wire:click="showRabpEditModal({{ $rabp->id }})">
-                                        <svg class="w-5 h-5 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
-                                    </button>
-                                    @if ($rabp->status['name'] == "Complete")
-                                        <button disabled>
-                                            <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
-                                        </button>
-                                    @else
-                                        <button title="Tambah" wire:click="showRabpMaterial({{ $rabp->id }})">
-                                            <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
-                                        </button>
-                                    @endif
-                                    {{-- @if ($checkExistData == false)
-                                        <button disabled>
-                                            <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 21h7a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v11m0 5l4.879-4.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242z"></path></svg>
-                                        </button>
-                                    @else --}}
-                                        <button title="Detail" wire:click="detailRabp({{ $rabp->id }})">
-                                            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 21h7a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v11m0 5l4.879-4.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242z"></path></svg>
-                                        </button>
-                                    {{-- @endif --}}
-                                    <button disabled title="Hapus" wire:click="deleteRabp({{ $rabp->id }})">
-                                        <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                    <button title="Detail" wire:click="detailRabp({{ $rabp->id }})">
+                                        <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 21h7a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v11m0 5l4.879-4.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242z"></path></svg>
                                     </button>
                                 </div>
                             </td>
@@ -120,15 +98,15 @@
             </div>
         </div>
 
-        {{-- RABP EDIT MODAL --}}
-        @if ($showingRabpModal === true)
+        {{-- RABP MODAL --}}
+        @if ($showingRabpModal)
             <div class="bg-black bg-opacity-50 fixed inset-0 flex justify-center items-center">
                 <div class="bg-white p-4 rounded-xl shadow-md">
                     <div class="flex justify-between items-center">
                         @if($isEditMode === true)
                             <h1 class="font-medium text-xl">Edit RABP</h1>
                         @else
-                            <h1 class="font-medium text-xl">Add RABP</h1>
+                            <h1 class="font-medium text-xl">Buat RABP</h1>
                         @endif
                         <button wire:click="closeModal">
                             <svg
@@ -152,21 +130,32 @@
 
                     <div class="mt-4">
                         <div class="flex items-center gap-8 justify-between p-1">
-                            <h1>Date</h1>
+                            <h1>Nama Penawaran</h1>
+                            <select
+                                class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm"
+                                wire:model="quotations_id"
+                            >
+                                <option value="">Pilih Penawaran</option>
+                                @foreach ($quotations as $quotation)
+                                    <option value="{{ $quotation->id }}">{{ $quotation->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="flex items-center gap-8 justify-between p-1">
+                            <h1>Kode RABP</h1>
                             <input
-                                type="date"
-                                wire:model.lazy="currentDate"
+                                type="text"
+                                wire:model="rabp_code"
                                 class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm bg-gray-100"
                                 disabled
                             />
                         </div>
                         <div class="flex items-center gap-8 justify-between p-1">
-                            <h1>RABP Code</h1>
+                            <h1>Nama</h1>
                             <input
                                 type="text"
-                                wire:model="budget_plan_code"
-                                class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm bg-gray-100"
-                                disabled
+                                wire:model="name"
+                                class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm"
                             />
                         </div>
                         <div class="flex items-center gap-8 justify-between p-1">
@@ -175,6 +164,15 @@
                                 type="text"
                                 wire:model="description"
                                 class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm"
+                            />
+                        </div>
+                        <div class="flex items-center gap-8 justify-between p-1">
+                            <h1>Tanggal</h1>
+                            <input
+                                type="date"
+                                wire:model.lazy="date"
+                                class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm bg-gray-100"
+                                disabled
                             />
                         </div>
 
@@ -204,366 +202,234 @@
             </div>
         @endif
 
-        {{-- RABP MATERIAL MODAL --}}
-        @if ($showingRabpMaterialModal)
-            <div class="bg-black bg-opacity-50 fixed inset-0 flex justify-center items-center">
-                <div class="bg-white p-4 rounded-xl shadow-md">
-                    <div class="flex justify-between items-center">
-                        <h1 class="font-medium text-xl">Tambah RABP Material</h1>
-                        <button wire:click="closeModal">
-                            <svg
-                                class="w-6 h-6"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                                xmlns="http://www.w3.org/2000/svg"
-                            >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M6 18L18 6M6 6l12 12"
-                                ></path>
-                            </svg>
-                        </button>
-                    </div>
-                    
-                    <div class="border black w-full mt-4"></div>
-                    
-                    <div class="my-4">
-                        <div class="flex items-center gap-4">
-                            <div class="p-1">
-                                <div class="flex items-center">
-                                    <h1 class="w-24">Overhead</h1>
-                                    <input
-                                        type="number"
-                                        wire:model="overhead_cost"
-                                        class="border border-gray-300/50 rounded-xl p-2 text-sm"
-                                        min="1"
-                                        required
-                                    />
-                                </div>
-                            </div>  
-                            <div class="p-1">
-                                <div class="flex items-center">
-                                    <h1 class="w-20">Profit</h1>
-                                    <input
-                                        type="number"
-                                        wire:model="profit"
-                                        class="w-16 border border-gray-300/50 rounded-xl p-2 text-sm"
-                                        min="1"
-                                        required
-                                    />
-                                    <span class="py-2 w-6 text-right">%</span>
-                                </div>
-                            </div>  
-                        </div>            
-                        <div class="flex items-center gap-4">
-                            <div class="p-1">
-                                <div class="flex items-center">
-                                    <h1 class="w-24 items-center">Preliminary</h1>
-                                    <input
-                                        type="number"
-                                        wire:model="preliminary_cost"
-                                        class="border border-gray-300/50 rounded-xl p-2 text-sm"
-                                        min="1"
-                                        required
-                                    />
-                                </div>
-                            </div>  
-                            <div class="p-1">
-                                <div class="flex items-center">
-                                    <h1 class="w-20">PPN</h1>
-                                    <input
-                                        type="number"
-                                        wire:model="ppn"
-                                        class="w-16 border border-gray-300/50 rounded-xl p-2 text-sm bg-gray-100 text-center"
-                                        min="1"
-                                        disabled
-                                    />
-                                    <span class="py-2 w-6 text-right">%</span>
-                                </div>
-                            </div>  
-                        </div>
-                    </div>            
+        @endif
 
-                    <div class="h-[400px] overflow-y-auto overflow-x-hidden pr-4">
-                        <table class="w-full text-sm text-left text-gray-600">
-                            <thead class="bg-gray-50">
+        {{-- DETAIL MODAL --}}
+        @if ($showingDetailModal)
+            <div class="m-6">
+                <div class="flex justify-between">
+                    <div class="flex items-center gap-4">
+                        <a href="#">
+                            <div class="font-medium text-lg text-gray-400">Penawaran</div>
+                        </a>
+                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"></path></svg>
+                        <a href="#">
+                            <div class="font-medium text-lg">RABP Penawaran Panel A</div>
+                        </a>
+                    </div>
+                    <button 
+                        class="text-lg font-medium hover:text-purple-900" 
+                        wire:click="back">Kembali
+                    </button>
+                </div>
+            </div>
+
+            <div class="m-6">
+                <div class="overflow-x-auto sm:rounded-xl border border-gray-300/50">
+                    <div class="bg-white py-3 px-6">
+                        {{-- SECTION RABP --}}
+                        <div class="my-2">
+                            <p class="font-medium">Kode RABP:</p>
+                            <input
+                                disabled
+                                type="text"
+                                wire:model="rabp_code"
+                                class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-gray-100"
+                            />
+                        </div>
+                        <div class="my-2">
+                            <p class="font-medium">Kode Penawaran:</p>
+                            <input
+                                disabled
+                                type="text"
+                                wire:model="quotations_id"
+                                class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-gray-100"
+                            />
+                        </div>
+                        <div class="my-2">
+                            <p class="font-medium">Nama:</p>
+                            <input
+                                type="text"
+                                wire:model="name"
+                                class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm"
+                            />
+                        </div>
+                        <div class="my-2">
+                            <p class="font-medium">Keterangan:</p>
+                            <input
+                                type="text"
+                                wire:model="description"
+                                class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm"
+                            />
+                        </div>
+                        <div class="my-2">
+                            <p class="font-medium">Tanggal:</p>
+                            <input
+                                disabled
+                                type="date"
+                                wire:model="date"
+                                class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-gray-100"
+                            />
+                        </div>
+                        <div class="my-2 flex justify-end">
+                            <button
+                                wire:click="updateRabp"
+                                class="text-white bg-purple-900 py-2 px-6 rounded-xl"
+                            >
+                                Submit
+                            </button>
+                        </div>
+                    
+                        <div class="border black w-full mt-4"></div>
+
+                        {{-- SECTION TENTUKAN COST --}}
+                        <div class="my-2">
+                            <p class="font-medium">Tentukan Overhead:</p>
+                            <input
+                                placeholder="Tentukan Overhead"
+                                type="number"
+                                wire:model="overhead"
+                                class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm"
+                            />
+                        </div>  
+                        <div class="my-2">
+                            <p class="font-medium">Tentukan Preliminary:</p>
+                            <input
+                                placeholder="Tentukan Preliminary"
+                                type="number"
+                                wire:model="preliminary"
+                                class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm"
+                            />
+                        </div>  
+                        <div class="my-2">
+                            <p class="font-medium">Tentukan Profit:</p>
+                            <input
+                                placeholder="Tentukan Profit"
+                                type="number"
+                                wire:model="profit"
+                                class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm"
+                                max= 100
+                            />
+                        </div>  
+                        <div class="my-2">
+                            <p class="font-medium">PPN:</p>
+                            <input
+                                disabled
+                                type="number"
+                                wire:model="ppn"
+                                class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-gray-100"
+                            />
+                        </div>
+                        <div class="my-2 flex justify-end">
+                            <button
+                                wire:click="storeCost"
+                                class="text-white bg-purple-900 py-2 px-6 rounded-xl"
+                            >
+                                Set Biaya
+                            </button>
+                        </div>
+
+                        <div class="border black w-full my-4"></div>
+
+                        {{-- SECTION BARANG --}}
+                        <table class="w-full text-sm text-left text-gray-600 my-2">
+                            <thead class="bg-gray-100">
                                 <tr>
-                                    <th scope="col" class="py-3 px-6">Kategori</th>
-                                    <th scope="col" class="py-3 px-6">Material</th>
+                                    <th scope="col" class="py-3 px-6">Barang</th>
                                     <th scope="col" class="py-3 px-6">Qty</th>
-                                    <th scope="col" class="py-3 px-6">Satuan</th>
                                     <th scope="col" class="py-3 px-6">Harga</th>
-                                    <th scope="col" class="py-3 px-6">Harga Total</th>
+                                    <th scope="col" class="py-3 px-6">Price</th>
                                     <th scope="col" class="py-3 px-6">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($bill_materials as $bm)
+                                @foreach ($detailrabps as $detailrabp)
                                     <tr class="bg-white hover:bg-gray-50 hover:text-black font-medium">
-                                        <td class="py-2 px-6">{{ $bm->material->category['name'] }}</td>
-                                        <td class="py-2 px-6">{{ $bm->material['name'] }}</td>
-                                        <td class="py-2 px-6">{{ $bm->quantity }}</td>
-                                        <td class="py-2 px-6">{{ $bm->material->measurement['name'] }}</td>
-                                        <td class="py-2 px-6">Rp. {{ number_format($bm->price) }}</td>
-                                        <td class="py-2 px-6">Rp. {{ number_format($bm->total_price) }}</td>
-                                        <td class="py-2 px-6">
-                                            <button disabled>
-                                                <svg
-                                                    class="w-5 h-5 text-red-500"
-                                                    fill="none"
-                                                    stroke="currentColor"
-                                                    viewBox="0 0 24 24"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                >
-                                                    <path
-                                                    stroke-linecap="round"
-                                                    stroke-linejoin="round"
-                                                    stroke-width="2"
-                                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                                                    ></path>
-                                                </svg>
-                                            </button>
-                                        </td>
+                                        <td class="py-2 px-6">Box Panel A</td>
+                                        <td class="py-2 px-6">2</td>
+                                        <td class="py-2 px-6">Rp. 2.000.000</td>
+                                        <td class="py-2 px-6"><button wireclick="ddd" >Detail</button></td>
                                     </tr>
                                 @endforeach
                             </tbody>
                             <tfoot>
                                 <tr class="font-medium">
-                                    <input wire:model="budget_plan_costs_id" type="hidden" />
-                                    <td class="py-2 px-2">
-                                        <input
-                                            wire:model="category"
-                                            class="border-gray-300/50  rounded-xl bg-gray-100 text-sm w-36 text-center"
-                                            type="text"
-                                            disabled
-                                        />
-                                    </td>
                                     <td class="py-2 px-2">
                                         <select
-                                            wire:model="materials_id"
-                                            class="border-gray-300/50 rounded-xl text-sm w-46"
+                                            wire:model="set_goods_id"
+                                            class="w-full border-gray-300/50 rounded-lg text-sm"
                                         >
-                                            @foreach ($materials as $material)
-                                            <option value="{{ $material->id }}">{{ $material->name }}</option>
+                                            <option value="">Pilih Barang</option>
+                                            @foreach ($setgoods as $setgood)
+                                            <option value="{{ $setgood->id }}">{{ $setgood->name }}</option>
                                             @endforeach
                                         </select>
                                     </td>
                                     <td class="py-2 px-2">
                                         <input
-                                            wire:model="quantity"
-                                            class="border-gray-300/50 rounded-xl text-sm w-20 text-center"
+                                            wire:model="qty_bg"
+                                            class="w-full border-gray-300/50 rounded-lg text-sm text-center"
                                             type="number"
                                             min="1"
                                         />
                                     </td>
                                     <td class="py-2 px-2">
                                         <input
-                                            wire:model="measurement"
-                                            class="border-gray-300/50  rounded-xl bg-gray-100 text-sm w-36 text-center"
-                                            type="text"
-                                            disabled
-                                        />
-                                    </td>
-                                    <td class="py-2 px-2">
-                                        <input
-                                            wire:model="price"
-                                            class="border-gray-300/50  rounded-xl bg-gray-100 text-sm w-36 text-center"
+                                            wire:model="price_bg"
+                                            class="w-full border-gray-300/50  rounded-lg text-sm text-center"
                                             type="number"
                                             disabled
                                         />
                                     </td>
                                     <td class="py-2 px-2">
                                         <input
-                                            wire:model="total_price"
-                                            class="border-gray-300/50  rounded-xl bg-gray-100 text-sm w-36 text-center"
+                                            wire:model="total_price_bg"
+                                            class="w-full border-gray-300/50  rounded-lg text-sm text-center"
                                             type="number"
                                             disabled
                                         />
                                     </td>
                                     <td class="py-2 px-6">
-                                        <button wire:click="storeRabpMaterial">
+                                        <button wire:click="storeGood">
                                             <svg class="w-5 h-5 text-purple-900" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                             </svg>
                                         </button>
                                     </td>
-                                    <td>
-                                        <input 
-                                        wire:model="keyword" 
-                                        {{-- wire:keydown="updateKeyword" --}}
-                                        class="border-gray-300/50  rounded-xl text-sm w-36 text-center"
-                                        type="text"
+                                </tr>
+
+                                <tr class="font-medium">
+                                    <td></td>
+                                    <td></td>
+                                    <td class="text-right font-bold px-2">Total Profit</td>
+                                    <td class="py-2 px-2">
+                                        <input
+                                            wire:model="total_profit"
+                                            class="w-full border-gray-300/50 rounded-lg text-sm text-center bg-gray-100"
+                                            type="number"
+                                            disabled
                                         />
-                                        @if (strlen($keyword) > 2)
-                                            <div class="absolute text-sm">
-                                                @if ($results->count() > 0)
-                                                    <ul>
-                                                        @foreach ($results as $result)
-                                                            <li class="border border-hray-300/50 w-36 px-2 py-2 rounded-xl cursor-pointer">
-                                                                {{ $result->name }}
-                                                            </li>
-                                                        @endforeach
-                                                    </ul>
-                                                @else
-                                                    <ul>
-                                                        <li class="border border-hray-300/50 w-36 px-2 py-2 rounded-xl">
-                                                            <span class="ml-2">No Result</span>
-                                                        </li>
-                                                    </ul>
-                                                @endif
-                                            </div>
-                                        @endif
+                                    </td>
+                                    <td class="py-2 px-6">
                                     </td>
                                 </tr>
+                                <tr class="font-medium">
+                                    <td></td>
+                                    <td></td>
+                                    <td class="text-right font-bold px-2">Total Harga</td>
+                                    <td class="py-2 px-2">
+                                        <input
+                                            wire:model="total_price"
+                                            class="w-full border-gray-300/50 rounded-lg text-sm text-center bg-gray-100"
+                                            type="number"
+                                            disabled
+                                        />
+                                    </td>
+                                    <td class="py-2 px-6">
+                                    </td>
+                                </tr>
+
                             </tfoot>
                         </table>
-                    </div>
-
-                    <div class="border black w-full mt-4"></div>
-
-                    <div class="flex justify-end mt-4">
-                        @if ($overhead_cost == NULL || $preliminary_cost == NULL || $profit == NULL || $checkExistBillMaterial <= 0)
-                            <button
-                                disabled
-                                wire:click="storeRabpCostMaterial"
-                                class="text-white bg-gray-100 py-2 px-6 rounded-xl"
-                            >
-                                Submit
-                            </button>
-                        @else
-                            <button
-                                wire:click="storeRabpCostMaterial"
-                                class="text-white bg-purple-900 py-2 px-6 rounded-xl"
-                            >
-                                Submit
-                            </button>
-                        @endif
-                    </div>   
-                </div>
-            </div>
-        @endif
-
-        {{-- DETAIL MODAL --}}
-        @if ($showingDetailRabpModal == true)
-            <div class="bg-black bg-opacity-50 fixed inset-0 flex justify-center items-center">
-                <div class="bg-white p-4 rounded-xl">
-                    <div class="flex justify-between">
-                        <h1 class="font-medium text-xl">Detail RABP</h1>
-                        <button wire:click="closeModal">
-                            <svg
-                                class="w-6 h-6"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                                xmlns="http://www.w3.org/2000/svg"
-                            >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M6 18L18 6M6 6l12 12"
-                                ></path>
-                            </svg>
-                        </button>
-                    </div>
-
-                    <div class="border black w-full mt-4"></div>
-
-                    <div class="h-[600px] overflow-y-auto pr-4">
-                        <div class="mt-4 flex">
-                            <h1 class="font-medium w-36">Kode Penawaran</h1>
-                            <div>{{ $quotation_code }}</div>
-                        </div>
-                        <div class="mt-0.5 flex">
-                            <h1 class="font-medium w-36">Tanggal</h1>
-                            <div>{{ $quotation_date }}</div>
-                        </div>
-                        <div class="mt-0.5 flex">
-                            <h1 class="font-medium w-36">Nama</h1>
-                            <div>{{ $quotation_name }}</div>
-                        </div>
-                        <div class="mt-0.5 flex">
-                            <h1 class="font-medium w-36">Customer</h1>
-                            <div>{{ $quotation_customer }}</div>
-                        </div>
-                        <div class="mt-4 flex">
-                            <h1 class="font-medium w-36">Kode RABP</h1>
-                            <div>{{ $budget_plan_code }}</div>
-                        </div>
-                        <div class="mt-0.5 flex">
-                            <h1 class="font-medium w-36">Description</h1>
-                            <div>{{ $description }}</div>
-                        </div>
-                        <div class="mt-0.5 flex">
-                            <h1 class="font-medium w-36">Status</h1>
-                            <div>{{ $status_id }}</div>
-                        </div>
-                        <div class="mt-0.5 flex">
-                            <h1 class="font-medium w-36">Pembuat</h1>
-                            <div>{{ $users_id }}</div>
-                        </div>
-
-                        <div class="mt-4 flex">
-                            <h1 class="font-medium w-36">Detail Material</h1>
-                            <div class="border border-gray-300/50 p-2 rounded-xl shadow-sm">
-                                <table class="w-full text-sm text-left text-gray-600">
-                                    <thead class="bg-gray-50">
-                                        <tr>
-                                            {{-- <th scope="col" class="py-1.5 px-6">Kode Material</th> --}}
-                                            <th scope="col" class="py-1.5 px-6">Kategori</th>
-                                            <th scope="col" class="py-1.5 px-6">Nama</th>
-                                            <th scope="col" class="py-1.5 px-6">Qty</th>
-                                            <th scope="col" class="py-1.5 px-6">Satuan</th>
-                                            <th scope="col" class="py-1.5 px-6">Harga</th>
-                                            <th scope="col" class="py-1.5 px-6">Harga Total</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($bill_materials as $bm)
-                                            <tr class="bg-white hover:bg-gray-50 hover:text-black font-medium">
-                                                {{-- <td scope="col" class="py-1.5 px-6">Kode Material</td> --}}
-                                                <td scope="col" class="py-1.5 px-6">{{ $bm->material->category['name'] }}</td>
-                                                <td scope="col" class="py-1.5 px-6">{{ $bm->material['name'] }}</td>
-                                                <td scope="col" class="py-1.5 px-6">{{ $bm->quantity }}</td>
-                                                <td scope="col" class="py-1.5 px-6">{{ $bm->material->measurement['name'] }}</td>
-                                                <td scope="col" class="py-1.5 px-6">Rp. {{ number_format($bm->price) }}</td>
-                                                <td scope="col" class="py-1.5 px-6">Rp. {{ number_format($bm->total_price) }}</td>
-                                            </tr>
-                                        @endforeach
-                                            <tr>
-                                                <td colspan="5" class="text-right font-bold">Total RAP</td>
-                                                <td class="py-1.5 px-6">Rp. {{ number_format($totalRap) }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="5" class="text-right font-bold">Biaya Overhead</td>
-                                                <td class="py-1.5 px-6">Rp. {{ number_format($overhead_cost) }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="5" class="text-right font-bold">Biaya Prelim</td>
-                                                <td class="py-1.5 px-6">Rp. {{ number_format($preliminary_cost) }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="5" class="text-right font-bold">Profit ({{ $profit }}%)</td>
-                                                <td class="py-1.5 px-6">Rp. {{ number_format($totalProfit) }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="5" class="text-right font-bold">Sub Total</td>
-                                                <td class="py-1.5 px-6">Rp. {{ number_format($subTotal) }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="5" class="text-right font-bold">PPN ({{ $ppn }}%)</td>
-                                                <td class="py-1.5 px-6">Rp. {{ number_format($totalPPN) }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="5" class="text-right font-bold">Total RABP</td>
-                                                <td class="py-1.5 px-6">Rp. {{ number_format($totalRabp) }}</td>
-                                            </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>

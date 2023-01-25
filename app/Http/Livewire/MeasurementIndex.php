@@ -38,7 +38,7 @@ class MeasurementIndex extends Component
         ]);
 
         $this->reset();
-        $this->showingMeasurementModal = false;
+        $this->closeModal();
 
         $this->dispatchBrowserEvent('store-success');
     }
@@ -59,7 +59,7 @@ class MeasurementIndex extends Component
         ]);
 
         $this->reset();
-        $this->showingMeasurementModal = false;
+        $this->closeModal();
 
         $this->dispatchBrowserEvent('update-success');
     }

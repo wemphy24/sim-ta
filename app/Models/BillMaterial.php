@@ -16,16 +16,21 @@ class BillMaterial extends Model
     ];
 
     protected $fillable = [
-        'budget_plan_costs_id', 
+        'finish_goods_id', 
         'materials_id', 
+        'planning_costs_id', 
         'quantity', 
         'price', 
         'total_price', 
     ];
 
-    public function budget_plan()
+    // public function budget_plan()
+    // {
+    //     return $this->belongsTo('App\Models\BudgetPlanCost', 'budget_plan_costs_id', 'id');
+    // }
+    public function finish_good()
     {
-        return $this->belongsTo('App\Models\BudgetPlanCost', 'budget_plan_costs_id', 'id');
+        return $this->belongsTo('App\Models\FinishGood', 'finish_goods_id', 'id');
     }
 
     public function material()
@@ -33,8 +38,13 @@ class BillMaterial extends Model
         return $this->belongsTo('App\Models\Material', 'materials_id', 'id');
     }
 
-    public function detail_bill_material()
+    public function planning_cost()
     {
-        return $this->hasOne('App\Models\DetailBillMaterial', 'bill_materials_id');
+        return $this->belongsTo('App\Models\PlanningCost', 'planning_costs_id', 'id');
     }
+
+    // public function detail_bill_material()
+    // {
+    //     return $this->hasOne('App\Models\DetailBillMaterial', 'bill_materials_id');
+    // }
 }

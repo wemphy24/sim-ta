@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\Customer;
 use App\Models\BudgetPlanCost;
+use App\Models\Inquiry;
 use App\Models\Quotation;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -20,7 +21,7 @@ class QuotationIndex extends Component
     public $showingQuotationModal = false;
     public $showingDetailQuotationModal = false;
     public $isEditMode = false;
-    public $quotation_code, $name, $project, $date, $location, $customers_id, $users_id, $status_id;   
+    public $inquiries_id, $quotation_code, $name, $project, $location, $customers_id, $users_id, $status_id;   
 
     public $budget_plan_code;
 
@@ -40,6 +41,7 @@ class QuotationIndex extends Component
                         ->orWhere('name', 'like', '%'.$this->search.'%')->orWhere('project', 'like', '%'.$this->search.'%')
                         ->orWhere('date', 'like', '%'.$this->search.'%')->latest()->paginate($this->showPage),
             'customers' => Customer::all(),
+            'inquiries' => Inquiry::all(),
         ])->layout('layouts.admin');
     }
 
@@ -59,23 +61,23 @@ class QuotationIndex extends Component
         $countQO = Quotation::count();
         $getTimeNow = Carbon::now();
         if($countQO == 0) {
-            $this->quotation_code = 'QO.' . ($getTimeNow->day) . ".0" . ($getTimeNow->month) . "." . ($getTimeNow->year) . '.' . 1001;
+            $this->quotation_code = 'QO.' . "0" . ($getTimeNow->day) . "." . ($getTimeNow->month) . "." . ($getTimeNow->year) . '.' . 1001;
         } else {
             $getLastQO = Quotation::all()->last();
             $convertQO = (int)substr($getLastQO->quotation_code, -4) + 1;
-            $this->quotation_code = 'QO.' . ($getTimeNow->day) . ".0" . ($getTimeNow->month) . "." . ($getTimeNow->year) . '.' . $convertQO;
+            $this->quotation_code = 'QO.' . "0" . ($getTimeNow->day) . "." . ($getTimeNow->month) . "." . ($getTimeNow->year) . '.' . $convertQO;
         }
 
         // Membuat kode RABP
-        $countRabp = BudgetPlanCost::count();
-        $getTimeNow = Carbon::now();
-        if($countRabp == 0) {
-            $this->budget_plan_code = 'RABP.' . ($getTimeNow->day) . ".0" . ($getTimeNow->month) . "." . ($getTimeNow->year) . '.' . 1001;
-        } else {
-            $getLastRabp = BudgetPlanCost::all()->last();
-            $convertRabp = (int)substr($getLastRabp->budget_plan_code, -4) + 1;
-            $this->budget_plan_code = 'RABP.' . ($getTimeNow->day) . ".0" . ($getTimeNow->month) . "." . ($getTimeNow->year) . '.' . $convertRabp;
-        }
+        // $countRabp = BudgetPlanCost::count();
+        // $getTimeNow = Carbon::now();
+        // if($countRabp == 0) {
+        //     $this->budget_plan_code = 'RABP.' . ($getTimeNow->day) . ".0" . ($getTimeNow->month) . "." . ($getTimeNow->year) . '.' . 1001;
+        // } else {
+        //     $getLastRabp = BudgetPlanCost::all()->last();
+        //     $convertRabp = (int)substr($getLastRabp->budget_plan_code, -4) + 1;
+        //     $this->budget_plan_code = 'RABP.' . ($getTimeNow->day) . ".0" . ($getTimeNow->month) . "." . ($getTimeNow->year) . '.' . $convertRabp;
+        // }
     }
 
     public function storeQuotation()
@@ -83,6 +85,7 @@ class QuotationIndex extends Component
         // Memasukkan data ke dalam 2 tabel sekaligus, $getQuotationId digunakan untuk mendapat id quotation, dan otomatis di assign ke quotations_id pada tabel budget_plans 
         DB::transaction(function () {
             $getQuotationId = Quotation::create([
+                'inquiries_id' => $this->inquiries_id,
                 'quotation_code' => $this->quotation_code,
                 'name' => $this->name,
                 'project' => $this->project,
@@ -94,20 +97,20 @@ class QuotationIndex extends Component
                 'users_id' => Auth::user()->id,
             ]);
 
-            BudgetPlanCost::create([
-                'quotations_id' => $getQuotationId->id,
-                'budget_plan_code' => $this->budget_plan_code,
-                'budget_cost_code' => NULL,
-                'description' => 'Menunggu pembuatan RABP',
-                // Ambil tanggal sekarang dari method showQuotationModal
-                'date' => $this->currentDate,
-                'status_id' => 1,
-                'users_id' => Auth::user()->id,
-            ]);
+            // BudgetPlanCost::create([
+            //     'quotations_id' => $getQuotationId->id,
+            //     'budget_plan_code' => $this->budget_plan_code,
+            //     'budget_cost_code' => NULL,
+            //     'description' => 'Menunggu pembuatan RABP',
+            //     // Ambil tanggal sekarang dari method showQuotationModal
+            //     'date' => $this->currentDate,
+            //     'status_id' => 1,
+            //     'users_id' => Auth::user()->id,
+            // ]);
         });
 
         $this->reset();
-        $this->showingQuotationModal = false;
+        $this->closeModal();
 
         $this->dispatchBrowserEvent('store-success');
     }
@@ -136,14 +139,25 @@ class QuotationIndex extends Component
         ]);
 
         $this->reset();
-        $this->showingCategoryModal = false;
+        $this->closeModal();
 
         $this->dispatchBrowserEvent('update-success');
+    }
+
+    public function updated($key, $value)
+    {
+        // Realtime update value
+        if($this->inquiries_id != NULL) {
+            $this->customers_id = Inquiry::where('id','=',$this->inquiries_id)->first(['customers_id'])->customers_id;
+        } else {
+            $this->customers_id = NULL;
+        }
     }
 
     public function detailQuotation($id)
     {
         $this->quotation = Quotation::findOrFail($id);
+        $this->inquiries_id = $this->quotation->inquiry['name'];
         $this->quotation_code = $this->quotation->quotation_code;
         $this->name = $this->quotation->name;
         $this->project = $this->quotation->project;

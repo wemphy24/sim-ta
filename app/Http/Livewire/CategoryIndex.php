@@ -54,13 +54,12 @@ class CategoryIndex extends Component
 
     public function updateCategory()
     {
-        // dd($this->category);
         $this->category->update([
             'name' => $this->name
         ]);
 
         $this->reset();
-        $this->showingCategoryModal = false;
+        $this->closeModal();
 
         $this->dispatchBrowserEvent('update-success');
     }

@@ -25,4 +25,14 @@ class Category extends Model
     {
         return $this->hasMany('App\Models\Material', 'categories_id');
     }
+
+    public function finish_good()
+    {
+        return $this->hasMany('App\Models\FinishGood', 'categories_id');
+    }
+
+    public function set_good()
+    {
+        return $this->hasMany('App\Models\SetGood', 'categories_id');
+    }
 }

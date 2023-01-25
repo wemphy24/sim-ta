@@ -51,9 +51,11 @@ class CustomerIndex extends Component
             'phone' => $this->phone,
             'address' => $this->address,
         ]);
-
+        
         $this->reset();
-        $this->showingCustomerModal = false;
+        $this->closeModal();
+
+        $this->dispatchBrowserEvent('store-success');
     }
 
     public function updateCustomer()
@@ -67,11 +69,15 @@ class CustomerIndex extends Component
 
         $this->reset();
         $this->showingCustomerModal = false;
+
+        $this->dispatchBrowserEvent('update-success');
     }
 
     public function deleteCustomer($id)
     {
         $customer = Customer::find($id);
         $customer->delete();
+
+        $this->dispatchBrowserEvent('delete-success');
     }
 }

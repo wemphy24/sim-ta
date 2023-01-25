@@ -15,14 +15,15 @@ return new class extends Migration
     {
         Schema::create('quotations', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('inquiries_id')->constrained('inquiries')->onUpdate('CASCADE');
             $table->string('quotation_code')->unique();
             $table->string('name');
             $table->string('project')->nullable();
             $table->date('date');
             $table->string('location')->nullable();
-            $table->foreignId('customers_id')->index('fk_quotations_to_customers');
-            $table->foreignId('status_id')->index('fk_quotations_to_status');
-            $table->foreignId('users_id')->index('fk_quotations_to_users');
+            $table->foreignId('customers_id')->constrained('customers')->onUpdate('CASCADE');
+            $table->foreignId('status_id')->constrained('status')->onUpdate('CASCADE');
+            $table->foreignId('users_id')->constrained('users')->onUpdate('CASCADE');
             $table->timestamps();
         });
     }
