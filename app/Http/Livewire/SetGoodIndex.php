@@ -21,6 +21,7 @@ class SetGoodIndex extends Component
     public $showingBillMaterialModal = false;
     public $showingDetailModal = false;
     public $isEditMode = false;
+    public $showingMainPage = true;
 
     public $categories_id, $measurements_id, $set_goods_code, $name, $qty, $price;
     public $set_good;

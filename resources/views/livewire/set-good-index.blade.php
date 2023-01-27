@@ -1,4 +1,4 @@
-<div class="main-content bg-gray-100 flex-1">
+<div class="main-content bg-gray-50 flex-1 ml-64 h-screen">
 
     @section('title', 'Set Barang')
 

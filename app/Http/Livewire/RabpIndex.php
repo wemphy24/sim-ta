@@ -2,15 +2,11 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\BillMaterial;
-use App\Models\BudgetPlanCost;
-use App\Models\Category;
 use App\Models\DetailRabp;
-use App\Models\Material;
-use App\Models\Measurement;
 use App\Models\Quotation;
 use App\Models\Rabp;
 use App\Models\RabpCost;
+use App\Models\SetBillMaterial;
 use App\Models\SetGood;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -21,38 +17,26 @@ use Livewire\WithPagination;
 class RabpIndex extends Component
 {
     use WithPagination;
-    public $search;
+    public $search = '';
     public $showPage;
+    public $searchBy = 'rabp_code';
+    public $orderAsc = true;
 
     public $showingRabpModal = false;
     public $showingDetailModal = false;
     public $isEditMode = false;
     public $showingMainPage = true;
+    public $showingDetailGood = false;
 
     public $quotations_id, $rabp_code, $name, $description, $date, $status_id;
     public $rabp;
 
     public $rabps_id, $set_goods_id, $qty_bg, $price_bg, $total_price_bg;
 
-    public $overhead, $preliminary, $ppn, $profit, $total_price;
+    public $overhead, $preliminary, $ppn, $profit,$total_profit, $total_price;
+    public $rabp_cost;
 
-
-
-
-    // public $currentDate;
-    // public $getDateNow;
-
-    // // RABP material
-    // public $catchRabpId;
-    // public $budget_plan_costs_id, $materials_id, $price, $quantity, $total_price;
-    // public $overhead_cost, $preliminary_cost, $ppn, $profit;
-
-    // public $checkExistBillMaterial;
-    // public $measurement;
-
-    // // Detail RABP material
-    // public $checkExistData;
-    // public $totalRap, $totalProfit, $totalPPN, $subTotal, $totalRabp;
+    public $getBMId, $good_name;
 
     // public $keyword = "";
     // protected $queryString = ['keyword'];
@@ -64,9 +48,7 @@ class RabpIndex extends Component
     public function mount()
     {
         // Set default value untuk fitur tampilkan halaman
-        $this->showPage = 5;
-        // $this->ppn = 11;
-        // $this->getDateNow = Carbon::now()->format('Y-m-d');
+        $this->showPage = 15;
     }
 
     public function render()
@@ -75,16 +57,14 @@ class RabpIndex extends Component
         // if (strlen($this->keyword) > 2) {
         //     $this->results = Material::where('name', 'LIKE', "%".$this->keyword."%")->get(['name']);
         // }
-
-        // Cek jika tabel bill material sudah ada isinya
-        // $this->checkExistBillMaterial = BillMaterial::count();
-
         return view('livewire.rabp-index', [
-            'rabps' => Rabp::latest()->paginate(5),
+            // 'rabps' => Rabp::latest()->paginate($this->showPage),
+            'rabps' => Rabp::where($this->searchBy,'like','%'.$this->search.'%')->orderBy($this->searchBy,$this->orderAsc ? 'asc' : 'desc')->paginate($this->showPage),
             'quotations' => Quotation::all(),
             'setgoods' => SetGood::all(),
-            'detailrabps' => DetailRabp::all(),
+            'detailrabps' => DetailRabp::where('rabps_id','=',$this->rabps_id)->get(),
             'rabpcosts' => RabpCost::all(),
+            'setbillmaterials' => SetBillMaterial::where('set_goods_id','=',$this->getBMId)->get(),
         ])->layout('layouts.admin');
     }
 
@@ -120,10 +100,20 @@ class RabpIndex extends Component
         $this->createRabpCode();
         $this->date = Carbon::now()->format('Y-m-d');
         $this->description = "Menunggu Review";
+
+        $this->ppn = 12;
     }
 
     public function storeRabp()
     {
+        $this->validate([
+            'quotations_id' => 'required|integer',
+            'name' => 'required|string|max:128',
+            'description' => 'string|max:128',
+        ],[
+        'name.required' => 'Nama wajib diisi',
+        ]);
+
         Rabp::create([
             'quotations_id' => $this->quotations_id,
             'rabp_code' => $this->rabp_code,
@@ -132,6 +122,18 @@ class RabpIndex extends Component
             'date' => $this->date,
             'status_id' => 1,
             'users_id' => Auth::user()->id,
+        ]);
+
+        $getId = Rabp::where('quotations_id','=', $this->quotations_id)->first(['id'])->id;
+
+        RabpCost::create([
+            'rabps_id' => $getId,
+            'overhead' => 0,
+            'preliminary' => 0,
+            'profit' => 0,
+            'ppn' => 12,
+            'total_profit' => 0,
+            'total_price' => 0,
         ]);
 
         $this->reset();
@@ -146,7 +148,6 @@ class RabpIndex extends Component
         $this->showingMainPage = false;
         $this->rabps_id = $id;
         $this->qty_bg = 1;
-        $this->ppn = 12;
 
         $this->rabp = Rabp::findOrFail($id);
         $this->rabp_code = $this->rabp->rabp_code;
@@ -155,13 +156,22 @@ class RabpIndex extends Component
         $this->description = $this->rabp->description;
         $this->date = $this->rabp->date;
 
-        $this->overhead = RabpCost::where('id','=',$id)->first(['overhead'])->overhead;
-        $this->preliminary = RabpCost::where('id','=',$id)->first(['preliminary'])->preliminary;
-        $this->profit = RabpCost::where('id','=',$id)->first(['profit'])->profit;
+        $this->rabp_cost = RabpCost::findOrFail($id);
+        $this->overhead = $this->rabp_cost->overhead;
+        $this->preliminary = $this->rabp_cost->preliminary;
+        $this->profit = $this->rabp_cost->profit;
+        $this->ppn = $this->rabp_cost->ppn;
+        $this->total_price = $this->rabp_cost->total_price;
+        $this->total_profit = $this->rabp_cost->total_profit;
     }
 
     public function updateRabp()
     {
+        $this->validate([
+            'name' => 'required|string|max:128',
+            'description' => 'string|max:128',
+        ]);
+        
         $this->rabp->update([
             'name' => $this->name,
             'description' => $this->description,
@@ -171,25 +181,53 @@ class RabpIndex extends Component
         $this->dispatchBrowserEvent('update-success');
     }
 
-    // Menentukan cost barang yang di order
-    public function storeCost()
+    public function updateCost()
     {
-        RabpCost::create([
-            'rabps_id' => $this->rabps_id,
+        $this->validate([
+            'overhead' => 'required|integer',
+            'preliminary' => 'required|integer',
+            'profit' => 'required|integer',
+
+            'total_profit' => 'required|integer',
+            'total_price' => 'required|integer',
+        ]);
+
+        // Update total cost
+        RabpCost::findOrFail($this->rabps_id)->update([
             'overhead' => $this->overhead,
             'preliminary' => $this->preliminary,
             'profit' => $this->profit,
-            'ppn' => $this->ppn,
-            'total_price' => $this->total_price,
         ]);
 
-        $this->dispatchBrowserEvent('store-success');
+        $countOverPrelim = DetailRabp::where('rabps_id','=', $this->rabps_id)->sum('price') + $this->overhead + $this->preliminary; 
+        $countTotalProfit = $countOverPrelim * ($this->profit * 0.01);
+        $countTotalTax = ($countOverPrelim + $countTotalProfit) * ($this->ppn * 0.01);
+
+        // Update total harga seluruh barang
+        RabpCost::findOrFail($this->rabps_id)->update([
+            'total_profit' => $countTotalProfit,
+            'total_price' => $countOverPrelim + $countTotalProfit + $countTotalTax,
+        ]);
+
+        // Reset total harga dan total profit
+        $this->total_price = RabpCost::where('id','=',$this->rabps_id)->first(['total_price'])->total_price;
+        $this->total_profit = RabpCost::where('id','=',$this->rabps_id)->first(['total_profit'])->total_profit;
+
+        $this->dispatchBrowserEvent('update-success');
     }
 
-    // Menetukan barang yang di order
     public function storeGood()
     {
-        // dd(RabpCost::where('id','=', $this->rabps_id)->first(['total_price'])->total_price);
+        $this->validate([
+            'set_goods_id' => 'required|integer',
+            'qty' => 'required|integer',
+            'price' => 'required|integer',
+
+            'total_profit' => 'required|integer',
+            'total_price' => 'required|integer',
+        ]);
+
+        // Menambah barang yang di order
         DetailRabp::create([
             'rabps_id' => $this->rabps_id,
             'set_goods_id' => $this->set_goods_id,
@@ -197,17 +235,38 @@ class RabpIndex extends Component
             'price' => $this->price_bg,
         ]);
 
-        $countOverPrelim = DetailRabp::where('id','=', $this->rabps_id)->sum('price') + $this->overhead + $this->preliminary; 
+        $countOverPrelim = DetailRabp::where('rabps_id','=', $this->rabps_id)->sum('price') + $this->overhead + $this->preliminary; 
         $countTotalProfit = $countOverPrelim * ($this->profit * 0.01);
-        $countTotalTax = $countOverPrelim * ($this->ppn * 0.01);
+        $countTotalTax = ($countOverPrelim + $countTotalProfit) * ($this->ppn * 0.01);
+
         // Update total harga seluruh barang
         RabpCost::findOrFail($this->rabps_id)->update([
-            // 'total_price' => (DetailRabp::where('id','=', $this->rabps_id)->sum('price')),
+            'total_profit' => $countTotalProfit,
             'total_price' => $countOverPrelim + $countTotalProfit + $countTotalTax,
         ]);
 
+        // Reset form tambah barang
+        $this->set_goods_id = NULL;
+        $this->qty_bg = 1;
+        $this->price_bg = NULL;
+        $this->total_price_bg = NULL;
 
+        // Reset total harga dan total profit
+        $this->total_price = RabpCost::where('id','=',$this->rabps_id)->first(['total_price'])->total_price;
+        $this->total_profit = RabpCost::where('id','=',$this->rabps_id)->first(['total_profit'])->total_profit;
         $this->dispatchBrowserEvent('store-success');
+    }
+
+    public function detailGood($id)
+    {
+        $this->showingDetailGood = true;
+        $this->getBMId = $id;
+        $this->good_name = SetGood::where('id','=',$id)->first(['name'])->name;
+    }
+
+    public function closeDetailGood()
+    {
+        $this->showingDetailGood = false;
     }
 
     public function updated($key, $value)
@@ -219,13 +278,6 @@ class RabpIndex extends Component
         } else {
             $this->price_bg = NULL;
             $this->total_price_bg = NULL;
-        }
-
-        if($this->overhead != NULL)
-        {
-            $this->total_price = RabpCost::where('id','=',$this->rabps_id)->first(['total_price'])->total_price;
-        } else {
-            $this->total_price = 0;
         }
     }
 }

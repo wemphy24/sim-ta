@@ -20,6 +20,7 @@ return new class extends Migration
             $table->integer('preliminary')->nullable();
             $table->integer('profit')->nullable();
             $table->integer('ppn')->nullable();
+            $table->integer('total_profit')->nullable();
             $table->integer('total_price')->nullable();
             $table->timestamps();
         });

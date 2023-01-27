@@ -18,6 +18,8 @@ class DetailRabp extends Model
     protected $fillable = [
         'rabps_id', 
         'set_goods_id', 
+        'qty',
+        'price',
         'updated_at',
         'created_at',
     ];

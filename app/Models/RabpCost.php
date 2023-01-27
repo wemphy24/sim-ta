@@ -21,6 +21,7 @@ class RabpCost extends Model
         'preliminary', 
         'profit', 
         'ppn', 
+        'total_profit', 
         'total_price', 
         'updated_at',
         'created_at',
