@@ -29,13 +29,14 @@
                                 <option value="15">15</option>
                                 <option value="20">20</option>
                             </select>
-                            <input wire:model="search" class="w-96 border-gray-300/50 rounded-lg p-2 text-sm" type="text" placeholder="Search">
+                            <input wire:model.debounce.500ms="search" class="w-96 border-gray-300/50 rounded-lg p-2 text-sm" type="text" placeholder="Search">
                             <select wire:model="searchBy" class="border-gray-300/50 rounded-lg text-sm">
                                 <option value="rabp_code">KODE RABP</option>
                                 <option value="name">NAME</option>
                                 <option value="description">KETERANGAN</option>
                                 <option value="date">TANGGAL</option>
-                                {{-- <option value="status_id">STATUS</option> --}}
+                                <option value="status_id">STATUS</option>
+                                <option value="quotations_id">KODE PENAWARAN</option>
                             </select>
                             <select wire:model="orderAsc" class="border-gray-300/50 rounded-lg text-sm">
                                 <option value="1">Ascending</option>
@@ -72,9 +73,7 @@
                         </thead>
                         <tbody>
                             @foreach ($rabps as $rabp)
-                            <tr
-                                class="bg-white border-b hover:bg-gray-50 hover:text-black font-medium"
-                            >
+                            <tr class="bg-white border-b hover:bg-gray-50 hover:text-black font-medium">
                                 <td class="py-4 px-6">{{ ($rabps ->currentpage()-1) * $rabps ->perpage() + $loop->index + 1 }}</td>
                                 <td class="py-4 px-6 font-bold">{{ $rabp->rabp_code }}</td>
                                 <td class="py-4 px-6">{{ $rabp->quotation['quotation_code'] }}</td>
@@ -218,7 +217,7 @@
                         </a>
                         <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"></path></svg>
                         <a href="#">
-                            <div class="font-medium text-lg">RABP Penawaran Panel A</div>
+                            <div class="font-medium text-lg">RABP {{ $name }}</div>
                         </a>
                     </div>
                     <button 
@@ -362,6 +361,7 @@
                                         <td class="py-2 px-6">{{ $detailrabp->qty }}</td>
                                         <td class="py-2 px-6">{{ $detailrabp->price }}</td>
                                         <td class="py-2 px-6 text-blue-600"><button wire:click="detailGood({{ $detailrabp->set_goods_id }})">Detail</button></td>
+                                        <td class="py-2 px-6 text-blue-600"><button wire:click="updateProfitPrice">Perbarui</button></td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -435,6 +435,7 @@
                     </div>
                 </div>
             </div>
+            
             {{-- DETAIL GOOD MODAL --}}
             @if ($showingDetailGood)
                 <div class="bg-black bg-opacity-50 fixed inset-0 flex justify-center items-center">

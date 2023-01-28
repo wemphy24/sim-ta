@@ -59,7 +59,8 @@ class RabpIndex extends Component
         // }
         return view('livewire.rabp-index', [
             // 'rabps' => Rabp::latest()->paginate($this->showPage),
-            'rabps' => Rabp::where($this->searchBy,'like','%'.$this->search.'%')->orderBy($this->searchBy,$this->orderAsc ? 'asc' : 'desc')->paginate($this->showPage),
+            // 'rabps' => Rabp::where($this->searchBy,'like','%'.$this->search.'%')->orderBy($this->searchBy,$this->orderAsc ? 'asc' : 'desc')->paginate($this->showPage),
+            'rabps' => Rabp::with('quotation','status')->search(trim($this->search))->orderBy($this->searchBy,$this->orderAsc ? 'asc' : 'desc')->paginate($this->showPage),
             'quotations' => Quotation::all(),
             'setgoods' => SetGood::all(),
             'detailrabps' => DetailRabp::where('rabps_id','=',$this->rabps_id)->get(),
@@ -220,7 +221,7 @@ class RabpIndex extends Component
     {
         $this->validate([
             'set_goods_id' => 'required|integer',
-            'qty' => 'required|integer',
+            'qty_bg' => 'required|integer',
             'price' => 'required|integer',
 
             'total_profit' => 'required|integer',
@@ -279,5 +280,23 @@ class RabpIndex extends Component
             $this->price_bg = NULL;
             $this->total_price_bg = NULL;
         }
+    }
+
+    public function updateProfitPrice()
+    {
+        $countOverPrelim = DetailRabp::where('rabps_id','=', $this->rabps_id)->sum('price') + $this->overhead + $this->preliminary; 
+        $countTotalProfit = $countOverPrelim * ($this->profit * 0.01);
+        $countTotalTax = ($countOverPrelim + $countTotalProfit) * ($this->ppn * 0.01);
+
+        // Update total harga seluruh barang
+        RabpCost::findOrFail($this->rabps_id)->update([
+            'total_profit' => $countTotalProfit,
+            'total_price' => $countOverPrelim + $countTotalProfit + $countTotalTax,
+        ]);
+
+        // Reset total harga dan total profit
+        $this->total_price = RabpCost::where('id','=',$this->rabps_id)->first(['total_price'])->total_price;
+        $this->total_profit = RabpCost::where('id','=',$this->rabps_id)->first(['total_profit'])->total_profit;
+        $this->dispatchBrowserEvent('store-success');
     }
 }

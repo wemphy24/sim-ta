@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Category;
+use App\Models\DetailRabp;
 use App\Models\Material;
 use App\Models\Measurement;
 use App\Models\SetBillMaterial;
@@ -13,15 +14,20 @@ use Livewire\WithPagination;
 class SetGoodIndex extends Component
 {
     use WithPagination;
-    public $search;
+    public $search = '';
     public $showPage;
+    public $searchBy = 'rabp_code';
+    public $orderAsc = true;
     
     public $showingSetGoodModal = false;
     public $showingDetailSetGoodModal = false;
     public $showingBillMaterialModal = false;
     public $showingDetailModal = false;
-    public $isEditMode = false;
     public $showingMainPage = true;
+
+    public $showingSetGood = false;
+
+    public $isEditMode = false;
 
     public $categories_id, $measurements_id, $set_goods_code, $name, $qty, $price;
     public $set_good;
@@ -43,7 +49,7 @@ class SetGoodIndex extends Component
             'material_bms' => Material::where('categories_id','=',1)->orWhere('categories_id','=','2')->get(),
             'categories' => Category::all(),
             'measurements' => Measurement::all(),
-            'set_bill_materials' => SetBillMaterial::all(),
+            'set_bill_materials' => SetBillMaterial::where('set_goods_id','=',$this->set_goods_id)->get(),
         ])->layout('layouts.admin');
     }
 
@@ -53,6 +59,12 @@ class SetGoodIndex extends Component
         $this->showingDetailSetGoodModal = false;
         $this->showingBillMaterialModal = false;
         $this->showingDetailModal = false;
+    }
+
+    public function back()
+    {
+        $this->showingDetailModal = false;
+        $this->showingMainPage = true;
     }
 
     // SET GOOD
@@ -103,19 +115,20 @@ class SetGoodIndex extends Component
         $this->dispatchBrowserEvent('store-success');
     }
 
-    public function showEditGood($id)
-    {
-        $this->showingSetGoodModal = true;
-        $this->isEditMode = true;
+    // public function showEditGood($id)
+    // {
+    //     $this->showingSetGoodModal = true;
+    //     // $this->isEditMode = true; ---
+    //     $this->showingMainPage = false;
 
-        $this->set_good = SetGood::findOrFail($id);
-        $this->set_goods_code = $this->set_good->set_goods_code;
-        $this->name = $this->set_good->name;
-        $this->categories_id = $this->set_good->categories_id;
-        $this->qty = $this->set_good->qty;
-        $this->measurements_id = $this->set_good->measurements_id;
-        $this->price = $this->set_good->price;
-    }
+    //     $this->set_good = SetGood::findOrFail($id);
+    //     $this->set_goods_code = $this->set_good->set_goods_code;
+    //     $this->name = $this->set_good->name;
+    //     $this->categories_id = $this->set_good->categories_id;
+    //     $this->qty = $this->set_good->qty;
+    //     $this->measurements_id = $this->set_good->measurements_id;
+    //     $this->price = $this->set_good->price;
+    // }
 
     public function updateSetGood()
     {
@@ -137,20 +150,40 @@ class SetGoodIndex extends Component
             'price' => $this->price,
         ]);
 
-        $this->reset();
-        $this->closeModal();
+        // $this->reset(); ----
+        // $this->closeModal(); ----
         $this->dispatchBrowserEvent('update-success');
     }
 
     // SET BILL MATERIAL
-    public function showSetBill($id)
-    {
-        $this->reset();
-        $this->showingBillMaterialModal = true;
+    // public function showSetBill($id)
+    // {
+    //     $this->reset();
+    //     $this->showingBillMaterialModal = true;
 
+    //     // $this->set_goods_id = $id; ---
+    //     $this->qty_bm = 1;
+    //     $this->good_name = SetGood::where('id','=',$id)->first(['name'])->name;
+    // }
+
+    
+
+    // DETAILS
+    public function showDetail($id)
+    {
+        $this->showingDetailModal = true;
+        $this->showingMainPage = false;
         $this->set_goods_id = $id;
+
+        $this->set_good = SetGood::findOrFail($id);
+        $this->set_goods_code = $this->set_good->set_goods_code;
+        $this->name = $this->set_good->name;
+        $this->categories_id = $this->set_good->categories_id;
+        $this->qty = $this->set_good->qty;
+        $this->measurements_id = $this->set_good->measurements_id;
+        $this->price = $this->set_good->price;
+
         $this->qty_bm = 1;
-        $this->good_name = SetGood::where('id','=',$id)->first(['name'])->name;
     }
 
     public function storeSetBill()
@@ -176,27 +209,12 @@ class SetGoodIndex extends Component
             'price' => SetBillMaterial::where('set_goods_id','=',$this->set_goods_id)->sum('total_price')
         ]);
 
+        DetailRabp::where('set_goods_id','=',$this->set_goods_id)->update([
+            'price' => SetBillMaterial::where('set_goods_id','=',$this->set_goods_id)->sum('total_price')
+        ]);
+
         $this->reset();
         $this->dispatchBrowserEvent('store-success');
-    }
-
-    public function showEditBill($id)
-    {
-        
-    }
-
-    // DETAILS
-    public function showDetail($id)
-    {
-        $this->showingDetailModal = true;
-
-        $this->set_good = SetGood::findOrFail($id);
-        $this->set_goods_code = $this->set_good->set_goods_code;
-        $this->good_name = $this->set_good->name;
-        $this->categories_id = $this->set_good->category['name'];
-        $this->qty = $this->set_good->qty;
-        $this->measurements_id = $this->set_good->measurement['name'];
-        $this->price = $this->set_good->price;
     }
 
     public function updated($key, $value)
