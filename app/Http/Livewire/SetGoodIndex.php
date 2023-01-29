@@ -15,17 +15,13 @@ class SetGoodIndex extends Component
 {
     use WithPagination;
     public $search = '';
-    public $showPage;
-    public $searchBy = 'rabp_code';
+    public $showPage = 15;
+    public $searchBy = 'set_goods_code';
     public $orderAsc = true;
     
     public $showingSetGoodModal = false;
-    public $showingDetailSetGoodModal = false;
-    public $showingBillMaterialModal = false;
     public $showingDetailModal = false;
     public $showingMainPage = true;
-
-    public $showingSetGood = false;
 
     public $isEditMode = false;
 
@@ -36,15 +32,16 @@ class SetGoodIndex extends Component
     public $set_bill;
     public $good_name;
 
-    public function mount()
-    {
-        $this->showPage = 5;
-    }
+    // public function mount()
+    // {
+    //     $this->showPage = 5;
+    // }
 
     public function render()
     {
         return view('livewire.set-good-index', [
-            'set_goods' => SetGood::latest()->paginate($this->showPage),
+            // 'set_goods' => SetGood::latest()->paginate($this->showPage),
+            'set_goods' => SetGood::with('category','measurement')->search(trim($this->search))->orderBy($this->searchBy,$this->orderAsc ? 'asc' : 'desc')->paginate($this->showPage),
             'materials' => Material::where('categories_id','=',3)->get(),
             'material_bms' => Material::where('categories_id','=',1)->orWhere('categories_id','=','2')->get(),
             'categories' => Category::all(),
@@ -56,8 +53,6 @@ class SetGoodIndex extends Component
     public function closeModal()
     {
         $this->showingSetGoodModal = false;
-        $this->showingDetailSetGoodModal = false;
-        $this->showingBillMaterialModal = false;
         $this->showingDetailModal = false;
     }
 

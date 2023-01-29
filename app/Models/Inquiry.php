@@ -48,4 +48,20 @@ class Inquiry extends Model
     {
         return $this->hasMany('App\Models\Quotation', 'inquiries_id');
     }
+
+    public function scopeSearch($query, $term)
+    {
+        $term = "%$term%";
+        $query->where(function($query) use ($term) {
+            $query->where('name', 'like', $term)
+            ->orWhere('description', 'like', $term)
+            ->orWhere('date', 'like', $term)
+            ->orWhereHas('customer', function($query) use ($term) {
+                $query->where('name', 'like', $term);
+            })
+            ->orWhereHas('status', function($query) use ($term) {
+                $query->where('name', 'like', $term);
+            });
+        });
+    }
 }

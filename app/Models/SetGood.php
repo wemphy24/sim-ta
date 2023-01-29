@@ -45,4 +45,21 @@ class SetGood extends Model
     {
         return $this->hasMany('App\Models\DetailRabp', 'set_goods_id');
     }
+
+    public function scopeSearch($query, $term)
+    {
+        $term = "%$term%";
+        $query->where(function($query) use ($term) {
+            $query->where('set_goods_code', 'like', $term)
+            ->orWhere('name', 'like', $term)
+            ->orWhere('qty', 'like', $term)
+            ->orWhere('price', 'like', $term)
+            ->orWhereHas('category', function($query) use ($term) {
+                $query->where('name', 'like', $term);
+            })
+            ->orWhereHas('measurement', function($query) use ($term) {
+                $query->where('name', 'like', $term);
+            });
+        });
+    }
 }

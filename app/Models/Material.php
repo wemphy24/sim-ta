@@ -47,4 +47,21 @@ class Material extends Model
     {
         return $this->hasMany('App\Models\SetBillMaterial', 'materials_id');
     }
+
+    public function scopeSearch($query, $term)
+    {
+        $term = "%$term%";
+        $query->where(function($query) use ($term) {
+            $query->where('material_code', 'like', $term)
+            ->orWhere('name', 'like', $term)
+            ->orWhere('stock', 'like', $term)
+            ->orWhere('price', 'like', $term)
+            ->orWhereHas('category', function($query) use ($term) {
+                $query->where('name', 'like', $term);
+            })
+            ->orWhereHas('measurement', function($query) use ($term) {
+                $query->where('name', 'like', $term);
+            });
+        });
+    }
 }

@@ -18,7 +18,7 @@ class RabpIndex extends Component
 {
     use WithPagination;
     public $search = '';
-    public $showPage;
+    public $showPage = 15;
     public $searchBy = 'rabp_code';
     public $orderAsc = true;
 
@@ -45,11 +45,11 @@ class RabpIndex extends Component
     // public $results;
     // protected $queryString = ['keyword'];
 
-    public function mount()
-    {
-        // Set default value untuk fitur tampilkan halaman
-        $this->showPage = 15;
-    }
+    // public function mount()
+    // {
+    //     // Set default value untuk fitur tampilkan halaman
+    //     $this->showPage = 15;
+    // }
 
     public function render()
     {
@@ -102,7 +102,7 @@ class RabpIndex extends Component
         $this->date = Carbon::now()->format('Y-m-d');
         $this->description = "Menunggu Review";
 
-        $this->ppn = 12;
+        $this->ppn = 11;
     }
 
     public function storeRabp()
@@ -132,7 +132,7 @@ class RabpIndex extends Component
             'overhead' => 0,
             'preliminary' => 0,
             'profit' => 0,
-            'ppn' => 12,
+            'ppn' => 11,
             'total_profit' => 0,
             'total_price' => 0,
         ]);

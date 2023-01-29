@@ -29,7 +29,7 @@
                                 <option value="15">15</option>
                                 <option value="20">20</option>
                             </select>
-                            <input wire:model.debounce.500ms="search" class="w-96 border-gray-300/50 rounded-lg p-2 text-sm" type="text" placeholder="Search">
+                            <input wire:model.debounce.500ms="search" class="border-gray-300/50 rounded-lg p-2 text-sm" type="text" placeholder="Search">
                             <select wire:model="searchBy" class="border-gray-300/50 rounded-lg text-sm">
                                 <option value="rabp_code">KODE RABP</option>
                                 <option value="name">NAME</option>
@@ -55,7 +55,7 @@
                                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
                                     <span>Buat RABP</span>
                                 </div>
-                        </button> 
+                            </button> 
                         </div>        
                     </div>
                     <table class="w-full text-sm text-left text-gray-600">
@@ -217,7 +217,7 @@
                         </a>
                         <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"></path></svg>
                         <a href="#">
-                            <div class="font-medium text-lg">RABP {{ $name }}</div>
+                            <div class="font-medium text-lg">{{ $name }}</div>
                         </a>
                     </div>
                     <button 

@@ -4,9 +4,13 @@ namespace App\Http\Livewire;
 
 use App\Models\Measurement;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class MeasurementIndex extends Component
 {
+    use WithPagination;
+    public $showPage = 15;
+
     public $showingMeasurementModal = false;
     public $isEditMode = false;
     public $name;
@@ -16,7 +20,7 @@ class MeasurementIndex extends Component
     public function render()
     {
         return view('livewire.measurement-index', [
-            'measurements' => Measurement::all(),
+            'measurements' => Measurement::latest()->paginate($this->showPage),
         ])->layout('layouts.admin');
     }
 

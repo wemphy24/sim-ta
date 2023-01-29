@@ -72,4 +72,21 @@ class Quotation extends Model
         return $this->hasMany('App\Models\Rabp', 'quotations_id');
     }
     
+    public function scopeSearch($query, $term)
+    {
+        $term = "%$term%";
+        $query->where(function($query) use ($term) {
+            $query->where('quotation_code', 'like', $term)
+            ->orWhere('name', 'like', $term)
+            ->orWhere('project', 'like', $term)
+            ->orWhere('date', 'like', $term)
+            ->orWhere('location', 'like', $term)
+            ->orWhereHas('status', function($query) use ($term) {
+                $query->where('name', 'like', $term);
+            })
+            ->orWhereHas('customer', function($query) use ($term) {
+                $query->where('name', 'like', $term);
+            });
+        });
+    }
 }

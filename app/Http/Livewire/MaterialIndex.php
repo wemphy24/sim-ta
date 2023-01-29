@@ -6,9 +6,16 @@ use App\Models\Category;
 use App\Models\Material;
 use App\Models\Measurement;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class MaterialIndex extends Component
 {
+    use WithPagination;
+    public $search = '';
+    public $showPage = 15;
+    public $searchBy = 'material_code';
+    public $orderAsc = true;
+
     public $showingMaterialModal = false;
     public $isEditMode = false;
     public $categories_id, $measurements_id, $material_code, $name, $stock, $price, $min_stock, $max_stock;
@@ -18,7 +25,7 @@ class MaterialIndex extends Component
     public function render()
     {
         return view('livewire.material-index', [
-            'materials' => Material::all(),
+            'materials' => Material::with('category','measurement')->search(trim($this->search))->orderBy($this->searchBy,$this->orderAsc ? 'asc' : 'desc')->paginate($this->showPage),
             'categories' => Category::all(),
             'measurements' => Measurement::all(),
         ])->layout('layouts.admin');
@@ -107,7 +114,7 @@ class MaterialIndex extends Component
                 $this->material_code = "BB.00" . 1;
             } else if($this->categories_id == 2) {
                 $this->material_code = "BP.00" . 1;
-            } else {
+            } else if($this->categories_id == 3){
                 $this->material_code = "BJ.00" . 1;
             }
         } else {

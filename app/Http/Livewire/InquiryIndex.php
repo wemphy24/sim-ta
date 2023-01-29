@@ -13,11 +13,14 @@ use Livewire\WithPagination;
 class InquiryIndex extends Component
 {
     use WithPagination;
-    public $search;
-    public $showPage;
+    public $search = '';
+    public $showPage = 15;
+    public $searchBy = 'name';
+    public $orderAsc = true;
 
     public $showingInquiryModal = false;
-    public $showingDetailInquiryModal = false;
+    public $showingDetailModal = false;
+    public $showingMainPage = true;
     public $isEditMode = false;
 
     use WithFileUploads;
@@ -33,14 +36,21 @@ class InquiryIndex extends Component
     {
         return view('livewire.inquiry-index',[
             'inquiries' => Inquiry::latest()->paginate($this->showPage),
+            'inquiries' => Inquiry::with('customer','status')->search(trim($this->search))->orderBy($this->searchBy,$this->orderAsc ? 'asc' : 'desc')->paginate($this->showPage),
             'customers' => Customer::all(),
         ])->layout('layouts.admin');
+    }
+
+    public function back()
+    {
+        $this->showingDetailModal = false;
+        $this->showingMainPage = true;
     }
 
     public function closeModal()
     {
         $this->showingInquiryModal = false;
-        $this->showingDetailInquiryModal = false;
+        $this->showingDetailModal = false;
     }
 
     public function showInquiryModal() 
@@ -81,18 +91,19 @@ class InquiryIndex extends Component
         $this->dispatchBrowserEvent('store-success');
     }
 
-    public function showInquiryEditModal($id)
+    public function detailInquiry($id)
     {
-        $this->showingInquiryModal = true;
+        $this->showingDetailModal = true;
+        $this->showingMainPage = false;
         $this->isEditMode = true;
 
         $this->inquiry = Inquiry::findOrFail($id);
         $this->name = $this->inquiry->name;
-        // $this->inquiry_file = $this->inquiry->inquiry_file;
-        // $this->purchase_order_file = $this->inquiry->purchase_order_file;
         $this->description = $this->inquiry->description;
         $this->date = $this->inquiry->date;
         $this->customers_id = $this->inquiry->customers_id;
+        $this->status_id = $this->inquiry->status['name'];
+        $this->users_id = $this->inquiry->user['name'];
     }
 
     public function updateInquiry()
@@ -123,23 +134,24 @@ class InquiryIndex extends Component
         ]);
 
         $this->showingInquiryModal = false;
+        $this->reset();
         $this->dispatchBrowserEvent('update-success');
     }
 
-    public function detailInquiry($id)
-    {
-        $this->inquiry = Inquiry::findOrFail($id);
-        $this->name = $this->inquiry->name;
-        $this->inquiry_file = $this->inquiry->inquiry_file;
-        $this->purchase_order_file = $this->inquiry->purchase_order_file;
-        $this->description = $this->inquiry->description;
-        $this->date = $this->inquiry->date;
-        $this->customers_id = $this->inquiry->customer['name'];
-        $this->status_id = $this->inquiry->status['name'];
-        $this->users_id = $this->inquiry->user['name'];
+    // public function detailInquiry($id)
+    // {
+    //     $this->inquiry = Inquiry::findOrFail($id);
+    //     $this->name = $this->inquiry->name;
+    //     $this->inquiry_file = $this->inquiry->inquiry_file;
+    //     $this->purchase_order_file = $this->inquiry->purchase_order_file;
+    //     $this->description = $this->inquiry->description;
+    //     $this->date = $this->inquiry->date;
+    //     $this->customers_id = $this->inquiry->customer['name'];
+    //     $this->status_id = $this->inquiry->status['name'];
+    //     $this->users_id = $this->inquiry->user['name'];
 
-        $this->showingDetailInquiryModal = true;
-    }
+    //     $this->showingDetailModal = true;
+    // }
 
     public function deleteInquiry($id)
     {

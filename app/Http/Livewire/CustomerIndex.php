@@ -4,9 +4,16 @@ namespace App\Http\Livewire;
 
 use App\Models\Customer;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class CustomerIndex extends Component
 {
+    use WithPagination;
+    public $search = '';
+    public $showPage = 15;
+    public $searchBy = 'name';
+    public $orderAsc = true;
+
     public $showingCustomerModal = false;
     public $isEditMode = false;
     public $name, $email, $phone, $address;   
@@ -16,7 +23,7 @@ class CustomerIndex extends Component
     public function render()
     {
         return view('livewire.customer-index', [
-            'customers' => Customer::all(),
+            'customers' => Customer::search(trim($this->search))->orderBy($this->searchBy,$this->orderAsc ? 'asc' : 'desc')->paginate($this->showPage),
         ])->layout('layouts.admin');
     }
 

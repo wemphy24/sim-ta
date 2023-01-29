@@ -22,19 +22,41 @@
             {{-- TABLE DATA --}}
             <div class="m-6">
                 <div class="overflow-x-auto shadow-sm sm:rounded-lg border border-gray-300/50">
-                    <div class="bg-white border-b-2 py-3 px-6 flex justify-end gap-4">
-                        <button class="py-2 px-4 text-center rounded-lg border hover:bg-purple-900 hover:text-white">
-                            <div class="flex items-center gap-1">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"></path></svg>
-                                <span>Download CSV</span>
-                            </div> 
-                        </button>
-                        <button wire:click="showSetGood" class="py-2 px-4 text-center text-white rounded-lg border bg-purple-900">
-                            <div class="flex items-center gap-1">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
-                                <span>Buat Set Barang</span>
-                            </div>
-                        </button>               
+                    <div class="bg-white border-b-2 py-3 px-6 flex justify-between gap-4">
+                        <div class="flex items-center gap-4">
+                            <select wire:model="showPage" class="border-gray-300/50 rounded-lg text-sm">
+                                <option value="5">5</option>
+                                <option value="15">15</option>
+                                <option value="20">20</option>
+                            </select>
+                            <input wire:model.debounce.500ms="search" class="border-gray-300/50 rounded-lg p-2 text-sm" type="text" placeholder="Search">
+                            <select wire:model="searchBy" class="border-gray-300/50 rounded-lg text-sm">
+                                <option value="set_goods_code">KODE SET BARANG</option>
+                                <option value="name">NAMA</option>
+                                <option value="qty">QTY</option>
+                                <option value="price">HARGA</option>
+                                <option value="categories_id">KATEGORI</option>
+                                <option value="measurements_id">SATUAN</option>
+                            </select>
+                            <select wire:model="orderAsc" class="border-gray-300/50 rounded-lg text-sm">
+                                <option value="1">Ascending</option>
+                                <option value="0">Descending</option>
+                            </select>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <button class="py-2 px-4 text-center rounded-lg border hover:bg-purple-900 hover:text-white">
+                                <div class="flex items-center gap-1">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"></path></svg>
+                                    <span>Download CSV</span>
+                                </div> 
+                            </button>
+                            <button wire:click="showSetGood" class="py-2 px-4 text-center text-white rounded-lg border bg-purple-900">
+                                <div class="flex items-center gap-1">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                                    <span>Buat Set Barang</span>
+                                </div>
+                            </button> 
+                        </div>        
                     </div>
                     <table class="w-full text-sm text-left text-gray-600">
                         <thead class="bg-white text-black">
@@ -155,8 +177,9 @@
                                 <input
                                     type="number"
                                     wire:model="qty"
-                                    class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm"
+                                    class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm bg-gray-100"
                                     min=1
+                                    disabled
                                 />
                             </div>
                             <div class="flex items-center gap-8 justify-between p-1">
@@ -444,7 +467,7 @@
                         </a>
                         <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"></path></svg>
                         <a href="#">
-                            <div class="font-medium text-lg">Buat Set Bill Material</div>
+                            <div class="font-medium text-lg">Set {{ $name }}</div>
                         </a>
                     </div>
                     <button 
@@ -497,8 +520,9 @@
                             <input
                                 type="number"
                                 wire:model="qty"
-                                class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm"
-                                maxlength="128"
+                                class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-gray-100"
+                                min="1"
+                                disabled
                             />
                         </div>
                         <div class="my-2">

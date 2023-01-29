@@ -4,9 +4,16 @@ namespace App\Http\Livewire;
 
 use App\Models\Supplier;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class SupplierIndex extends Component
 {
+    use WithPagination;
+    public $search = '';
+    public $showPage = 15;
+    public $searchBy = 'name';
+    public $orderAsc = true;
+
     public $showingSupplierModal = false;
     public $isEditMode = false;
     public $name, $email, $phone, $address;
@@ -16,7 +23,7 @@ class SupplierIndex extends Component
     public function render()
     {
         return view('livewire.supplier-index', [
-            'suppliers' => Supplier::all()
+            'suppliers' => Supplier::search(trim($this->search))->orderBy($this->searchBy,$this->orderAsc ? 'asc' : 'desc')->paginate($this->showPage),
         ])->layout('layouts.admin');
     }
 

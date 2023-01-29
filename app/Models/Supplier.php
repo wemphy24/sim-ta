@@ -23,4 +23,15 @@ class Supplier extends Model
         'updated_at',
         'created_at',
     ];
+
+    public function scopeSearch($query, $term)
+    {
+        $term = "%$term%";
+        $query->where(function($query) use ($term) {
+            $query->where('name', 'like', $term)
+            ->orWhere('email', 'like', $term)
+            ->orWhere('phone', 'like', $term)
+            ->orWhere('address', 'like', $term);
+        });
+    }
 }

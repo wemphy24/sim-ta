@@ -33,4 +33,15 @@ class Customer extends Model
     {
         return $this->hasMany('App\Models\Inquiry', 'customers_id');
     }
+
+    public function scopeSearch($query, $term)
+    {
+        $term = "%$term%";
+        $query->where(function($query) use ($term) {
+            $query->where('name', 'like', $term)
+            ->orWhere('email', 'like', $term)
+            ->orWhere('phone', 'like', $term)
+            ->orWhere('address', 'like', $term);
+        });
+    }
 }
