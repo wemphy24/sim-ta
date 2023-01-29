@@ -74,9 +74,6 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @php
-                            $count = 0;
-                        @endphp
                         @foreach ($materials as $material)
                             <tr class="bg-white border-b hover:bg-gray-100 hover:text-black font-medium">
                                 <td class="py-4 px-6">{{ ($materials ->currentpage()-1) * $materials ->perpage() + $loop->index + 1 }}</td>

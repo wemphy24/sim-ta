@@ -122,7 +122,7 @@ class MaterialIndex extends Component
                 $this->material_code = "BB.00" . (int)substr($getLastMaterialCode->material_code, -2) + 1;
             } else if($this->categories_id == 2) {
                 $this->material_code = "BP.00" . (int)substr($getLastMaterialCode->material_code, -2) + 1;
-            } else {
+            } else if($this->categories_id == 3) {
                 $this->material_code = "BJ.00" . (int)substr($getLastMaterialCode->material_code, -2) + 1;
             }
         }

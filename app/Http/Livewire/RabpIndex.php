@@ -222,7 +222,7 @@ class RabpIndex extends Component
         $this->validate([
             'set_goods_id' => 'required|integer',
             'qty_bg' => 'required|integer',
-            'price' => 'required|integer',
+            'price_bg' => 'required|integer',
 
             'total_profit' => 'required|integer',
             'total_price' => 'required|integer',
