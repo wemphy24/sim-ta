@@ -4,3 +4,4 @@
 />
 <link rel="stylesheet" href="{{ asset('/css/style.css') }}">
 <link href="{{ url('https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.3/flowbite.min.css') }}" rel="stylesheet" />
+{{-- <link rel="stylesheet" href="{{ url('https://cdn.jsdelivr.net/npm/tw-elements/dist/css/index.min.css') }}" /> --}}

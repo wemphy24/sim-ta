@@ -13,8 +13,11 @@ use App\Http\Livewire\MaterialIndex;
 use App\Http\Livewire\CustomerIndex;
 use App\Http\Livewire\DetailSetGoodIndex;
 use App\Http\Livewire\PlanningCostIndex;
+use App\Http\Livewire\ProductionIndex;
+use App\Http\Livewire\PurchaseRequestIndex;
 use App\Http\Livewire\SetGoodIndex;
 use App\Http\Livewire\SupplierIndex;
+use App\Http\Livewire\TestIndex;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -39,8 +42,11 @@ Route::group(['middleware' => ['auth:sanctum',config('jetstream.auth_session'), 
     Route::get('/inquiry', InquiryIndex::class)->name('inquiry');
     Route::get('/quotation', QuotationIndex::class)->name('quotation');
     Route::get('/setgood', SetGoodIndex::class)->name('setgood');
-    Route::get('/planning', PlanningCostIndex::class)->name('planning');
     Route::get('/rabp', RabpIndex::class)->name('rabp');
+    Route::get('/production', ProductionIndex::class)->name('production');
+    Route::get('/purchaserequest', PurchaseRequestIndex::class)->name('purchaserequest');
+    // Route::get('/planning', PlanningCostIndex::class)->name('planning');
+    // Route::get('/test', TestIndex::class)->name('test');
 });
 
 // Untuk masterdata

@@ -15,12 +15,12 @@
         <!-- Styles -->
         @livewireStyles
     </head>
-    <body class="w-full">
+    <body class="w-full bg-gray-50">
         {{-- @include('includes.header') --}}
-        <div class="flex">
+        {{-- <div class="flex"> --}}
             @include('includes.sidebar')
             {{ $slot }}
-        </div>
+        {{-- </div> --}}
         <!-- Scripts -->
         {{-- @stack('modals') --}}
         @stack('before-script')

@@ -1,11 +1,11 @@
-<div class="main-content bg-gray-100 flex-1">
+<div class="main-content bg-gray-50 flex-1 sm:ml-64 h-screen">
 
     @section('title', 'Dashboard')
     
         <div class="m-6">
             <div class="my-6 text-xl font-medium">Informasi Umum</div>
             <div
-                class="flex gap-6 flex-wrap justify-center md:justify-between"
+                class="flex gap-6 flex-wrap justify-center lg:justify-between"
             >
                 <div
                     class="flex w-72 justify-around gap-2 items-center bg-white rounded-xl p-4 border border-gray-300/50 group hover:bg-purple-900 hover:text-white"
@@ -32,7 +32,7 @@
                         <p class="font-bold text-2xl">{{ $customers }}</p>
                         <p class="font-medium">Total Customer</p>
                     </div>
-                    <a href="">
+                    <a href="{{ route('masterdata.customer') }}">
                         <svg
                             class="w-6 h-6 text-purple-900 group-hover:text-white"
                             fill="none"
@@ -74,7 +74,7 @@
                         <p class="font-bold text-2xl">{{ $suppliers }}</p>
                         <p class="font-medium">Total Supplier</p>
                     </div>
-                    <a href="">
+                    <a href="{{ route('masterdata.supplier') }}">
                         <svg
                             class="w-6 h-6 text-purple-900 group-hover:text-white"
                             fill="none"
@@ -116,7 +116,7 @@
                         <p class="font-bold text-2xl">{{ $quotations }}</p>
                         <p class="font-medium">Total Penawaran</p>
                     </div>
-                    <a href="">
+                    <a href="{{ route('quotation') }}">
                         <svg
                             class="w-6 h-6 text-purple-900 group-hover:text-white"
                             fill="none"

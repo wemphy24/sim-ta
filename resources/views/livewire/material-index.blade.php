@@ -1,9 +1,9 @@
-<div class="main-content bg-gray-50 flex-1 ml-64 h-screen">
+<div class="main-content bg-gray-50 flex-1 md:ml-64 h-screen">
 
     @section('title', 'Material')
 
         {{-- PAGE TITLE --}}
-        <div class="m-6">
+        <div class="mx-6 mt-20">
             <div class="flex justify-between">
                 <div class="flex items-center gap-4">
                     <a href="#">
@@ -110,7 +110,7 @@
         {{-- MATERIAL MODAL --}}
         @if ($showingMaterialModal === true)
             <div class="bg-black bg-opacity-50 fixed inset-0 flex justify-center items-center">
-                <div class="bg-white p-4 rounded-lg shadow-md">
+                <div class="bg-white p-4 rounded-lg shadow-md w-[350px] h-[500px] overflow-auto sm:w-fit sm:h-fit">
                     <div class="flex justify-between items-center">
                         @if($isEditMode === true)
                             <h1 class="font-medium text-xl">Edit Material</h1>
@@ -135,7 +135,7 @@
                         </button>
                     </div>
                     <div class="mt-4">
-                        <div class="flex items-center gap-8 justify-between p-1">
+                        <div class="flex items-center gap-0 justify-between p-1 flex-wrap sm:gap-2">
                             <h1>Kode Material</h1>
                             <input
                                 type="text"
@@ -143,7 +143,7 @@
                                 class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm bg-gray-100"
                             />
                         </div>
-                        <div class="flex items-center gap-8 justify-between p-1">
+                        <div class="flex items-center gap-0 justify-between p-1 flex-wrap sm:gap-2">
                             <h1>Nama</h1>
                             <input
                                 type="text"
@@ -151,7 +151,15 @@
                                 class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm"
                             />
                         </div>
-                        <div class="flex items-center gap-8 justify-between p-1">
+                        <div class="flex items-center gap-0 justify-between p-1 flex-wrap sm:gap-2">
+                            <h1>Nama</h1>
+                            <input
+                                type="text"
+                                wire:model="name"
+                                class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm"
+                            />
+                        </div>
+                        <div class="flex items-center gap-0 justify-between p-1 flex-wrap sm:gap-2">
                             <h1>Kategori</h1>
                             <select
                                 class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm"
@@ -163,7 +171,7 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="flex items-center gap-8 justify-between p-1">
+                        <div class="flex items-center gap-0 justify-between p-1 flex-wrap sm:gap-2">
                             <h1>Harga</h1>
                             <input
                                 type="number"
@@ -171,7 +179,7 @@
                                 class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm"
                             />
                         </div>
-                        <div class="flex items-center gap-8 justify-between p-1">
+                        <div class="flex items-center gap-0 justify-between p-1 flex-wrap sm:gap-2">
                             <h1>Stok</h1>
                             <input
                                 type="number"
@@ -179,7 +187,7 @@
                                 class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm"
                             />
                         </div>
-                        <div class="flex items-center gap-8 justify-between p-1">
+                        <div class="flex items-center gap-0 justify-between p-1 flex-wrap sm:gap-2">
                             <h1>Min Stok</h1>
                             <input
                                 type="number"
@@ -187,7 +195,7 @@
                                 class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm"
                             />
                         </div>
-                        <div class="flex items-center gap-8 justify-between p-1">
+                        <div class="flex items-center gap-0 justify-between p-1 flex-wrap sm:gap-2">
                             <h1>Max Stok</h1>
                             <input
                                 type="number"
@@ -195,7 +203,7 @@
                                 class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm"
                             />
                         </div>
-                        <div class="flex items-center gap-8 justify-between p-1">
+                        <div class="flex items-center gap-0 justify-between p-1 flex-wrap sm:gap-2">
                             <h1>Satuan</h1>
                             <select
                                 class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm"

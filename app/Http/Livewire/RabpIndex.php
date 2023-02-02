@@ -27,6 +27,7 @@ class RabpIndex extends Component
     public $isEditMode = false;
     public $showingMainPage = true;
     public $showingDetailGood = false;
+    public $showingApproval = false;
 
     public $quotations_id, $rabp_code, $name, $description, $date, $status_id;
     public $rabp;
@@ -37,6 +38,10 @@ class RabpIndex extends Component
     public $rabp_cost;
 
     public $getBMId, $good_name;
+
+    public $assign_rabpid;
+
+    
 
     // public $keyword = "";
     // protected $queryString = ['keyword'];
@@ -73,6 +78,7 @@ class RabpIndex extends Component
     {
         $this->showingRabpModal = false;
         $this->showingDetailModal = false;
+        $this->showingApproval = false;
     }
 
     public function back()
@@ -298,5 +304,10 @@ class RabpIndex extends Component
         $this->total_price = RabpCost::where('id','=',$this->rabps_id)->first(['total_price'])->total_price;
         $this->total_profit = RabpCost::where('id','=',$this->rabps_id)->first(['total_profit'])->total_profit;
         $this->dispatchBrowserEvent('store-success');
+    }
+
+    public function approve()
+    {
+        $this->showingApproval = true;
     }
 }
