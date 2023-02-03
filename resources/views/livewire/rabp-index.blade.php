@@ -93,7 +93,7 @@
                                 </td>
                                 <td class="py-4 px-6">
                                     <div class="flex items-center gap-4">
-                                        <button title="Approve" wire:click="approve"">
+                                        <button title="Approve" wire:click="showApproval({{ $rabp->id }})">
                                             <svg class="w-6 h-6 text-green-600 hover:text-green-700" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                                         </button>
@@ -223,7 +223,7 @@
                             <h3 class="mb-4 text-xl font-medium text-gray-900">Tentukan deadline untuk produksi</h3>
                             <form class="space-y-6" action="#">
                                 <div>
-                                    <input wire:model="assign_rabpid" type="date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
+                                    <input wire:model="date" type="date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
                                 </div>
                                 <button class="w-full text-white bg-purple-800 hover:bg-purple-900 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Submit</button>
                             </form>

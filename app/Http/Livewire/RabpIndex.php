@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\DetailRabp;
+use App\Models\Production;
 use App\Models\Quotation;
 use App\Models\Rabp;
 use App\Models\RabpCost;
@@ -306,8 +307,21 @@ class RabpIndex extends Component
         $this->dispatchBrowserEvent('store-success');
     }
 
-    public function approve()
+    public function showApproval($id)
     {
         $this->showingApproval = true;
+        $this->assign_rabpid = $id;
+    }
+
+    public function storeProduction()
+    {
+        // Production::create([
+        //     'rabps_id' => $this->assign_rabpid,
+        //     'name' => "",
+        //     'description' => "Menunggu Produksi",
+        //     'deadline' => $this->date,
+        //     'status_id' => 1,
+        //     'users_id' => Auth::user()->id,
+        // ]);
     }
 }
