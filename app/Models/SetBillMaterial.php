@@ -21,6 +21,9 @@ class SetBillMaterial extends Model
         'qty', 
         'price', 
         'total_price', 
+        'qty_received', 
+        'qty_install', 
+        'qty_remaining', 
         'updated_at',
         'created_at',
     ];

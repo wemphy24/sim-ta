@@ -20,6 +20,9 @@ return new class extends Migration
             $table->integer('qty');
             $table->integer('price'); 
             $table->integer('total_price'); 
+            $table->integer('qty_received')->nullable(); 
+            $table->integer('qty_install')->nullable(); 
+            $table->integer('qty_remaining')->nullable(); 
             $table->timestamps();
         });
     }

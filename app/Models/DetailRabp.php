@@ -20,6 +20,8 @@ class DetailRabp extends Model
         'set_goods_id', 
         'qty',
         'price',
+        // 'total_price',
+        'quality',
         'updated_at',
         'created_at',
     ];

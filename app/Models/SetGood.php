@@ -18,6 +18,7 @@ class SetGood extends Model
     protected $fillable = [
         'categories_id', 
         'measurements_id', 
+        'quotations_id', // Tambahan
         'set_goods_code', 
         'name', 
         'qty', 
@@ -34,6 +35,11 @@ class SetGood extends Model
     public function measurement()
     {
         return $this->belongsTo('App\Models\Measurement', 'measurements_id', 'id');
+    }
+
+    public function quotation() // Tambahan
+    {
+        return $this->belongsTo('App\Models\Quotation', 'quotations_id', 'id');
     }
 
     public function set_bill_material()

@@ -51,4 +51,8 @@ class Status extends Model
         return $this->hasMany('App\Models\Rabp', 'status_id');
     }
 
+    public function production()
+    {
+        return $this->hasMany('App\Models\Production', 'status_id');
+    }
 }

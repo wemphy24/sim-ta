@@ -2,6 +2,11 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\DetailRabp;
+use App\Models\Production;
+use App\Models\Rabp;
+use App\Models\SetBillMaterial;
+use App\Models\SetGood;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -10,13 +15,120 @@ class ProductionIndex extends Component
     use WithPagination;
     public $search = '';
     public $showPage = 15;
-    public $searchBy = 'material_code';
+    public $searchBy = 'name';
     public $orderAsc = true;
+
+    public $showingMainPage = true;
+    public $showingDetail = false;
+    public $showingDetailMaterial = false;
+    public $showingEditDetailMaterial = false;
+    
+
+    // Tabel production
+    public $productions_id, $rabps_id, $production_code, $name, $description, $deadline, $status_id, $users_id;
+
+    public $production;
+
+    // Tabel set bill material
+    public $getBMId, $good_name, $count_material, $qty_received, $qty_install, $qty_remaining, $getEditBMId;
 
     public function render()
     {
         return view('livewire.production-index', [
-
+            'productions' => Production::with('rabp','status')->search(trim($this->search))->orderBy($this->searchBy,$this->orderAsc ? 'asc' : 'desc')->paginate($this->showPage),
+            'detailrabps' => DetailRabp::where('rabps_id','=',$this->rabps_id)->get(),
+            'rabps' => Rabp::all(),
+            'setbillmaterials' => SetBillMaterial::where('set_goods_id','=',$this->getBMId)->get(),
+            'editsetbillmaterials' => SetBillMaterial::where('id','=',$this->getEditBMId)->get(),
         ])->layout('layouts.admin');
+    }
+
+    public function back()
+    {
+        // Menutup detail page dan menampilkan main page
+        $this->showingDetail = false;
+        $this->showingMainPage = true;
+    }
+
+    // DETAILS SECTION --------------------------------
+    public function detail($id)
+    {
+        // Menampilkan detail page
+        $this->showingDetail = true;
+        $this->showingMainPage = false;
+
+        // Menampilkan detail data produksi
+        $this->production = Production::findOrFail($id);
+        $this->rabps_id = $this->production->rabp['id'];
+        $this->production_code = $this->production->production_code;
+        $this->name = $this->production->name;
+        $this->description = $this->production->description;
+        $this->deadline = $this->production->deadline;
+        $this->status_id = $this->production->status['name'];
+        $this->users_id = $this->production->users_id;
+    }
+
+    public function detailMaterial($id)
+    {
+        // Menampilkan modal detail material
+        $this->showingDetailMaterial = true;
+        $this->getBMId = $id;
+        $this->good_name = SetGood::where('id','=',$id)->first(['name'])->name;
+        $this->count_material = DetailRabp::where('rabps_id','=',$this->rabps_id)->orWhere('set_goods_id','=',$this->getBMId)->first(['qty'])->qty;
+    }
+
+    public function closeDetailMaterial()
+    {
+        // Menutup modal detail material
+        $this->showingDetailMaterial = false;
+    }
+
+    public function editProgress($id)
+    {
+        // Menampilkan modal edit progress
+        $this->showingDetailMaterial = false;
+        $this->showingEditDetailMaterial = true;
+
+        $this->getEditBMId = $id;
+        $this->qty_received = SetBillMaterial::where('id', '=', $id)->first('qty_received')->qty_received;
+        $this->qty_install = SetBillMaterial::where('id', '=', $id)->first('qty_install')->qty_install;
+        $this->qty_remaining = SetBillMaterial::where('id', '=', $id)->first('qty_remaining')->qty_remaining;
+    }
+
+    public function storeEditProgress()
+    {
+        // Menyimpan data perubahan progress
+        SetBillMaterial::findOrFail($this->getEditBMId)->update([
+            'qty_received' => $this->qty_received,
+            'qty_install' => $this->qty_install,
+            'qty_remaining' => $this->qty_remaining,
+        ]);
+
+        $this->dispatchBrowserEvent('store-success');
+        $this->showingEditDetailMaterial = false;
+    }
+
+    public function closeEditProgress()
+    {
+        // Menutup modal edit progress
+        $this->showingDetailMaterial = false;
+        $this->showingEditDetailMaterial = false;
+    }
+    // END --------------------------------
+
+    public function updateProduction()
+    {
+        $this->production->update([
+            'name' => $this->name,
+            'description' => $this->description,
+        ]);
+
+        $this->reset();
+        $this->dispatchBrowserEvent('store-success');
+    }
+
+    public function updated($key, $value) 
+    {
+        
     }
 }

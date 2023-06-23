@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('inquiries', function (Blueprint $table) {
             $table->id();
+            $table->string('inquiry_code')->unique();
             $table->string('name');
             $table->longText('inquiry_file');
             $table->longText('purchase_order_file')->nullable();

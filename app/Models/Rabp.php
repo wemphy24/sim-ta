@@ -52,6 +52,11 @@ class Rabp extends Model
         return $this->hasMany('App\Models\RabpCost', 'rabps_id');
     }
 
+    public function production()
+    {
+        return $this->hasOne('App\Models\Production', 'rabps_id');
+    }
+
     public function scopeSearch($query, $term)
     {
         $term = "%$term%";
@@ -64,7 +69,7 @@ class Rabp extends Model
                 $query->where('name', 'like', $term);
             })
             ->orWhereHas('quotation', function($query) use ($term) {
-                $query->where('quotation_code', 'like', $term);
+                $query->where('name', 'like', $term);
             });
         });
     }

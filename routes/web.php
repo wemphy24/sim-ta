@@ -8,6 +8,7 @@ use App\Http\Livewire\RabpIndex;
 use App\Http\Livewire\InquiryIndex;
 
 use App\Http\Livewire\CategoryIndex;
+use App\Http\Livewire\ContractIndex;
 use App\Http\Livewire\MeasurementIndex;
 use App\Http\Livewire\MaterialIndex;
 use App\Http\Livewire\CustomerIndex;
@@ -43,6 +44,7 @@ Route::group(['middleware' => ['auth:sanctum',config('jetstream.auth_session'), 
     Route::get('/quotation', QuotationIndex::class)->name('quotation');
     Route::get('/setgood', SetGoodIndex::class)->name('setgood');
     Route::get('/rabp', RabpIndex::class)->name('rabp');
+    Route::get('/contract', ContractIndex::class)->name('contract');
     Route::get('/production', ProductionIndex::class)->name('production');
     Route::get('/purchaserequest', PurchaseRequestIndex::class)->name('purchaserequest');
     // Route::get('/planning', PlanningCostIndex::class)->name('planning');

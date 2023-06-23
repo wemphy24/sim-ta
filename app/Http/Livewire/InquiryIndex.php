@@ -18,24 +18,18 @@ class InquiryIndex extends Component
     public $searchBy = 'name';
     public $orderAsc = true;
 
-    public $showingInquiryModal = false;
-    public $showingDetailModal = false;
+    public $showingInquiry = false;
+    public $showingDetail = false;
     public $showingMainPage = true;
-    public $isEditMode = false;
 
     use WithFileUploads;
-    public $name, $inquiry_file, $purchase_order_file, $description, $date, $customers_id, $status_id, $users_id;
+    public $inquiry_code, $name, $inquiry_file, $purchase_order_file, $description, $date, $customers_id, $status_id, $users_id;
     public $inquiry;
-
-    public function mount()
-    {
-        $this->showPage = 15;
-    }
 
     public function render()
     {
         return view('livewire.inquiry-index',[
-            'inquiries' => Inquiry::latest()->paginate($this->showPage),
+            // 'inquiries' => Inquiry::latest()->paginate($this->showPage),
             'inquiries' => Inquiry::with('customer','status')->search(trim($this->search))->orderBy($this->searchBy,$this->orderAsc ? 'asc' : 'desc')->paginate($this->showPage),
             'customers' => Customer::all(),
         ])->layout('layouts.admin');
@@ -43,21 +37,39 @@ class InquiryIndex extends Component
 
     public function back()
     {
-        $this->showingDetailModal = false;
+        // Menutup detail page dan menampilkan main page
+        $this->showingDetail = false;
         $this->showingMainPage = true;
     }
 
     public function closeModal()
     {
-        $this->showingInquiryModal = false;
-        $this->showingDetailModal = false;
+        // Menutup inquiry modal
+        $this->showingInquiry = false;
+        $this->showingDetail = false;
     }
 
-    public function showInquiryModal() 
+    public function createInquiryCode()
     {
+        // Membuat kode inquiry
+        $countInquiries = Inquiry::count();
+        if($countInquiries == 0) {
+            $this->inquiry_code = 'INQ.' . "0" . (Carbon::now()->day) . "." . (Carbon::now()->month) . "." . (Carbon::now()->year) . '.' . 1001;
+        } else {
+            $getLastInquiries = Inquiry::all()->last();
+            $convertInquiries = (int)substr($getLastInquiries->inquiry_code, -4) + 1;
+            $this->inquiry_code = 'INQ.' . "0" . (Carbon::now()->day) . "." . (Carbon::now()->month) . "." . (Carbon::now()->year) . '.' . $convertInquiries;
+        }
+    }
+
+    public function showInquiry() 
+    {
+        // Menampilkan inquiry modal
         $this->reset();
-        $this->showingInquiryModal = true;
+        $this->showingInquiry = true;
+
         $this->date = Carbon::now()->format('Y-m-d');
+        $this->createInquiryCode();
         $this->description = "Request Penawaran";
     }
 
@@ -76,9 +88,11 @@ class InquiryIndex extends Component
             $this->inquiry_file->storeAs('public/inquiry', $filename);
         } 
 
+        // Store data inquiry
         Inquiry::create([
             'name' => $this->name,
             'inquiry_file' => $filename,
+            'inquiry_code' => $this->inquiry_code,
             'description' => $this->description,
             'date' => $this->date,
             'customers_id' => $this->customers_id,
@@ -87,17 +101,19 @@ class InquiryIndex extends Component
         ]);
 
         $this->reset();
-        $this->showingInquiryModal = false;
+        $this->showingInquiry = false;
         $this->dispatchBrowserEvent('store-success');
     }
 
-    public function detailInquiry($id)
+    public function showDetail($id)
     {
-        $this->showingDetailModal = true;
+         // Menampilkan detail page
+        $this->showingDetail = true;
         $this->showingMainPage = false;
-        $this->isEditMode = true;
 
+        // Mengambil data inquiry
         $this->inquiry = Inquiry::findOrFail($id);
+        $this->inquiry_code = $this->inquiry->inquiry_code;
         $this->name = $this->inquiry->name;
         $this->description = $this->inquiry->description;
         $this->date = $this->inquiry->date;
@@ -126,6 +142,7 @@ class InquiryIndex extends Component
             $this->purchase_order_file->storeAs('public/purchaseorder', $filenamePO);
         }
 
+         // Mengupdate data inquiry
         $this->inquiry->update([
             'name' => $this->name,
             'inquiry_file' => $this->inquiry_file != NULL ?  $filenameInq : $this->inquiry->inquiry_file,
@@ -133,31 +150,26 @@ class InquiryIndex extends Component
             'description' => $this->description,
         ]);
 
-        $this->showingInquiryModal = false;
         $this->reset();
         $this->dispatchBrowserEvent('update-success');
     }
 
-    // public function detailInquiry($id)
-    // {
-    //     $this->inquiry = Inquiry::findOrFail($id);
-    //     $this->name = $this->inquiry->name;
-    //     $this->inquiry_file = $this->inquiry->inquiry_file;
-    //     $this->purchase_order_file = $this->inquiry->purchase_order_file;
-    //     $this->description = $this->inquiry->description;
-    //     $this->date = $this->inquiry->date;
-    //     $this->customers_id = $this->inquiry->customer['name'];
-    //     $this->status_id = $this->inquiry->status['name'];
-    //     $this->users_id = $this->inquiry->user['name'];
-
-    //     $this->showingDetailModal = true;
-    // }
-
-    public function deleteInquiry($id)
+    public function doneInquiry()
     {
-        $inquiry = Inquiry::find($id);
-        $inquiry->delete();
+        // Mengubah status inquiry ke complete
+        $this->inquiry->update([
+            'status_id' => 3,
+        ]);
 
-        $this->dispatchBrowserEvent('delete-success');
+        $this->reset();
+        $this->dispatchBrowserEvent('update-success');
     }
+
+    // public function deleteInquiry($id)
+    // {
+    //     $inquiry = Inquiry::find($id);
+    //     $inquiry->delete();
+
+    //     $this->dispatchBrowserEvent('delete-success');
+    // }
 }

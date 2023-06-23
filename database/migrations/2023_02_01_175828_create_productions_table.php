@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('productions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('rabps_id')->constrained('rabps')->onUpdate('CASCADE');
+            $table->string('production_code')->unique();
             $table->string('name');
             $table->string('description')->nullable();
             $table->date('deadline');

@@ -16,6 +16,7 @@ class Inquiry extends Model
     ];
 
     protected $fillable = [
+        'inquiry_code', 
         'name', 
         'inquiry_file', 
         'purchase_order_file', 
@@ -54,6 +55,7 @@ class Inquiry extends Model
         $term = "%$term%";
         $query->where(function($query) use ($term) {
             $query->where('name', 'like', $term)
+            ->orWhere('inquiry_code', 'like', $term)
             ->orWhere('description', 'like', $term)
             ->orWhere('date', 'like', $term)
             ->orWhereHas('customer', function($query) use ($term) {

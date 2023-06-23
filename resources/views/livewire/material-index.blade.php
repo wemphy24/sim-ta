@@ -152,14 +152,6 @@
                             />
                         </div>
                         <div class="flex items-center gap-0 justify-between p-1 flex-wrap sm:gap-2">
-                            <h1>Nama</h1>
-                            <input
-                                type="text"
-                                wire:model="name"
-                                class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm"
-                            />
-                        </div>
-                        <div class="flex items-center gap-0 justify-between p-1 flex-wrap sm:gap-2">
                             <h1>Kategori</h1>
                             <select
                                 class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm"

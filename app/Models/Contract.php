@@ -43,4 +43,22 @@ class Contract extends Model
     {
         return $this->belongsTo('App\Models\User', 'users_id', 'id');
     }
+
+    public function scopeSearch($query, $term)
+    {
+        $term = "%$term%";
+        $query->where(function($query) use ($term) {
+            $query->where('name', 'like', $term)
+            ->orWhere('contract_code', 'like', $term)
+            ->orWhere('name', 'like', $term)
+            ->orWhere('contract_value', 'like', $term)
+            ->orWhere('finish_date', 'like', $term)
+            ->orWhereHas('quotation', function($query) use ($term) {
+                $query->where('name', 'like', $term);
+            })
+            ->orWhereHas('status', function($query) use ($term) {
+                $query->where('name', 'like', $term);
+            });
+        });
+    }
 }

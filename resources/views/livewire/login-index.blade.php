@@ -66,10 +66,18 @@
             </div>
         </div>
         <!-- BACKGROUND -->
-        <div
+        {{-- <div
             class="hidden col-span-7 rounded-3xl lg:block m-2"
             style="
                 background: url('https://lh3.googleusercontent.com/ta81jqAjsg8zm1c_jGrdVD_t3Xy4OPSk8qp8CbyU7oqx1MVYbm9uZviYepodUppXnVJAcRSUIuBe7dUs2DaNRgMHGJh2h6jIvRXWpASul-OEZaFj3iSkJxXGLwXDOk2WctVPbUGvN5A=w2400');
+                background-size: cover;
+                background-repeat: no-repeat;
+            "
+        ></div> --}}
+        <div
+            class="hidden col-span-7 rounded-3xl lg:block m-2"
+            style="
+                background: url('https://images.unsplash.com/photo-1521111756787-d2f69136cedf?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1326&q=80');
                 background-size: cover;
                 background-repeat: no-repeat;
             "

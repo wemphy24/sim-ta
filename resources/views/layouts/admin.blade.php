@@ -15,7 +15,7 @@
         <!-- Styles -->
         @livewireStyles
     </head>
-    <body class="w-full bg-gray-50">
+    <body class="w-full bg-zinc-100">
         {{-- @include('includes.header') --}}
         {{-- <div class="flex"> --}}
             @include('includes.sidebar')

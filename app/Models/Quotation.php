@@ -71,6 +71,11 @@ class Quotation extends Model
     {
         return $this->hasMany('App\Models\Rabp', 'quotations_id');
     }
+
+    public function set_good()
+    {
+        return $this->hasMany('App\Models\SetGood', 'quotations_id');
+    }
     
     public function scopeSearch($query, $term)
     {

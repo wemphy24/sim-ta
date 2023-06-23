@@ -13,13 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('purchase_requests', function (Blueprint $table) {
+        Schema::create('purchase_orders', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('productions_id')->constrained('productions')->onUpdate('CASCADE');
-            $table->string('purchase_request_code')->unique();
+            $table->foreignId('purchase_requests_id')->constrained('purchase_requests')->onUpdate('CASCADE');
+            $table->string('purchase_order_code')->unique();
             $table->string('name');
-            $table->string('description')->nullable();
+            $table->string('description');
             $table->date('deadline');
+            $table->foreignId('suppliers_id')->constrained('suppliers')->onUpdate('CASCADE');
             $table->foreignId('status_id')->constrained('status')->onUpdate('CASCADE');
             $table->foreignId('users_id')->constrained('users')->onUpdate('CASCADE');
             $table->timestamps();
@@ -33,6 +34,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('purchase_requests');
+        Schema::dropIfExists('purchase_orders');
     }
 };

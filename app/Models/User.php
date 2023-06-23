@@ -88,4 +88,9 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Models\Rabp', 'users_id');
     }
+
+    public function production()
+    {
+        return $this->hasMany('App\Models\Production', 'users_id');
+    }
 }

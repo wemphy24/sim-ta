@@ -19,6 +19,8 @@ return new class extends Migration
             $table->foreignId('set_goods_id')->constrained('set_goods')->onUpdate('CASCADE');
             $table->integer('qty')->nullable();
             $table->integer('price')->nullable();
+            // $table->integer('total_price')->nullable();
+            $table->integer('quality')->nullable(); // Tambahan
             $table->timestamps();
         });
     }

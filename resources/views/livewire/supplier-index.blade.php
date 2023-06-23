@@ -3,7 +3,7 @@
     @section('title', 'Supplier')
 
         {{-- PAGE TITLE --}}
-        <div class="m-6">
+        <div class="mx-6 mt-20">
             <div class="flex justify-between">
                 <div class="flex items-center gap-4">
                     <a href="#">

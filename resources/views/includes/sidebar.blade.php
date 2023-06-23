@@ -1,235 +1,4 @@
-{{-- CUSTOM NAVBAR --}}
-{{-- <aside class="bg-slate-50 w-64 fixed left-0 h-screen hidden lg:block border-r border-gray-300/50">
-    <div class="flex flex-col">
-        <a
-            class="hover:border-r-4 hover:border-purple-900 group"
-            href=""
-        >
-            <div
-                class="flex items-center text-gray-400 p-3 mx-2 rounded-xl text-lg font-medium hover:text-black hover:bg-purple-50"
-            >
-                <svg
-                    class="w-6 h-6 mr-6 group-hover:text-purple-900"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                >
-                    <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
-                    ></path>
-                </svg>
-                <span class="">Dashboard</span>
-            </div>
-        </a>
-        <a
-            class="hover:border-r-4 hover:border-purple-900 group"
-            href=""
-        >
-            <div
-                class="flex items-center text-gray-400 p-3 mx-2 rounded-xl text-lg font-medium hover:text-black hover:bg-purple-50"
-            >
-                <svg
-                    class="w-6 h-6 mr-6 group-hover:text-purple-900"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                >
-                    <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"
-                    ></path>
-                </svg>
-                <span>Master Data</span>
-            </div>
-        </a>
-        <a
-            class="hover:border-r-4 hover:border-purple-900 group"
-            href=""
-        >
-            <div
-                class="flex items-center text-gray-400 p-3 mx-2 rounded-xl text-lg font-medium hover:text-black hover:bg-purple-50"
-            >
-                <svg
-                    class="w-6 h-6 mr-6 group-hover:text-purple-900"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                >
-                    <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                    ></path>
-                </svg>
-                <span>Penawaran</span>
-            </div>
-        </a>
-        <a
-            class="hover:border-r-4 hover:border-purple-900 group"
-            href=""
-        >
-            <div
-                class="flex items-center text-gray-400 p-3 mx-2 rounded-xl text-lg font-medium hover:text-black hover:bg-purple-50"
-            >
-                <svg
-                    class="w-6 h-6 mr-6 group-hover:text-purple-900"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                >
-                    <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5"
-                    ></path>
-                </svg>
-                <span>Produksi</span>
-            </div>
-        </a>
-        <a
-            class="hover:border-r-4 hover:border-purple-900 group"
-            href=""
-        >
-            <div
-                class="flex items-center text-gray-400 p-3 mx-2 rounded-xl text-lg font-medium hover:text-black hover:bg-purple-50"
-            >
-                <svg
-                    class="w-6 h-6 mr-6 group-hover:text-purple-900"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                >
-                    <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
-                    ></path>
-                </svg>
-                <span>Pengadaan</span>
-            </div>
-        </a>
-        <a
-            class="hover:border-r-4 hover:border-purple-900 group"
-            href=""
-        >
-            <div
-                class="flex items-center text-gray-400 p-3 mx-2 rounded-xl text-lg font-medium hover:text-black hover:bg-purple-50"
-            >
-                <svg
-                    class="w-6 h-6 mr-6 group-hover:text-purple-900"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                >
-                    <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"
-                    ></path>
-                </svg>
-                <span>Pengelolaan</span>
-            </div>
-        </a>
-        <a
-            class="hover:border-r-4 hover:border-purple-900 group"
-            href=""
-        >
-            <div
-                class="flex items-center text-gray-400 p-3 mx-2 rounded-xl text-lg font-medium hover:text-black hover:bg-purple-50"
-            >
-                <svg
-                    class="w-6 h-6 mr-6 group-hover:text-purple-900"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                >
-                    <path
-                        d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z"
-                    ></path>
-                    <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0"
-                    ></path>
-                </svg>
-                <span>Pengiriman</span>
-            </div>
-        </a>
-        <a
-            class="hover:border-r-4 hover:border-purple-900 group"
-            href=""
-        >
-            <div
-                class="flex items-center text-gray-400 p-3 mx-2 rounded-xl text-lg font-medium hover:text-black hover:bg-purple-50"
-            >
-                <svg
-                    class="w-6 h-6 mr-6 group-hover:text-purple-900"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                >
-                    <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M13 10V3L4 14h7v7l9-11h-7z"
-                    ></path>
-                </svg>
-                <span>Log Aktivitas</span>
-            </div>
-        </a>
-        <a
-            class="hover:border-r-4 hover:border-purple-900 group"
-            href=""
-        >
-            <div
-                class="flex items-center text-gray-400 p-3 mx-2 rounded-xl text-lg font-medium hover:text-black hover:bg-purple-50"
-            >
-                <svg
-                    class="w-6 h-6 mr-6 group-hover:text-purple-900"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                >
-                    <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
-                    ></path>
-                    <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                    ></path>
-                </svg>
-                <span>Pengaturan</span>
-            </div>
-        </a>
-    </div>
-</aside> --}}
-
-<nav class="fixed top-0 z-50 w-full bg-slate-50 border-b border-gray-200">
+<nav class="fixed top-0 z-50 w-full bg-zinc-100 border-b border-gray-200">
   <div class="px-3 py-3 lg:px-5 lg:pl-3">
     <div class="flex items-center justify-between">
       <div class="flex items-center justify-start">
@@ -240,8 +9,8 @@
             </svg>
          </button>
         <a href="https://flowbite.com" class="flex ml-2 md:mr-24">
-          <img src="https://flowbite.com/docs/images/logo.svg" class="h-8 mr-3" alt="FlowBite Logo" />
-          <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap">Flowbite</span>
+          {{-- <img src="https://flowbite.com/docs/images/logo.svg" class="h-8 mr-3" alt="FlowBite Logo" /> --}}
+          <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap">SIM Group</span>
         </a>
       </div>
       <div class="flex items-center">
@@ -255,24 +24,18 @@
             <div class="border z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow" id="dropdown-user">
               <div class="px-4 py-3" role="none">
                 <p class="text-sm text-gray-900" role="none">
-                  Neil Sims
+                  {{ Auth::user()->name }}
                 </p>
                 <p class="text-sm font-medium text-gray-900 truncate dark:text-gray-300" role="none">
-                  neil.sims@flowbite.com
+                  {{ Auth::user()->email }}
                 </p>
               </div>
               <ul class="py-1" role="none">
                 <li>
-                  <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Dashboard</a>
-                </li>
-                <li>
                   <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Settings</a>
                 </li>
                 <li>
-                  <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Earnings</a>
-                </li>
-                <li>
-                  <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Sign out</a>
+                  <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Sign Out</a>
                 </li>
               </ul>
             </div>
@@ -282,25 +45,20 @@
   </div>
 </nav>
 
-{{-- DEFAULT SIDEBAR --}}
-{{-- <button data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar" type="button" class="inline-flex items-center p-2 mt-2 ml-3 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400">
-   <span class="sr-only">Open sidebar</span>
-   <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-      <path clip-rule="evenodd" fill-rule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
-   </svg>
-</button> --}}
-
 <aside id="logo-sidebar" class="fixed top-0 left-0 z-40 w-64 h-screen pt-14 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0" aria-label="Sidebar">
-   <div class="h-full px-3 py-4 overflow-y-auto bg-slate-50">
+   <div class="h-full px-3 py-4 overflow-y-auto bg-zinc-100 text-zinc-800">
       <ul class="space-y-2">
+        {{-- DASHBOARD --}}
          <li>
-            <a href="{{ url('general') }}" class="{{ request()->is('general') ? 'bg-purple-900' : '' }} border flex items-center w-full p-2 text-base font-normal text-gray-400 transition duration-75 rounded-lg group hover:bg-purple-900 hover:text-white group">
+            <a href="{{ url('general') }}" class="{{ request()->is('general') ? 'bg-zinc-800 text-white' : '' }} border flex items-center w-full p-2 text-base font-normal transition duration-75 rounded-lg group hover:bg-zinc-800 hover:text-white group">
                <svg aria-hidden="true" class="flex-shrink-0 w-6 h-6 transition duration-75 group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path><path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path></svg>
                <span class="ml-3 font-medium">Dashboard</span>
             </a>
          </li>
+
+         {{-- MASTER DATA --}}
          <li>
-            <button type="button" class="{{ request()->is(['masterdata/material','masterdata/customer','masterdata/supplier'],'masterdata/category','masterdata/measurement') ? 'bg-purple-900' : '' }} border flex items-center w-full p-2 text-base font-normal text-gray-400 transition duration-75 rounded-lg group hover:bg-purple-900 hover:text-white group" aria-controls="dropdown-masterdata" data-collapse-toggle="dropdown-masterdata">
+            <button type="button" class="{{ request()->is(['masterdata/material','masterdata/customer','masterdata/supplier'],'masterdata/category','masterdata/measurement') ? 'bg-zinc-800 text-white' : '' }} border flex items-center w-full p-2 text-base font-normal transition duration-75 rounded-lg group hover:bg-zinc-800 hover:text-white group" aria-controls="dropdown-masterdata" data-collapse-toggle="dropdown-masterdata">
                   <svg class="flex-shrink-0 w-6 h-6 transition duration-75 group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                     <path d="M3 12v3c0 1.657 3.134 3 7 3s7-1.343 7-3v-3c0 1.657-3.134 3-7 3s-7-1.343-7-3z"></path>
                     <path d="M3 7v3c0 1.657 3.134 3 7 3s7-1.343 7-3V7c0 1.657-3.134 3-7 3S3 8.657 3 7z"></path>
@@ -310,66 +68,130 @@
             </button>
             <ul id="dropdown-masterdata" class="hidden py-2 space-y-2">
                   <li>
-                     <a href="{{ route('masterdata.material') }}" class="border flex items-center w-full p-2 text-base font-normal text-gray-400 transition duration-75 rounded-lg pl-11 hover:bg-purple-900 hover:text-white group">Material</a>
+                     <a href="{{ route('masterdata.material') }}" class="border flex items-center w-full p-2 text-base font-medium text-black transition duration-75 rounded-lg pl-11 hover:bg-zinc-800 hover:text-white group">Material</a>
                   </li>
                   <li>
-                     <a href="{{ route('masterdata.customer') }}" class="border flex items-center w-full p-2 text-base font-normal text-gray-400 transition duration-75 rounded-lg pl-11 hover:bg-purple-900 hover:text-white group">Customer</a>
+                     <a href="{{ route('masterdata.customer') }}" class="border flex items-center w-full p-2 text-base font-medium text-black transition duration-75 rounded-lg pl-11 hover:bg-zinc-800 hover:text-white group">Customer</a>
                   </li>
                   <li>
-                     <a href="{{ route('masterdata.supplier') }}" class="border flex items-center w-full p-2 text-base font-normal text-gray-400 transition duration-75 rounded-lg pl-11 hover:bg-purple-900 hover:text-white group">Supplier</a>
+                     <a href="{{ route('masterdata.supplier') }}" class="border flex items-center w-full p-2 text-base font-medium text-black transition duration-75 rounded-lg pl-11 hover:bg-zinc-800 hover:text-white group">Supplier</a>
                   </li>
                   <li>
-                     <a href="{{ route('masterdata.category') }}" class="border flex items-center w-full p-2 text-base font-normal text-gray-400 transition duration-75 rounded-lg pl-11 hover:bg-purple-900 hover:text-white group">Kategori</a>
+                     <a href="{{ route('masterdata.category') }}" class="border flex items-center w-full p-2 text-base font-medium text-black transition duration-75 rounded-lg pl-11 hover:bg-zinc-800 hover:text-white group">Kategori</a>
                   </li>
                   <li>
-                     <a href="{{ route('masterdata.measurement') }}" class="border flex items-center w-full p-2 text-base font-normal text-gray-400 transition duration-75 rounded-lg pl-11 hover:bg-purple-900 hover:text-white group">Satuan</a>
+                     <a href="{{ route('masterdata.measurement') }}" class="border flex items-center w-full p-2 text-base font-medium text-black transition duration-75 rounded-lg pl-11 hover:bg-zinc-800 hover:text-white group">Satuan</a>
                   </li>
             </ul>
          </li>
-         {{-- <li>
-            <a href="#" class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
-               <svg aria-hidden="true" class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
-               <span class="flex-1 ml-3 whitespace-nowrap">Kanban</span>
-               <span class="inline-flex items-center justify-center px-2 ml-3 text-sm font-medium text-gray-800 bg-gray-200 rounded-full dark:bg-gray-700 dark:text-gray-300">Pro</span>
-            </a>
-         </li>
+
+         {{-- SALES --}}
          <li>
-            <a href="#" class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
-               <svg aria-hidden="true" class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M8.707 7.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l2-2a1 1 0 00-1.414-1.414L11 7.586V3a1 1 0 10-2 0v4.586l-.293-.293z"></path><path d="M3 5a2 2 0 012-2h1a1 1 0 010 2H5v7h2l1 2h4l1-2h2V5h-1a1 1 0 110-2h1a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V5z"></path></svg>
-               <span class="flex-1 ml-3 whitespace-nowrap">Inbox</span>
-               <span class="inline-flex items-center justify-center w-3 h-3 p-3 ml-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300">3</span>
-            </a>
-         </li> --}}
-         <li>
-            <button type="button" class="{{ request()->is(['inquiry','quotation','rabp','setgood']) ? 'bg-purple-900' : '' }} border flex items-center w-full p-2 text-base font-normal text-gray-400 transition duration-75 rounded-lg group hover:bg-purple-900 hover:text-white group" aria-controls="dropdown-penawaran" data-collapse-toggle="dropdown-penawaran">
+            <button type="button" class="{{ request()->is(['inquiry','quotation','rabp','setgood']) ? 'bg-zinc-800 text-white' : '' }} border flex items-center w-full p-2 text-base font-normal transition duration-75 rounded-lg group hover:bg-zinc-800 hover:text-white group" aria-controls="dropdown-penawaran" data-collapse-toggle="dropdown-penawaran">
                   <svg class="flex-shrink-0 w-6 h-6 transition duration-75 group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                     <path clip-rule="evenodd" fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z"></path></svg>
-                  <span class="flex-1 ml-3 text-left whitespace-nowrap font-medium" sidebar-toggle-item>Penawaran</span>
+                  <span class="flex-1 ml-3 text-left whitespace-nowrap font-medium" sidebar-toggle-item>Sales</span>
                   <svg sidebar-toggle-item class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
             </button>
             <ul id="dropdown-penawaran" class="hidden py-2 space-y-2">
                   <li>
-                     <a href="{{ url('inquiry') }}" class="border flex items-center w-full p-2 text-base font-normal text-gray-400 transition duration-75 rounded-lg pl-11 hover:bg-purple-900 hover:text-white group">Inquiry</a>
+                     <a href="{{ url('inquiry') }}" class="{{ request()->is(['inquiry']) ? 'bg-zinc-800 text-white' : '' }} border flex items-center w-full p-2 text-base font-medium transition duration-75 rounded-lg pl-11 hover:bg-zinc-800 hover:text-white group">Inquiry</a>
                   </li>
                   <li>
-                     <a href="{{ url('quotation') }}" class="border flex items-center w-full p-2 text-base font-normal text-gray-400 transition duration-75 rounded-lg pl-11 hover:bg-purple-900 hover:text-white group">Quotation</a>
+                     <a href="{{ url('quotation') }}" class="{{ request()->is(['quotation']) ? 'bg-zinc-800 text-white' : '' }} border flex items-center w-full p-2 text-base font-medium transition duration-75 rounded-lg pl-11 hover:bg-zinc-800 hover:text-white group">Penawaran</a>
                   </li>
                   <li>
-                     <a href="{{ url('rabp') }}" class="border flex items-center w-full p-2 text-base font-normal text-gray-400 transition duration-75 rounded-lg pl-11 hover:bg-purple-900 hover:text-white group">RABP</a>
+                     <a href="{{ url('setgood') }}" class="{{ request()->is(['setgood']) ? 'bg-zinc-800 text-white' : '' }} border flex items-center w-full p-2 text-base font-medium transition duration-75 rounded-lg pl-11 hover:bg-zinc-800 hover:text-white group">Set Barang</a>
                   </li>
                   <li>
-                     <a href="{{ url('setgood') }}" class="border flex items-center w-full p-2 text-base font-normal text-gray-400 transition duration-75 rounded-lg pl-11 hover:bg-purple-900 hover:text-white group">Set Barang</a>
+                     <a href="{{ url('rabp') }}" class="{{ request()->is(['rabp']) ? 'bg-zinc-800 text-white' : '' }} border flex items-center w-full p-2 text-base font-medium transition duration-75 rounded-lg pl-11 hover:bg-zinc-800 hover:text-white group">RABP</a>
                   </li>
             </ul>
          </li>
+
+         {{-- KONTRAK --}}
          <li>
-            <a href="#" class="border flex items-center p-2 text-base font-normal text-gray-400 rounded-lg hover:bg-purple-900 hover:text-white group">
+            <a href="{{ url('contract') }}" class="{{ request()->is('contract') ? 'bg-zinc-800 text-white' : '' }} border flex items-center w-full p-2 text-base font-normal transition duration-75 rounded-lg group hover:bg-zinc-800 hover:text-white group">
+               <svg class="flex-shrink-0 w-6 h-6 transition duration-75 group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path clip-rule="evenodd" fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"></path></svg>
+               <span class="flex-1 ml-3 whitespace-nowrap font-medium">Kontrak</span>
+            </a>
+         </li>
+
+         {{-- PRODUKSI --}}
+         <li>
+            <button type="button" class="{{ request()->is(['production']) ? 'bg-zinc-800 text-white' : '' }} border flex items-center w-full p-2 text-base font-normal transition duration-75 rounded-lg group hover:bg-zinc-800 hover:text-white group" aria-controls="dropdown-produksi" data-collapse-toggle="dropdown-produksi">
+                  <svg class="flex-shrink-0 w-6 h-6 transition duration-75 group-hover:text-white" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M12 .75a8.25 8.25 0 00-4.135 15.39c.686.398 1.115 1.008 1.134 1.623a.75.75 0 00.577.706c.352.083.71.148 1.074.195.323.041.6-.218.6-.544v-4.661a6.714 6.714 0 01-.937-.171.75.75 0 11.374-1.453 5.261 5.261 0 002.626 0 .75.75 0 11.374 1.452 6.712 6.712 0 01-.937.172v4.66c0 .327.277.586.6.545.364-.047.722-.112 1.074-.195a.75.75 0 00.577-.706c.02-.615.448-1.225 1.134-1.623A8.25 8.25 0 0012 .75z"></path>
+                    <path clip-rule="evenodd" fill-rule="evenodd" d="M9.013 19.9a.75.75 0 01.877-.597 11.319 11.319 0 004.22 0 .75.75 0 11.28 1.473 12.819 12.819 0 01-4.78 0 .75.75 0 01-.597-.876zM9.754 22.344a.75.75 0 01.824-.668 13.682 13.682 0 002.844 0 .75.75 0 11.156 1.492 15.156 15.156 0 01-3.156 0 .75.75 0 01-.668-.824z"></path></svg>
+                  <span class="flex-1 ml-3 text-left whitespace-nowrap font-medium" sidebar-toggle-item>Produksi</span>
+                  <svg sidebar-toggle-item class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+            </button>
+            <ul id="dropdown-produksi" class="hidden py-2 space-y-2">
+                  <li>
+                     <a href="{{ url('production') }}" class="{{ request()->is(['production']) ? 'bg-zinc-800 text-white' : '' }} border flex items-center w-full p-2 text-base font-medium transition duration-75 rounded-lg pl-11 hover:bg-zinc-800 hover:text-white group">List Produksi</a>
+                  </li>
+                  <li>
+                     <a href="{{ url('production') }}" class="border flex items-center w-full p-2 text-base font-medium text-black transition duration-75 rounded-lg pl-11 hover:bg-zinc-800 hover:text-white group">Quality Control</a>
+                  </li>
+            </ul>
+         </li>
+
+         {{-- PENGADAAN --}}
+         <li>
+            <button type="button" class="border flex items-center w-full p-2 text-base font-normal transition duration-75 rounded-lg group hover:bg-zinc-800 hover:text-white group" aria-controls="dropdown-pengadaan" data-collapse-toggle="dropdown-pengadaan">
+                  <svg class="flex-shrink-0 w-6 h-6 transition duration-75 group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"></path></svg>
+                  <span class="flex-1 ml-3 text-left whitespace-nowrap font-medium" sidebar-toggle-item>Pengadaan</span>
+                  <svg sidebar-toggle-item class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+            </button>
+            <ul id="dropdown-pengadaan" class="hidden py-2 space-y-2">
+                  <li>
+                     <a href="{{ url('production') }}" class="border flex items-center w-full p-2 text-base font-medium text-black transition duration-75 rounded-lg pl-11 hover:bg-zinc-800 hover:text-white group">Purchase Request</a>
+                  </li>
+                  <li>
+                     <a href="{{ url('production') }}" class="border flex items-center w-full p-2 text-base font-medium text-black transition duration-75 rounded-lg pl-11 hover:bg-zinc-800 hover:text-white group">Purchase Order</a>
+                  </li>
+            </ul>
+         </li>
+
+         {{-- PENGELOLAAN --}}
+         <li>
+            <button type="button" class="border flex items-center w-full p-2 text-base font-normal transition duration-75 rounded-lg group hover:bg-zinc-800 hover:text-white group" aria-controls="dropdown-pengelolaan" data-collapse-toggle="dropdown-pengelolaan">
+                  <svg class="flex-shrink-0 w-6 h-6 transition duration-75 group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M4 3a2 2 0 100 4h12a2 2 0 100-4H4z"></path><path clip-rule="evenodd" fill-rule="evenodd" d="M3 8h14v7a2 2 0 01-2 2H5a2 2 0 01-2-2V8zm5 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z"></path></svg>
+                  <span class="flex-1 ml-3 text-left whitespace-nowrap font-medium" sidebar-toggle-item>Pengelolaan</span>
+                  <svg sidebar-toggle-item class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+            </button>
+            <ul id="dropdown-pengelolaan" class="hidden py-2 space-y-2">
+                  <li>
+                     <a href="{{ url('production') }}" class="border flex items-center w-full p-2 text-base font-medium text-black transition duration-75 rounded-lg pl-11 hover:bg-zinc-800 hover:text-white group">Retur Material</a>
+                  </li>
+                  <li>
+                     <a href="{{ url('production') }}" class="border flex items-center w-full p-2 text-base font-medium text-black transition duration-75 rounded-lg pl-11 hover:bg-zinc-800 hover:text-white group">Logistik Material</a>
+                  </li>
+            </ul>
+         </li>
+         
+         {{-- PENGIRIMAN --}}
+         <li>
+            <a href="#" class="border flex items-center p-2 text-base font-normal text-black rounded-lg hover:bg-zinc-800 hover:text-white group">
+               <svg class="flex-shrink-0 w-6 h-6 transition duration-75 group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M8 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM15 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z"></path><path d="M3 4a1 1 0 00-1 1v10a1 1 0 001 1h1.05a2.5 2.5 0 014.9 0H10a1 1 0 001-1V5a1 1 0 00-1-1H3zM14 7a1 1 0 00-1 1v6.05A2.5 2.5 0 0115.95 16H17a1 1 0 001-1v-5a1 1 0 00-.293-.707l-2-2A1 1 0 0015 7h-1z"></path></svg>
+               <span class="flex-1 ml-3 whitespace-nowrap font-medium">Pengiriman</span>
+            </a>
+         </li>
+
+         {{-- USERS --}}
+         <li>
+            <a href="#" class="border flex items-center p-2 text-base font-normal rounded-lg hover:bg-zinc-800 hover:text-white group">
                <svg aria-hidden="true" class="flex-shrink-0 w-6 h-6 transition duration-75 group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
                <span class="flex-1 ml-3 whitespace-nowrap font-medium">Users</span>
             </a>
          </li>
+         
+         {{-- LOGOUT --}}
          <li>
-            <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="border flex items-center p-2 text-base font-normal text-gray-400 rounded-lg hover:bg-purple-900 hover:text-white group">
+            <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="border flex items-center p-2 text-base font-normal rounded-lg hover:bg-zinc-800 hover:text-white group">
                <svg class="flex-shrink-0 w-6 h-6 transition duration-75 group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                 <path clip-rule="evenodd" fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z"></path></svg>
                <span class="flex-1 ml-3 whitespace-nowrap font-medium">Logout</span>

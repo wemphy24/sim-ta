@@ -3,12 +3,10 @@
 namespace App\Http\Livewire;
 
 use App\Models\Customer;
-use App\Models\BudgetPlanCost;
 use App\Models\Inquiry;
 use App\Models\Quotation;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -20,21 +18,12 @@ class QuotationIndex extends Component
     public $searchBy = 'quotation_code';
     public $orderAsc = true;
 
-    public $showingQuotationModal = false;
-    public $showingDetailModal = false;
+    public $showingQuotation = false;
+    public $showingDetail = false;
     public $showingMainPage = true;
-    public $isEditMode = false;
-    public $inquiries_id, $quotation_code, $name, $project, $location, $customers_id, $users_id, $status_id;   
 
+    public $inquiries_id, $quotation_code, $name, $project, $location,$date, $customers_id, $users_id, $status_id;   
     public $quotation;
-
-    public $date;
-
-    // public function mount()
-    // {
-    //     // Set default value untuk fitur tampilkan halaman
-    //     $this->showPage = 5;
-    // }
     
     public function render()
     {
@@ -47,18 +36,21 @@ class QuotationIndex extends Component
 
     public function back()
     {
+        // Menutup detail page dan menampilkan main page
         $this->showingMainPage = true;
-        $this->showingDetailModal = false;
+        $this->showingDetail = false;
     }
 
     public function closeModal()
     {
-        $this->showingQuotationModal = false;
-        $this->showingDetailModal = false;
+        // Menutup quotation modal
+        $this->showingQuotation = false;
+        $this->showingDetail = false;
     }
 
     public function createQuotationCode()
     {
+        // Membuat kode quotation
         $countQuotations = Quotation::count();
         if($countQuotations == 0) {
             $this->quotation_code = 'QO.' . "0" . (Carbon::now()->day) . "." . (Carbon::now()->month) . "." . (Carbon::now()->year) . '.' . 1001;
@@ -69,10 +61,11 @@ class QuotationIndex extends Component
         }
     }
 
-    public function showQuotationModal()
+    public function showQuotation()
     {
+        // Menampilkan quotation modal
         $this->reset();
-        $this->showingQuotationModal = true;
+        $this->showingQuotation = true;
 
         $this->createQuotationCode();
         $this->date = Carbon::now()->format('Y-m-d');
@@ -80,6 +73,7 @@ class QuotationIndex extends Component
 
     public function storeQuotation()
     {
+        // Store data inquiry
         Quotation::create([
             'inquiries_id' => $this->inquiries_id,
             'quotation_code' => $this->quotation_code,
@@ -98,11 +92,11 @@ class QuotationIndex extends Component
         $this->dispatchBrowserEvent('store-success');
     }
 
-    public function detailQuotation($id)
+    public function showDetail($id)
     {
-        $this->showingDetailModal = true;
+        // Menampilkan detail page
+        $this->showingDetail = true;
         $this->showingMainPage = false;
-        $this->isEditMode = true;
 
         $this->quotation = Quotation::findOrFail($id);
         $this->inquiries_id = $this->quotation->inquiry['id'];
@@ -118,6 +112,7 @@ class QuotationIndex extends Component
 
     public function updateQuotation()
     {
+        // Mengupdate data quotation
         $this->quotation->update([
             'name' => $this->name,
             'project' => $this->project,
@@ -131,13 +126,13 @@ class QuotationIndex extends Component
         $this->dispatchBrowserEvent('update-success');
     }
 
-    public function deleteQuotation($id) 
-    {
-        $quotation = Quotation::find($id);
-        $quotation->delete();
+    // public function deleteQuotation($id) 
+    // {
+    //     $quotation = Quotation::find($id);
+    //     $quotation->delete();
 
-        $this->dispatchBrowserEvent('delete-success');
-    }
+    //     $this->dispatchBrowserEvent('delete-success');
+    // }
 
     public function updated($key, $value)
     {

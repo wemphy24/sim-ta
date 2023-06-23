@@ -13,13 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('purchase_requests', function (Blueprint $table) {
+        Schema::create('quality_controls', function (Blueprint $table) {
             $table->id();
             $table->foreignId('productions_id')->constrained('productions')->onUpdate('CASCADE');
-            $table->string('purchase_request_code')->unique();
+            $table->foreignId('rabps_id')->constrained('rabps')->onUpdate('CASCADE');
             $table->string('name');
-            $table->string('description')->nullable();
-            $table->date('deadline');
+            $table->string('description');
+            $table->date('date');
             $table->foreignId('status_id')->constrained('status')->onUpdate('CASCADE');
             $table->foreignId('users_id')->constrained('users')->onUpdate('CASCADE');
             $table->timestamps();
@@ -33,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('purchase_requests');
+        Schema::dropIfExists('quality_controls');
     }
 };
