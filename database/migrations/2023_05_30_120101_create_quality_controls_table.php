@@ -17,9 +17,11 @@ return new class extends Migration
             $table->id();
             $table->foreignId('productions_id')->constrained('productions')->onUpdate('CASCADE');
             $table->foreignId('rabps_id')->constrained('rabps')->onUpdate('CASCADE');
+            $table->string('quality_control_code');
             $table->string('name');
             $table->string('description');
-            $table->date('date');
+            $table->date('start_qc');
+            $table->date('end_qc')->nullable();
             $table->foreignId('status_id')->constrained('status')->onUpdate('CASCADE');
             $table->foreignId('users_id')->constrained('users')->onUpdate('CASCADE');
             $table->timestamps();

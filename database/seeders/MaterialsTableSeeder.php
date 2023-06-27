@@ -44,7 +44,7 @@ class MaterialsTableSeeder extends Seeder
                 'categories_id' => 3,
                 'measurements_id' => 3,
                 'material_code' => 'BB.00'. 3,
-                'name' => 'Panel A',
+                'name' => 'Panel LVMDP Swiss Bell',
                 'stock' => 0,
                 'price' => 0,
                 'min_stock' => 0,

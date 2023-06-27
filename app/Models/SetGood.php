@@ -23,6 +23,7 @@ class SetGood extends Model
         'name', 
         'qty', 
         'price', 
+        'status', 
         'updated_at',
         'created_at',
     ];
@@ -50,6 +51,11 @@ class SetGood extends Model
     public function detail_rabp()
     {
         return $this->hasMany('App\Models\DetailRabp', 'set_goods_id');
+    }
+
+    public function logistic_material()
+    {
+        return $this->hasOne('App\Models\LogisticMaterial', 'set_goods_id');
     }
 
     public function scopeSearch($query, $term)

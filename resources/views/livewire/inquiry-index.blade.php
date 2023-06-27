@@ -25,7 +25,7 @@
                         <span>Download CSV</span>
                     </div> 
                 </button>
-                <button wire:click="showInquiry" class="py-2 px-4 text-center text-white rounded-lg border bg-zinc-800">
+                <button wire:click="showInquiry" class="py-2 px-4 text-center text-white rounded-lg border bg-zinc-800 hover:scale-105 hover:-translate-x-0 hover:duration-150">
                     <div class="flex items-center gap-1">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
                         <span>Buat Inquiry</span>
@@ -105,7 +105,7 @@
                                 @endif
                             </td>
                             <td class="py-1 px-3">
-                                <div class="flex items-center gap-2">
+                                <div class="flex items-center gap-2 hover:scale-105 hover:-translate-x-0 hover:duration-150">
                                     <button wire:click="showDetail({{ $inquiry->id }})" class="bg-blue-500 px-2 py-1 rounded-md">
                                         <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 21h7a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v11m0 5l4.879-4.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242z"></path></svg>
                                     </button>
@@ -182,7 +182,7 @@
                         </div>
                         <div class="mt-4">
                             <div class="flex justify-end">
-                                <button wire:click="storeInquiry" class="text-white bg-zinc-800 py-2 px-6 rounded-lg">
+                                <button wire:click="storeInquiry" class="text-white bg-zinc-800 py-2 px-6 rounded-lg hover:scale-105 hover:-translate-x-0 hover:duration-150">
                                     Submit
                                 </button>
                             </div>
@@ -283,10 +283,25 @@
                         </div>
                         <div class="md:w-1/2">
                             <label>Status:</label>
-                            <input class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm font-bold" disabled
-                                type="text"
-                                wire:model="status_id"
-                            />
+                            @if ($status_id == "Pending")
+                                <input class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-red-200 font-bold"
+                                    type="text"
+                                    wire:model="status_id"
+                                    disabled
+                                />
+                            @elseif ($status_id == "Working")
+                                <input class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-yellow-200"
+                                    type="text"
+                                    wire:model="status_id"
+                                    disabled
+                                />
+                            @else
+                                <input class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-green-200"
+                                    type="text"
+                                    wire:model="status_id"
+                                    disabled
+                                />
+                            @endif
                         </div>
                     </div>
 
@@ -347,10 +362,10 @@
             {{-- BUTTON --}}
             <div class="py-3 px-6">
                 <div class="flex justify-end gap-4">
-                    <button wire:click="updateInquiry" class="py-2 px-6 my-2 text-center rounded-lg bg-zinc-800 text-white">
+                    <button wire:click="updateInquiry" class="py-2 px-6 my-2 text-center rounded-lg bg-zinc-800 text-white hover:scale-105 hover:-translate-x-0 hover:duration-150">
                         Simpan
                     </button>
-                    <button wire:click="doneInquiry" class="py-2 px-6 my-2 text-center rounded-lg bg-green-500 text-white">
+                    <button wire:click="doneInquiry" class="py-2 px-6 my-2 text-center rounded-lg bg-green-500 text-white hover:scale-105 hover:-translate-x-0 hover:duration-150">
                         Approve
                     </button>
                 </div>

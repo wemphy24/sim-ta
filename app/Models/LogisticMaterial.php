@@ -5,10 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class PurchaseRequest extends Model
+class LogisticMaterial extends Model
 {
     // use HasFactory;
-    public $table = 'purchase_requests';
+    public $table = 'logistic_materials';
 
     protected $dates = [
         'updated_at',
@@ -16,29 +16,24 @@ class PurchaseRequest extends Model
     ];
 
     protected $fillable = [
-        'productions_id', 
-        'purchase_request_code', 
-        // 'name',
+        'set_goods_id', 
+        'categories_id', 
+        'measurements_id', 
+        'logistic_code', 
         'materials_id',
         'qty_ask', 
-        'description', 
-        'deadline', 
-        'categories_id',  
-        'measurements_id',  
-        'status_id', 
+        'qty_stock', 
+        'price', 
+        'type', 
         'users_id', 
+        'status_id', 
         'updated_at',
         'created_at',
     ];
 
-    public function production()
+    public function set_good()
     {
-        return $this->belongsTo('App\Models\Production', 'productions_id', 'id');
-    }
-
-    public function material()
-    {
-        return $this->belongsTo('App\Models\Material', 'materials_id', 'id');
+        return $this->belongsTo('App\Models\SetGood', 'set_goods_id', 'id');
     }
 
     public function category()
@@ -51,9 +46,9 @@ class PurchaseRequest extends Model
         return $this->belongsTo('App\Models\Measurement', 'measurements_id', 'id');
     }
 
-    public function status()
+    public function material()
     {
-        return $this->belongsTo('App\Models\Status', 'status_id', 'id');
+        return $this->belongsTo('App\Models\Material', 'materials_id', 'id');
     }
 
     public function user()
@@ -61,14 +56,18 @@ class PurchaseRequest extends Model
         return $this->belongsTo('App\Models\User', 'users_id', 'id');
     }
 
+    public function status()
+    {
+        return $this->belongsTo('App\Models\Status', 'status_id', 'id');
+    }
+
     public function scopeSearch($query, $term)
     {
         $term = "%$term%";
         $query->where(function($query) use ($term) {
-            $query->where('purchase_request_code', 'like', $term)
-            ->orWhere('description', 'like', $term)
-            ->orWhere('deadline', 'like', $term)
-            ->orWhereHas('production', function($query) use ($term) {
+            $query->where('logistic_code', 'like', $term)
+            ->orWhere('type', 'like', $term)
+            ->orWhereHas('set_good', function($query) use ($term) {
                 $query->where('name', 'like', $term);
             })
             ->orWhereHas('status', function($query) use ($term) {

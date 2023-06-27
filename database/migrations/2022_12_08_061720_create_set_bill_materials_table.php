@@ -23,6 +23,7 @@ return new class extends Migration
             $table->integer('qty_received')->nullable(); 
             $table->integer('qty_install')->nullable(); 
             $table->integer('qty_remaining')->nullable(); 
+            $table->string('status'); 
             $table->timestamps();
         });
     }

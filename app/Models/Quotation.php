@@ -19,6 +19,7 @@ class Quotation extends Model
         'inquiries_id', 
         'quotation_code', 
         'name', 
+        'quotation_file', 
         'project', 
         'date', 
         'location', 

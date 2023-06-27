@@ -18,7 +18,10 @@ return new class extends Migration
             $table->foreignId('purchase_orders_id')->constrained('purchase_orders')->onUpdate('CASCADE');
             $table->foreignId('materials_id')->constrained('materials')->onUpdate('CASCADE');
             $table->integer('qty')->nullable();
-            $table->foreignId('status_id')->constrained('status')->onUpdate('CASCADE');
+            $table->integer('price')->nullable();
+            $table->integer('total_price')->nullable();
+            $table->string('status')->nullable();
+            // $table->foreignId('status_id')->constrained('status')->onUpdate('CASCADE');
             $table->timestamps();
         });
     }

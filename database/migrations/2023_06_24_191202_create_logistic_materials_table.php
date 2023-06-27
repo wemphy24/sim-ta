@@ -13,18 +13,20 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('purchase_requests', function (Blueprint $table) {
+        Schema::create('logistic_materials', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('productions_id')->constrained('productions')->onUpdate('CASCADE');
-            $table->string('purchase_request_code')->unique();
+            $table->foreignId('set_goods_id')->constrained('set_goods')->onUpdate('CASCADE');
+            $table->string('logistic_code');
+            // $table->string('name');
             $table->foreignId('materials_id')->constrained('materials')->onUpdate('CASCADE');
             $table->integer('qty_ask');
-            $table->string('description')->nullable();
-            $table->date('deadline');
+            $table->integer('qty_stock');
+            $table->integer('price');
+            $table->string('type'); //Berubah
             $table->foreignId('categories_id')->constrained('categories')->onUpdate('CASCADE');
             $table->foreignId('measurements_id')->constrained('measurements')->onUpdate('CASCADE');
-            $table->foreignId('status_id')->constrained('status')->onUpdate('CASCADE');
             $table->foreignId('users_id')->constrained('users')->onUpdate('CASCADE');
+            $table->foreignId('status_id')->constrained('status')->onUpdate('CASCADE');
             $table->timestamps();
         });
     }
@@ -36,6 +38,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('purchase_requests');
+        Schema::dropIfExists('logistic_materials');
     }
 };

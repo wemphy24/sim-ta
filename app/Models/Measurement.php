@@ -35,4 +35,14 @@ class Measurement extends Model
     {
         return $this->hasMany('App\Models\SetGood', 'measurements_id');
     }
+
+    public function logistic_material()
+    {
+        return $this->hasMany('App\Models\LogisticMaterial', 'measurements_id');
+    }
+
+    public function purchase_request()
+    {
+        return $this->hasMany('App\Models\PurchaseRequest', 'measurements_id');
+    }
 }

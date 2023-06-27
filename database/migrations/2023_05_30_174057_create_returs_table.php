@@ -15,6 +15,13 @@ return new class extends Migration
     {
         Schema::create('returs', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('set_goods_id')->constrained('set_goods')->onUpdate('CASCADE');
+            $table->string('retur_code');
+            $table->foreignId('materials_id')->constrained('materials')->onUpdate('CASCADE');
+            $table->integer('qty');
+            $table->integer('price');
+            $table->foreignId('status_id')->constrained('status')->onUpdate('CASCADE');
+            $table->foreignId('users_id')->constrained('users')->onUpdate('CASCADE');
             $table->timestamps();
         });
     }

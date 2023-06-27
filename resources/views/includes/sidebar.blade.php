@@ -139,7 +139,7 @@
 
          {{-- PENGADAAN --}}
          <li>
-            <button type="button" class="border flex items-center w-full p-2 text-base font-normal transition duration-75 rounded-lg group hover:bg-zinc-800 hover:text-white group" aria-controls="dropdown-pengadaan" data-collapse-toggle="dropdown-pengadaan">
+            <button type="button" class="{{ request()->is(['purchaserequest','purchaseorder','goodreceive']) ? 'bg-zinc-800 text-white' : '' }} border flex items-center w-full p-2 text-base font-normal transition duration-75 rounded-lg group hover:bg-zinc-800 hover:text-white group" aria-controls="dropdown-pengadaan" data-collapse-toggle="dropdown-pengadaan">
                   <svg class="flex-shrink-0 w-6 h-6 transition duration-75 group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                     <path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"></path></svg>
                   <span class="flex-1 ml-3 text-left whitespace-nowrap font-medium" sidebar-toggle-item>Pengadaan</span>
@@ -147,27 +147,30 @@
             </button>
             <ul id="dropdown-pengadaan" class="hidden py-2 space-y-2">
                   <li>
-                     <a href="{{ url('production') }}" class="border flex items-center w-full p-2 text-base font-medium text-black transition duration-75 rounded-lg pl-11 hover:bg-zinc-800 hover:text-white group">Purchase Request</a>
+                     <a href="{{ url('purchaserequest') }}" class="{{ request()->is(['purchaserequest']) ? 'bg-zinc-800 text-white' : '' }} border flex items-center w-full p-2 text-base font-medium transition duration-75 rounded-lg pl-11 hover:bg-zinc-800 hover:text-white group">Purchase Request</a>
                   </li>
                   <li>
-                     <a href="{{ url('production') }}" class="border flex items-center w-full p-2 text-base font-medium text-black transition duration-75 rounded-lg pl-11 hover:bg-zinc-800 hover:text-white group">Purchase Order</a>
+                     <a href="{{ url('purchaseorder') }}" class="{{ request()->is(['purchaseorder']) ? 'bg-zinc-800 text-white' : '' }} border flex items-center w-full p-2 text-base font-medium transition duration-75 rounded-lg pl-11 hover:bg-zinc-800 hover:text-white group">Purchase Order</a>
+                  </li>
+                  <li>
+                     <a href="{{ url('goodreceive') }}" class="{{ request()->is(['goodreceive']) ? 'bg-zinc-800 text-white' : '' }} border flex items-center w-full p-2 text-base font-medium transition duration-75 rounded-lg pl-11 hover:bg-zinc-800 hover:text-white group">GRN PO</a>
                   </li>
             </ul>
          </li>
 
          {{-- PENGELOLAAN --}}
          <li>
-            <button type="button" class="border flex items-center w-full p-2 text-base font-normal transition duration-75 rounded-lg group hover:bg-zinc-800 hover:text-white group" aria-controls="dropdown-pengelolaan" data-collapse-toggle="dropdown-pengelolaan">
+            <button type="button" class="{{ request()->is(['logistic']) ? 'bg-zinc-800 text-white' : '' }} border flex items-center w-full p-2 text-base font-normal transition duration-75 rounded-lg group hover:bg-zinc-800 hover:text-white group" aria-controls="dropdown-pengelolaan" data-collapse-toggle="dropdown-pengelolaan">
                   <svg class="flex-shrink-0 w-6 h-6 transition duration-75 group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M4 3a2 2 0 100 4h12a2 2 0 100-4H4z"></path><path clip-rule="evenodd" fill-rule="evenodd" d="M3 8h14v7a2 2 0 01-2 2H5a2 2 0 01-2-2V8zm5 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z"></path></svg>
                   <span class="flex-1 ml-3 text-left whitespace-nowrap font-medium" sidebar-toggle-item>Pengelolaan</span>
                   <svg sidebar-toggle-item class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
             </button>
             <ul id="dropdown-pengelolaan" class="hidden py-2 space-y-2">
                   <li>
-                     <a href="{{ url('production') }}" class="border flex items-center w-full p-2 text-base font-medium text-black transition duration-75 rounded-lg pl-11 hover:bg-zinc-800 hover:text-white group">Retur Material</a>
+                     <a href="{{ url('logistic') }}" class="{{ request()->is(['logistic']) ? 'bg-zinc-800 text-white' : '' }} border flex items-center w-full p-2 text-base font-medium transition duration-75 rounded-lg pl-11 hover:bg-zinc-800 hover:text-white group">Logistik Material</a>
                   </li>
                   <li>
-                     <a href="{{ url('production') }}" class="border flex items-center w-full p-2 text-base font-medium text-black transition duration-75 rounded-lg pl-11 hover:bg-zinc-800 hover:text-white group">Logistik Material</a>
+                     <a href="{{ url('retur') }}" class="{{ request()->is(['retur']) ? 'bg-zinc-800 text-white' : '' }} border flex items-center w-full p-2 text-base font-medium transition duration-75 rounded-lg pl-11 hover:bg-zinc-800 hover:text-white group">Retur Material</a>
                   </li>
             </ul>
          </li>

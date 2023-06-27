@@ -25,7 +25,7 @@
                             <span>Download CSV</span>
                         </div> 
                     </button>
-                    <button wire:click="showRabp" class="py-2 px-4 text-center text-white rounded-lg border bg-zinc-800">
+                    <button wire:click="showRabp" class="py-2 px-4 text-center text-white rounded-lg border bg-zinc-800 hover:scale-105 hover:-translate-x-0 hover:duration-150">
                         <div class="flex items-center gap-1">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
                             <span>Buat RABP</span>
@@ -102,12 +102,23 @@
                                 </td>
                                 <td class="py-1 px-3">
                                     <div class="flex items-center gap-4">                                     
-                                        <button wire:click="showDetail({{ $rabp->id }})" class="bg-blue-500 px-2 py-1 rounded-md">
+                                        <button wire:click="showDetail({{ $rabp->id }})" class="bg-blue-500 px-2 py-1 rounded-md hover:scale-105 hover:-translate-x-0 hover:duration-150">
                                             <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 21h7a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v11m0 5l4.879-4.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242z"></path></svg>
                                         </button>
-                                        <button title="Approve" wire:click="showApproval({{ $rabp->id }})" class="bg-green-500 px-2 py-1 rounded-md">
-                                            <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path clip-rule="evenodd" fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"></path></svg>
-                                        </button>
+                                        @if ($rabp->status['name'] == "Pending")
+                                            <button title="Approve" wire:click="approvee1({{ $rabp->id }})" class="text-white bg-green-500 p-2 rounded-lg font-medium hover:scale-105 hover:-translate-x-0 hover:duration-150">
+                                                Approve 1
+                                            </button>
+                                        @elseif ($rabp->status['name'] == "Working")
+                                            <button title="Approve" wire:click="approvee2({{ $rabp->id }})" class="text-white bg-green-500 p-2 rounded-lg font-medium hover:scale-105 hover:-translate-x-0 hover:duration-150">
+                                                Approve 2
+                                            </button>
+                                        @else
+                                            <button title="Approve" wire:click="" class="text-white bg-red-500 p-2 rounded-lg font-medium hover:scale-105 hover:-translate-x-0 hover:duration-150" disabled>
+                                                Approve 2
+                                            </button>
+                                        @endif
+                                        
                                     </div>
                                 </td>
                             </tr>
@@ -162,7 +173,7 @@
 
                             <div class="mt-4">
                                 <div class="flex justify-end">
-                                    <button wire:click="storeRabp" class="text-white bg-zinc-800 py-2 px-6 rounded-lg">
+                                    <button wire:click="storeRabp" class="text-white bg-zinc-800 py-2 px-6 rounded-lg hover:scale-105 hover:-translate-x-0 hover:duration-150">
                                         Submit
                                     </button>
                                 </div>
@@ -433,14 +444,21 @@
                 <div class="py-3 px-6">
                     <div class="flex justify-between">
                         <div class="flex gap-4">
-                            @if ($status_id == 'Working' || $status_id == 'Pending')
+                            @if ($status_id == 'Pending')
                                 <button wire:click="viewPdf" class="py-2 px-6 my-2 text-center rounded-lg bg-red-500 text-white" disabled>
                                     Download Penawaran
                                 </button>
                                 <button wire:click="showProduction" class="py-2 px-6 my-2 text-center rounded-lg bg-red-500 text-white" disabled>
                                     Proses Produksi
                                 </button>
-                            @else
+                            @elseif ($status_id == 'Working')
+                                <button wire:click="viewPdf" class="py-2 px-6 my-2 text-center rounded-lg bg-yellow-500 text-white">
+                                    Download Penawaran
+                                </button>
+                                <button wire:click="showProduction" class="py-2 px-6 my-2 text-center rounded-lg bg-red-500 text-white" disabled>
+                                    Proses Produksi
+                                </button>
+                            @else   
                                 <button wire:click="viewPdf" class="py-2 px-6 my-2 text-center rounded-lg bg-yellow-500 text-white">
                                     Download Penawaran
                                 </button>
@@ -460,9 +478,19 @@
                                     Revisi
                                 </button>
                             @endif
-                            <button wire:click="approve" class="py-2 px-6 my-2 text-center rounded-lg bg-green-500 text-white">
-                                Approve
-                            </button>
+                            @if ($status_id == 'Pending')
+                                <button wire:click="approve1" class="py-2 px-6 my-2 text-center rounded-lg bg-green-500 text-white">
+                                    Approve 1
+                                </button>
+                            @elseif ($status_id == 'Working')
+                                <button wire:click="approve2" class="py-2 px-6 my-2 text-center rounded-lg bg-green-500 text-white">
+                                    Approve 2
+                                </button>
+                            @else
+                                <button wire:click="approve2" class="py-2 px-6 my-2 text-center rounded-lg bg-red-500 text-white" disabled>
+                                    Approve 2
+                                </button>
+                            @endif
                         </div>
                     </div>
                     {{-- <button wire:click="viewPdf" class="py-2 px-6 text-center rounded-lg bg-yellow-500 w-full text-white">
@@ -486,7 +514,7 @@
                             <div class="mt-4">
                                 <div class="flex items-center gap-0 justify-between p-1 flex-wrap sm:gap-2">
                                     <h1>Kode Produksi</h1>
-                                    <input wire:model="production_code" type="text" class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm" maxlength="128"/>
+                                    <input wire:model="production_code" type="text" class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm bg-gray-100" maxlength="128"/ disabled>
                                 </div>
                                 <div class="flex items-center gap-0 justify-between p-1 flex-wrap sm:gap-2">
                                     <h1>Tanggal</h1>

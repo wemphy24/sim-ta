@@ -48,6 +48,21 @@ class Material extends Model
         return $this->hasMany('App\Models\SetBillMaterial', 'materials_id');
     }
 
+    public function logistic_material()
+    {
+        return $this->hasMany('App\Models\LogisticMaterial', 'materials_id');
+    }
+
+    public function purhcase_request()
+    {
+        return $this->hasMany('App\Models\PurchaseRequest', 'materials_id');
+    }
+
+    public function detail_po()
+    {
+        return $this->hasMany('App\Models\DetailPO', 'materials_id');
+    }
+
     public function scopeSearch($query, $term)
     {
         $term = "%$term%";

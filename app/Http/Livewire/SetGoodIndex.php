@@ -108,6 +108,7 @@ class SetGoodIndex extends Component
             'name' => $this->name,
             'qty' => $this->qty,
             'price' => $this->price,
+            'status' => "Siap Dirakit",
         ]);
         
         $this->reset();
@@ -185,6 +186,7 @@ class SetGoodIndex extends Component
             'qty_received' => 0,
             'qty_install' => 0,
             'qty_remaining' => 0,
+            'status' => "Belum Diambil",
         ]);
 
         // Hitung total harga seluruh material

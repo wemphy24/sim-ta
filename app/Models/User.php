@@ -93,4 +93,24 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Models\Production', 'users_id');
     }
+
+    public function logistic_material()
+    {
+        return $this->hasMany('App\Models\LogisticMaterial', 'users_id');
+    }
+
+    public function purchase_request()
+    {
+        return $this->hasMany('App\Models\PurchaseRequest', 'users_id');
+    }
+
+    public function purchase_order()
+    {
+        return $this->hasMany('App\Models\PurchaseOrder', 'users_id');
+    }
+
+    public function quality_control()
+    {
+        return $this->hasMany('App\Models\QualityControl', 'users_id');
+    }
 }

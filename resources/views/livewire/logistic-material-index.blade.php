@@ -1,15 +1,15 @@
 <div class="main-content bg-zinc-100 flex-1 md:ml-64 h-screen">
     
-    @section('title', 'Kontrak')
+    @section('title', 'Logistik')
 
     @if ($showingMainPage)
         {{-- PAGE TITLE --}}
         <div class="mx-6 mt-20">
             <div class="flex justify-between">
                 <div class="flex items-center gap-4">
-                    <a href="#"><div class="font-medium text-lg text-gray-400">Kontrak</div></a>
+                    <a href="#"><div class="font-medium text-lg text-gray-400">Pengelolaan</div></a>
                     <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"></path></svg>
-                    <a href="#"><div class="font-medium text-lg">List Kontrak</div></a>
+                    <a href="#"><div class="font-medium text-lg">Logistik Material</div></a>
                 </div>
             </div>
         </div>
@@ -23,10 +23,10 @@
                         <span>Download CSV</span>
                     </div> 
                 </button>
-                <button wire:click="" class="py-2 px-4 text-center text-white rounded-lg border bg-zinc-800 hover:scale-105 hover:-translate-x-0 hover:duration-150">
+                <button wire:click="" class="py-2 px-4 text-center text-white rounded-lg border bg-zinc-800">
                     <div class="flex items-center gap-1">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
-                        <span>Buat Kontrak</span>
+                        <span>Buat Logistik</span>
                     </div>
                 </button> 
             </div> 
@@ -41,11 +41,10 @@
                         </select>
                         <input wire:model.debounce.500ms="search" class="border-gray-300/50 rounded-lg p-2 text-sm" type="text" placeholder="Search">
                         <select wire:model="searchBy" class="border-gray-300/50 rounded-lg text-sm">
-                            <option value="production_code">KODE KONTRAK</option>
+                            <option value="production_code">KODE LOGISTIK</option>
                             <option value="name">NAMA</option>
-                            <option value="contract_value">JUMLAH KONTRAK</option>
+                            <option value="categories_id">KATEGORI</option>
                             <option value="description">KETERANGAN</option>
-                            <option value="finish_date">DEADLINE</option>
                             <option value="status_id">STATUS</option>
                         </select>
                         <select wire:model="orderAsc" class="border-gray-300/50 rounded-lg text-sm">
@@ -58,43 +57,58 @@
                     <thead class="bg-zinc-200 text-zinc-800">
                         <tr>
                             <th scope="col" class="py-3 px-4">#</th>
-                            <th scope="col" class="py-3 px-3">Kode Kontrak</th>
+                            <th scope="col" class="py-3 px-3">Kode Logistik</th>
                             <th scope="col" class="py-3 px-3">Nama</th>
-                            <th scope="col" class="py-3 px-3">Jumlah Kontrak</th>
-                            <th scope="col" class="py-3 px-3">Deadline</th>
+                            <th scope="col" class="py-3 px-3">Barang Diproduksi</th>
+                            <th scope="col" class="py-3 px-3">Kategori</th>
+                            <th scope="col" class="py-3 px-3">Qty Minta</th>
+                            <th scope="col" class="py-3 px-3">Qty Stok</th>
+                            <th scope="col" class="py-3 px-3">Tipe</th>
                             <th scope="col" class="py-3 px-3">Status</th>
                             <th scope="col" class="py-3 px-3">Aksi</th>
                         </tr>
                     </thead>
 
                     <tbody>
-                        @foreach ($contracts as $contract)
+                        @foreach ($logistics as $logistic)
                             <tr class="bg-white border-b hover:bg-gray-50 hover:text-black text-sm">
-                                <td class="py-1 px-3">{{ ($contracts ->currentpage()-1) * $contracts ->perpage() + $loop->index + 1 }}</td>
-                                <td class="py-1 px-3 font-medium">{{ $contract->contract_code }}</td>
-                                <td class="py-1 px-3">{{ $contract->name }}</td>
-                                <td class="py-1 px-3">RP. {{ number_format($contract->contract_value) }}</td>
-                                <td class="py-1 px-3">{{ $contract->finish_date }}</td>
+                                <td class="py-1 px-3">{{ ($logistics ->currentpage()-1) * $logistics ->perpage() + $loop->index + 1 }}</td>
+                                <td class="py-1 px-3 font-medium">{{ $logistic->logistic_code }}</td>
+                                <td class="py-1 px-3">{{ $logistic->material['name'] }}</td>
+                                <td class="py-1 px-3">{{ $logistic->set_good['name'] }}</td>
+                                <td class="py-1 px-3">{{ $logistic->category['name'] }}</td>
+                                <td class="py-1 px-3">{{ $logistic->qty_ask }}</td>
+                                <td class="py-1 px-3">{{ $logistic->qty_stock }}</td>
+                                <td class="py-1 px-3">{{ $logistic->type }}</td>
                                 <td class="py-1 px-3">
-                                    @if ($contract->status['name'] == "Working")
+                                    @if ($logistic->status['name'] == "Working")
                                         <div class="bg-yellow-200 w-24 py-1.5 rounded-full font-medium text-center">
-                                            {{ $contract->status['name'] }}
+                                            {{ $logistic->status['name'] }}
                                         </div>
-                                    @elseif ($contract->status['name'] == "Complete")
+                                    @elseif ($logistic->status['name'] == "Complete")
                                         <div class="bg-green-200 w-24 py-1.5 rounded-full font-medium text-center">
-                                            {{ $contract->status['name'] }}
+                                            {{ $logistic->status['name'] }}
                                         </div>
                                     @else
                                         <div class="bg-red-200 w-24 py-1.5 rounded-full font-medium text-center">
-                                            {{ $contract->status['name'] }}
+                                            {{ $logistic->status['name'] }}
                                         </div>
                                     @endif
                                 </td>
                                 <td class="py-1 px-3">
                                     <div class="flex items-center gap-4">
-                                        <button wire:click="detail({{ $contract->id }})" class="bg-blue-500 px-2 py-1 rounded-md hover:scale-105 hover:-translate-x-0 hover:duration-150">
+                                        {{-- <button wire:click="detail({{ $logistic->id }})" class="bg-blue-500 px-2 py-1 rounded-md">
                                             <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 21h7a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v11m0 5l4.879-4.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242z"></path></svg>
-                                        </button>
+                                        </button> --}}
+                                        @if ($logistic->qty_stock >= $logistic->qty_ask)
+                                            <button title="Approve" wire:click="approve({{ $logistic->id }})" class="text-white bg-green-500 p-2 rounded-lg font-medium hover:scale-105 hover:-translate-x-0 hover:duration-150">
+                                                Approve
+                                            </button>
+                                        @else
+                                            <button title="RequestPR" wire:click="requestPR({{ $logistic->id }})" class="text-white bg-yellow-500 p-2 rounded-lg font-medium hover:scale-105 hover:-translate-x-0 hover:duration-150">
+                                                Request PR
+                                            </button>
+                                        @endif
                                     </div>
                                 </td>
                             </tr>
@@ -103,7 +117,7 @@
                 </table>
             </div>
             <div class="rounded-lg mt-6">
-                {{ $contracts->links() }}
+                {{ $logistics->links() }}
             </div>
         </div>
     @endif
@@ -114,7 +128,7 @@
             <div class="flex justify-between">
                 <div class="flex items-center gap-4">
                     <a href="#">
-                        <div class="font-medium text-lg text-gray-400">Kontrak</div>
+                        <div class="font-medium text-lg text-gray-400">Logistik Material</div>
                     </a>
                     <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"></path></svg>
                     <a href="#">
@@ -129,17 +143,17 @@
         </div>
 
         <div class="m-6 pb-6">
-            {{-- SECTION DATA KONTRAK --}}
+            {{-- SECTION DATA LOGISTIK --}}
             <div class="overflow-x-auto sm:rounded-lg border border-gray-300/50">
                 <div class="bg-white py-3 px-6">
 
                     {{--  --}}
                     <div class="md:flex gap-2 form py-1">
                         <div class="md:w-1/2">
-                            <label>Kode Kontrak:</label>
+                            <label>Kode Logistik:</label>
                             <input class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-gray-100"
                                 type="text"
-                                wire:model="contract_code"
+                                wire:model="logistic_code"
                                 disabled
                             />
                         </div>
@@ -147,7 +161,7 @@
                             <label>Nama:</label>
                             <input class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm"
                                 type="text"
-                                wire:model="name"
+                                wire:model="materials_id"
                             />
                         </div>
                     </div>
@@ -155,31 +169,35 @@
                     {{--  --}}
                     <div class="md:flex gap-2 form py-1">
                         <div class="md:w-1/2">
-                            <label>Nama Penawaran:</label>
-                            <select wire:model="quotations_id" class="w-full border-gray-300/50 rounded-lg text-sm bg-gray-100" disabled>
-                                @foreach ($quotations as $quotation)
+                            <label>Kategori:</label>
+                            <select wire:model="categories_id" class="w-full border-gray-300/50 rounded-lg text-sm bg-gray-100" disabled>
+                                {{-- @foreach ($quotations as $quotation)
                                     <option value="{{ $quotation->id }}">{{ $quotation->name }}</option>
-                                @endforeach
+                                @endforeach --}}
                             </select>
                         </div>
                         <div class="md:w-1/2">
-                            <label>Jumlah Kontrak:</label>
-                            <input class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-gray-100" type="text" value="{{ number_format($contract_value) }}" disabled/>
+                            <label>Satuan:</label>
+                            <select wire:model="measurements_id" class="w-full border-gray-300/50 rounded-lg text-sm bg-gray-100" disabled>
+                                {{-- @foreach ($quotations as $quotation)
+                                    <option value="{{ $quotation->id }}">{{ $quotation->name }}</option>
+                                @endforeach --}}
+                            </select>
                         </div>
                     </div>
 
                     {{--  --}}
                     <div class="md:flex gap-2 form py-1">
                         <div class="md:w-1/2">
-                            <label>Mulai Kontrak:</label>
+                            <label>Minta:</label>
                             <input class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-gray-100" type="date" disabled
-                                wire:model="start_date" 
+                                wire:model="qty_ask" 
                             />
                         </div>
                         <div class="md:w-1/2">
-                            <label>Akhir Kontrak:</label>
+                            <label>Stok:</label>
                             <input class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-gray-100" type="text" disabled
-                                wire:model="finish_date"
+                                wire:model="qty_stock"
                             />
                         </div>
                     </div>
@@ -192,6 +210,12 @@
                                 wire:model="status_id"
                             />
                         </div>
+                        <div class="md:w-1/2">
+                            <label>User:</label>
+                            <input class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-red-200 font-bold" type="text" disabled
+                                wire:model="users_id"
+                            />
+                        </div>
                     </div>
 
                 </div>
@@ -201,38 +225,9 @@
             {{-- BUTTON ACTION--}}
             <div class="py-3 px-6">
                 <div class="flex justify-end gap-4">
-                    <button wire:click="updateContract" class="py-2 px-6 my-2 text-center rounded-lg bg-zinc-800 text-white hover:scale-105 hover:-translate-x-0 hover:duration-150">
+                    <button wire:click="" class="py-2 px-6 my-2 text-center rounded-lg bg-zinc-800 text-white">
                         Simpan
                     </button>
-                </div>
-            </div>
-            {{--  --}}
-
-            {{-- SECTION DATA BARANG --}}
-            <div class="bg-white overflow-x-auto sm:rounded-lg border border-gray-300/50 mt-6">
-                <div class="py-3 px-6">
-                    <div class="font-medium text-xl mb-3">Daftar Barang</div>
-                    <table class="w-full text-sm text-left text-black">
-                        <thead class="bg-zinc-200">
-                            <tr>
-                                <th scope="col" class="py-3 px-6">Barang</th>
-                                <th scope="col" class="py-3 px-6">Qty</th>
-                                <th scope="col" class="py-3 px-6">Satuan</th>
-                                {{-- <th scope="col" class="py-3 px-6">Harga</th> --}}
-                            </tr>
-                        </thead>
-                        
-                        <tbody>
-                            @foreach ($detailrabps as $detailrabp)
-                                <tr class="bg-white hover:bg-gray-50 hover:text-black font-medium">
-                                    <td class="py-2 px-6">{{ $detailrabp->set_good['name'] }}</td>
-                                    <td class="py-2 px-6">{{ $detailrabp->qty }}</td>
-                                    <td class="py-2 px-6">{{ $detailrabp->set_good->measurement['name'] }}</td>
-                                    {{-- <td class="py-2 px-6">RP. {{ number_format($total_price) }}</td> --}}
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
                 </div>
             </div>
             {{--  --}}

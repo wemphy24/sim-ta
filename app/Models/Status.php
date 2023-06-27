@@ -55,4 +55,24 @@ class Status extends Model
     {
         return $this->hasMany('App\Models\Production', 'status_id');
     }
+
+    public function logistic_material()
+    {
+        return $this->hasMany('App\Models\LogisticMaterial', 'status_id');
+    }
+
+    public function purchase_request()
+    {
+        return $this->hasMany('App\Models\PurchaseRequest', 'status_id');
+    }
+
+    public function purchase_order()
+    {
+        return $this->hasMany('App\Models\PurchaseOrder', 'status_id');
+    }
+
+    public function quality_control()
+    {
+        return $this->hasMany('App\Models\QualityCotrol', 'status_id');
+    }
 }

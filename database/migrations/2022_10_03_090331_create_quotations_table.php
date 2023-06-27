@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('inquiries_id')->constrained('inquiries')->onUpdate('CASCADE');
             $table->string('quotation_code')->unique();
             $table->string('name');
+            $table->longText('quotation_file')->nullable();
             $table->string('project')->nullable();
             $table->date('date');
             $table->string('location')->nullable();

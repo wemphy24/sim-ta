@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use Livewire\WithFileUploads;
 use App\Models\Customer;
 use App\Models\Inquiry;
 use App\Models\Quotation;
@@ -22,7 +23,8 @@ class QuotationIndex extends Component
     public $showingDetail = false;
     public $showingMainPage = true;
 
-    public $inquiries_id, $quotation_code, $name, $project, $location,$date, $customers_id, $users_id, $status_id;   
+    use WithFileUploads;
+    public $inquiries_id, $quotation_code, $name, $quotation_file, $project, $location,$date, $customers_id, $users_id, $status_id;   
     public $quotation;
     
     public function render()
@@ -112,9 +114,16 @@ class QuotationIndex extends Component
 
     public function updateQuotation()
     {
+        // Cek jika quotation_file NOT NULL dan tidak sama dengan PATHFILE
+        if (!empty($this->quotation_file)) {
+            $filenameQuo = $this->quotation_file->getClientOriginalName();
+            $this->quotation_file->storeAs('public/quotation', $filenameQuo);
+        } 
+
         // Mengupdate data quotation
         $this->quotation->update([
             'name' => $this->name,
+            'quotation_file' => $this->quotation_file != NULL ?  $filenameQuo : $this->quotation->quotation_file,
             'project' => $this->project,
             'date' => $this->date,
             'location' => $this->location,
@@ -123,6 +132,16 @@ class QuotationIndex extends Component
         $this->reset();
         $this->closeModal();
 
+        $this->dispatchBrowserEvent('update-success');
+    }
+
+    public function approve()
+    {
+        $this->quotation->update([
+            'status_id' => 3,
+        ]);
+
+        $this->reset();
         $this->dispatchBrowserEvent('update-success');
     }
 

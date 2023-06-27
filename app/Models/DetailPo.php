@@ -5,10 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class SetBillMaterial extends Model
+class DetailPo extends Model
 {
     // use HasFactory;
-    public $table = 'set_bill_materials';
+    public $table = 'detail_pos';
 
     protected $dates = [
         'updated_at',
@@ -16,23 +16,15 @@ class SetBillMaterial extends Model
     ];
 
     protected $fillable = [
-        'set_goods_id', 
-        'materials_id', 
+        'purchase_orders_id', 
+        'materials_id',
         'qty', 
         'price', 
         'total_price', 
-        'qty_received', 
-        'qty_install', 
-        'qty_remaining', 
-        'status', 
+        'status',  
         'updated_at',
         'created_at',
     ];
-
-    public function set_good()
-    {
-        return $this->belongsTo('App\Models\SetGood', 'set_goods_id', 'id');
-    }
 
     public function material()
     {

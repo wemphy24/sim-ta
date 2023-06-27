@@ -34,4 +34,9 @@ class Supplier extends Model
             ->orWhere('address', 'like', $term);
         });
     }
+
+    public function purchase_order()
+    {
+        return $this->hasMany('App\Models\PurchaseOrder', 'suppliers_id');
+    }
 }

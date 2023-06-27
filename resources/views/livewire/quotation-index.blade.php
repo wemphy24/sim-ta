@@ -25,7 +25,7 @@
                         <span>Download CSV</span>
                     </div> 
                 </button>
-                <button wire:click="showQuotation" class="py-2 px-4 text-center text-white rounded-lg border bg-zinc-800">
+                <button wire:click="showQuotation" class="py-2 px-4 text-center text-white rounded-lg border bg-zinc-800 hover:scale-105 hover:-translate-x-0 hover:duration-150">
                     <div class="flex items-center gap-1">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
                         <span>Buat Penawaran</span>
@@ -77,7 +77,13 @@
                             <td class="py-1 px-3">{{ ($quotations ->currentpage()-1) * $quotations ->perpage() + $loop->index + 1 }}</td>
                             <td class="py-1 px-3 font-medium">{{ $quotation->quotation_code }}</td>
                             <td class="py-1 px-3">{{ $quotation->name }}</td>
-                            <td class="py-1 px-3 text-red-600">Belum Tersedia</td> 
+                            @if ($quotation->quotation_file == NULL)
+                                <td class="px-3 text-red-700">Belum Tersedia</td>  
+                            @else
+                                <td class="px-3">
+                                    <a class="text-blue-600" href="{{ url('storage/purchaseorder/'.$quotation->quotation_file) }}">{{ $quotation->quotation_file }}</a>
+                                </td>  
+                            @endif
                             <td class="py-1 px-3">{{ $quotation->project }}</td>
                             <td class="py-1 px-3">{{ $quotation->date }}</td>
                             <td class="py-1 px-3">{{ $quotation->customer['name'] }}</td>
@@ -98,8 +104,8 @@
                             </td>
                             <td class="py-1 px-3">
                                 <div class="flex items-center gap-4">
-                                    <button wire:click="showDetail({{ $quotation->id }})" class="bg-blue-500 px-2 py-1 rounded-md">
-                                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 21h7a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v11m0 5l4.879-4.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242z"></path></svg>
+                                    <button wire:click="showDetail({{ $quotation->id }})" class="bg-blue-500 px-2 py-1 rounded-md hover:scale-105 hover:-translate-x-0 hover:duration-150">
+                                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 21h7a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v11m0 5l4.879-4.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242z"></path></svg>
                                     </button>
                                 </div>
                             </td>
@@ -184,7 +190,7 @@
                     
                         <div class="mt-4">
                             <div class="flex justify-end">
-                                <button wire:click="storeQuotation" class="text-white bg-zinc-800 py-2 px-6 rounded-lg">
+                                <button wire:click="storeQuotation" class="text-white bg-zinc-800 py-2 px-6 rounded-lg hover:scale-105 hover:-translate-x-0 hover:duration-150">
                                     Submit
                                 </button>
                             </div>
@@ -329,24 +335,24 @@
                     {{--  --}}
                     <div class="md:flex gap-2 form py-1">
                         <div class="md:w-1/2">
-                            <label>File Penawaran:</label>
+                            <label for="quotation_file">File Penawaran:</label>
                             <input class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-gray-100"
                                 type="file"
-                                {{-- wire:model="purchase_order_file" --}}
+                                wire:model="quotation_file"
                             />
                             <div class="my-2">
-                                {{-- @if ($inquiry->purchase_order_file == NULL) --}}
+                                @if ($quotation->quotation_file == NULL)
                                     <p class="w-full text-red-600">Belum Tersedia</p>
-                                {{-- @else --}}
-                                    {{-- <div class="border border-gray-300/50 rounded-lg shadow-sm text-center w-24">
-                                    <a href="{{ url('storage/purchaseorder/'.$inquiry->purchase_order_file) }}" class="text-blue-600 hover:bg-gray-100">
+                                @else
+                                    <div class="border border-gray-300/50 rounded-lg shadow-sm text-center w-24">
+                                    <a href="{{ url('storage/quotation/'.$quotation->quotation_file) }}" class="text-blue-600 hover:bg-gray-100">
                                         <div class="w-24 p-2">
                                             <img src="{{ asset('/images/pdf_icon.png') }}">
-                                            <p class="truncate">{{ $inquiry->purchase_order_file }}</p>
+                                            <p class="truncate">{{ $quotation->quotation_file }}</p>
                                         </div>
                                     </a>
-                                    </div>  --}}
-                                {{-- @endif --}}
+                                </div> 
+                                @endif
                             </div>
                         </div>
                         <div class="md:w-1/2">
@@ -364,12 +370,19 @@
             {{-- BUTTON ACTION--}}
             <div class="py-3 px-6">
                 <div class="flex justify-end gap-4">
-                    <button wire:click="updateQuotation" class="py-2 px-6 my-2 text-center rounded-lg bg-zinc-800 text-white">
+                    <button wire:click="updateQuotation" class="py-2 px-6 my-2 text-center rounded-lg bg-zinc-800 text-white hover:scale-105 hover:-translate-x-0 hover:duration-150">
                         Simpan
                     </button>
-                    {{-- <button wire:click="" class="py-2 px-6 my-2 text-center rounded-lg bg-green-500 text-white">
-                        Approve
-                    </button> --}}
+                    @if ($quotation->status['name'] == "Pending")
+                        <button wire:click="approve" class="py-2 px-6 my-2 text-center rounded-lg bg-green-500 text-white hover:scale-105 hover:-translate-x-0 hover:duration-150">
+                            Approve
+                        </button>
+                    @else
+                        <button wire:click="" class="py-2 px-6 my-2 text-center rounded-lg bg-red-500 text-white hover:scale-105 hover:-translate-x-0 hover:duration-150" disabled>
+                            Approve
+                        </button>
+                    @endif
+                    
                 </div>
             </div>
         </div>

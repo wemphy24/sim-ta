@@ -35,4 +35,14 @@ class Category extends Model
     {
         return $this->hasMany('App\Models\SetGood', 'categories_id');
     }
+
+    public function logistic_material()
+    {
+        return $this->hasMany('App\Models\LogisticMaterial', 'categories_id');
+    }
+
+    public function purchase_request()
+    {
+        return $this->hasMany('App\Models\PurchaseRequest', 'categories_id');
+    }
 }

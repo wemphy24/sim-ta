@@ -190,6 +190,11 @@ class RabpIndex extends Component
         $this->total_profit = $this->rabp_cost->total_profit;
         
         // Display data total cost barang
+        // if(DetailRabp::where('rabps_id','=',$this->rabps_id)->first(['price'])->price == NULL) {
+        //     $this->total_price_production = 0;
+        // } else {
+        //     $this->total_price_production = ((DetailRabp::where('rabps_id','=',$this->rabps_id)->first(['price'])->price) + $this->preliminary + $this->overhead); //////////////
+        // }
         // $this->total_price_production = ((DetailRabp::where('rabps_id','=',$this->rabps_id)->first(['price'])->price) + $this->preliminary + $this->overhead); //////////////
         $this->total_ppn = ($this->total_price_production + $this->total_profit) * (0.11);
 
@@ -348,6 +353,8 @@ class RabpIndex extends Component
         // Reset total harga dan total profit
         $this->total_price = RabpCost::where('id','=',$this->rabps_id)->first(['total_price'])->total_price;
         $this->total_profit = RabpCost::where('id','=',$this->rabps_id)->first(['total_profit'])->total_profit;
+
+        $this->reset();
         $this->dispatchBrowserEvent('store-success');
     }
 
@@ -435,7 +442,40 @@ class RabpIndex extends Component
     // END ---------
 
     // APPROVAL SECTION
-    public function approve()
+    public function approvee($id)
+    {
+        Rabp::findOrFail($id)->update([
+            'status_id' => 2,
+            'description' => "Menunggu Deal Penawaran",
+        ]);
+
+        $this->reset();
+        $this->dispatchBrowserEvent('update-success');
+    }
+
+    public function approve1()
+    {
+        Rabp::findOrFail($this->rabps_id)->update([
+            'status_id' => 2,
+            'description' => "Menunggu Deal Penawaran",
+        ]);
+
+        $this->reset();
+        $this->dispatchBrowserEvent('update-success');
+    }
+
+    public function approvee2($id)
+    {
+        Rabp::findOrFail($id)->update([
+            'status_id' => 3,
+            'description' => "Siap Produksi",
+        ]);
+
+        $this->reset();
+        $this->dispatchBrowserEvent('update-success');
+    }
+
+    public function approve2()
     {
         Rabp::findOrFail($this->rabps_id)->update([
             'status_id' => 3,

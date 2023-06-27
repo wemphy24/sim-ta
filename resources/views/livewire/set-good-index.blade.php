@@ -25,7 +25,7 @@
                             <span>Download CSV</span>
                         </div> 
                     </button>
-                    <button wire:click="showSetGood" class="py-2 px-4 text-center text-white rounded-lg border bg-zinc-800">
+                    <button wire:click="showSetGood" class="py-2 px-4 text-center text-white rounded-lg border bg-zinc-800 hover:scale-105 hover:-translate-x-0 hover:duration-150">
                         <div class="flex items-center gap-1">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
                             <span>Buat Set Barang</span>
@@ -86,7 +86,7 @@
                                     @endif
                                     <td class="py-1 px-3">
                                         <div class="flex items-center gap-4">
-                                            <button wire:click="showDetail({{ $set_good->id }})" class="bg-blue-500 px-2 py-1 rounded-md">
+                                            <button wire:click="showDetail({{ $set_good->id }})" class="bg-blue-500 px-2 py-1 rounded-md hover:scale-105 hover:-translate-x-0 hover:duration-150">
                                                 <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 21h7a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v11m0 5l4.879-4.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242z"></path></svg>
                                             </button>
                                         </div>
@@ -191,7 +191,7 @@
 
                             <div class="mt-4">
                                 <div class="flex justify-end">
-                                    <button wire:click="storeSetGood" class="text-white bg-zinc-800 py-2 px-6 rounded-lg">
+                                    <button wire:click="storeSetGood" class="text-white bg-zinc-800 py-2 px-6 rounded-lg hover:scale-105 hover:-translate-x-0 hover:duration-150">
                                         Submit
                                     </button>
                                 </div>
@@ -340,7 +340,7 @@
                                         <td class="py-1 px-6">Rp. {{ number_format($sbm->price) }}</td>
                                         <td class="py-1 px-6">Rp. {{ number_format($sbm->total_price) }}</td>
                                         <td class="py-1 px-6">
-                                            <button wire:click="editSetBill({{ $sbm->id }})" class="bg-yellow-500 px-2 py-1 rounded-md">
+                                            <button wire:click="editSetBill({{ $sbm->id }})" class="bg-yellow-500 px-2 py-1 rounded-md hover:scale-105 hover:-translate-x-0 hover:duration-150">
                                                 <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"></path></svg>
                                             </button>
                                             <button disabled class="bg-red-500 px-2 py-1 rounded-md">
@@ -387,7 +387,7 @@
                                         />
                                     </td>
                                     <td class="py-2 px-6">
-                                        <button class="bg-zinc-800 px-2 py-1 rounded-md" wire:click="storeSetBill">
+                                        <button class="bg-zinc-800 px-2 py-1 rounded-md hover:scale-105 hover:-translate-x-0 hover:duration-150" wire:click="storeSetBill">
                                             <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                                             <path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z"></path></svg>
                                         </button>
@@ -401,7 +401,7 @@
                 {{-- BUTTON ACTION--}}
                 <div class="py-3 px-6">
                     <div class="flex justify-end gap-4">
-                        <button wire:click="updateSetGood" class="py-2 px-6 my-2 text-center rounded-lg bg-zinc-800 text-white">
+                        <button wire:click="updateSetGood" class="py-2 px-6 my-2 text-center rounded-lg bg-zinc-800 text-white hover:scale-105 hover:-translate-x-0 hover:duration-150">
                             Simpan
                         </button>
                     </div>
@@ -446,7 +446,7 @@
                         </div>
                         <div class="mt-4">
                         <div class="flex justify-end">
-                            <button wire:click="updateSetBill" class="text-white bg-zinc-800 py-2 px-6 rounded-lg">
+                            <button wire:click="updateSetBill" class="text-white bg-zinc-800 py-2 px-6 rounded-lg hover:scale-105 hover:-translate-x-0 hover:duration-150">
                                 Submit
                             </button>
                         </div>

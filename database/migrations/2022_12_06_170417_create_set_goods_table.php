@@ -22,6 +22,7 @@ return new class extends Migration
             $table->foreignId('categories_id')->constrained('categories')->onUpdate('CASCADE');
             $table->foreignId('measurements_id')->constrained('measurements')->onUpdate('CASCADE');
             $table->foreignId('quotations_id')->constrained('quotations')->onUpdate('CASCADE'); // Tambahan
+            $table->enum('status', ['Siap Dirakit', 'Sedang Dirakit', 'Selesai Dirakit']); // Tambahan
             $table->timestamps();
         });
     }
