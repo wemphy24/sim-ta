@@ -166,9 +166,10 @@
                         </div>
                         <div class="flex items-center gap-0 justify-between p-1 flex-wrap sm:gap-2">
                             <h1>Tanggal</h1>
-                            <input class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm"
+                            <input class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm bg-gray-100"
                                 type="date"
                                 wire:model.lazy="date"
+                                disabled
                             />
                         </div>
                         <div class="flex items-center gap-0 justify-between p-1 flex-wrap sm:gap-2">

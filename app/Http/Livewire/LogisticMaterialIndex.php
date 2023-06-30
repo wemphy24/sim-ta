@@ -6,6 +6,7 @@ use App\Models\LogisticMaterial;
 use App\Models\Material;
 use App\Models\PurchaseRequest;
 use App\Models\SetBillMaterial;
+use App\Models\SetGood;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -62,14 +63,35 @@ class LogisticMaterialIndex extends Component
         $getMaterialId = LogisticMaterial::where('id', '=', $id)->first('materials_id')->materials_id;
 
         // Menambah data set bill material setelah di approve oleh logistik
-        SetBillMaterial::where('materials_id', '=', $getMaterialId)->update([
-            'qty_received' => LogisticMaterial::where('materials_id', '=', $id)->first('qty_ask')->qty_ask,
-            'status' => "Sudah Diambil",
-        ]);
+        // SetBillMaterial::where('materials_id', '=', $getMaterialId)->update([
+        //     'qty_received' => LogisticMaterial::where('materials_id', '=', $getMaterialId)->first('qty_ask')->qty_ask,
+        //     'status' => "Sudah Diambil",
+        // ]);
 
         // Update status logistic material
         LogisticMaterial::where('id', '=', $id)->update([
-            'status_id' => 3
+            'status_id' => 3,
+            'qty_stock' => (LogisticMaterial::where('materials_id', '=', $getMaterialId)->first('qty_stock')->qty_stock) - (LogisticMaterial::where('materials_id', '=', $getMaterialId)->first('qty_ask')->qty_ask),
+        ]);
+
+        // Mengurangi stok pada master data
+        Material::where('id', '=', $getMaterialId)->update([
+            'stock' => (Material::where('id', '=', $getMaterialId)->first('stock')->stock) - (LogisticMaterial::where('materials_id', '=', $getMaterialId)->first('qty_ask')->qty_ask),
+        ]);
+
+        $this->dispatchBrowserEvent('store-success');
+    }
+
+    public function approveBarang($id)
+    {
+        // Mengambil id material
+        $getMaterialId = LogisticMaterial::where('id', '=', $id)->first('materials_id')->materials_id;
+        $getSetGoodId = LogisticMaterial::where('id', '=', $id)->first('set_goods_id')->set_goods_id;
+
+        // Update status logistic material
+        LogisticMaterial::where('id', '=', $id)->update([
+            'status_id' => 3,
+            'qty_stock' => (LogisticMaterial::where('materials_id', '=', $getMaterialId)->first('qty_stock')->qty_stock) - (LogisticMaterial::where('materials_id', '=', $getMaterialId)->first('qty_ask')->qty_ask),
         ]);
 
         // Mengurangi stok pada master data
@@ -77,8 +99,30 @@ class LogisticMaterialIndex extends Component
             'stock' => (Material::where('id', '=', $getMaterialId)->first('stock')->stock) - (LogisticMaterial::where('materials_id', '=', $id)->first('qty_ask')->qty_ask),
         ]);
 
+        SetGood::where('id','=',$getSetGoodId)->update([
+            'status_delivery' => "Sedang Dikirim"
+        ]);
+
         $this->dispatchBrowserEvent('store-success');
     }
+
+    // public function approveGR($id)
+    // {
+    //     // Mengambil id material
+    //     $getMaterialId = LogisticMaterial::where('id', '=', $id)->first('materials_id')->materials_id;
+
+    //     // Mengupdate data material karena telah menerima material dari approve GR
+    //     Material::where('id', '=', $getMaterialId)->update([
+    //         'stock' => LogisticMaterial::where('materials_id', '=', $getMaterialId)->first('qty_stock')->qty_stock + LogisticMaterial::where('materials_id', '=', $getMaterialId)->first('qty_ask')->qty_ask,
+    //     ]);
+
+    //     // Update status logistic material
+    //     LogisticMaterial::where('id', '=', $id)->update([
+    //         'status_id' => 3
+    //     ]);
+
+    //     $this->dispatchBrowserEvent('store-success');
+    // }
 
     public function requestPR($id)
     {

@@ -64,11 +64,6 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\Quotation', 'users_id');
     }
 
-    // public function budget_plan()
-    // {
-    //     return $this->hasMany('App\Models\BudgetPlan', 'users_id');
-    // }
-
     public function inquiry()
     {
         return $this->hasMany('App\Models\Inquiry', 'users_id');
@@ -112,5 +107,25 @@ class User extends Authenticatable
     public function quality_control()
     {
         return $this->hasMany('App\Models\QualityControl', 'users_id');
+    }
+
+    public function good_receive()
+    {
+        return $this->hasMany('App\Models\GoodReceive', 'users_id');
+    }
+
+    public function retur()
+    {
+        return $this->hasMany('App\Models\Retur', 'users_id');
+    }
+
+    public function delivery()
+    {
+        return $this->hasMany('App\Models\Delivery', 'users_id');
+    }
+
+    public function detail_user()
+    {
+        return $this->hasOne('App\Models\DetailUser', 'users_id');
     }
 }

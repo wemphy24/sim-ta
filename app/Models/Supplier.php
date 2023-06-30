@@ -24,6 +24,16 @@ class Supplier extends Model
         'created_at',
     ];
 
+    public function purchase_order()
+    {
+        return $this->hasMany('App\Models\PurchaseOrder', 'suppliers_id');
+    }
+
+    public function good_receive()
+    {
+        return $this->hasMany('App\Models\GoodReceive', 'suppliers_id');
+    }
+
     public function scopeSearch($query, $term)
     {
         $term = "%$term%";
@@ -33,10 +43,5 @@ class Supplier extends Model
             ->orWhere('phone', 'like', $term)
             ->orWhere('address', 'like', $term);
         });
-    }
-
-    public function purchase_order()
-    {
-        return $this->hasMany('App\Models\PurchaseOrder', 'suppliers_id');
     }
 }

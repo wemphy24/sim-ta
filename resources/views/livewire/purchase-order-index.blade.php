@@ -332,9 +332,16 @@
                                             <button wire:click="editOrderPO({{ $dp->id }})" class="bg-yellow-500 px-2 py-1 rounded-md hover:scale-105 hover:-translate-x-0 hover:duration-150">
                                                 <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"></path></svg>
                                             </button>
-                                            <button wire:click="printGRN{{ $dp->id }})" class="bg-green-500 px-2 py-1 rounded-md">
-                                                Cetak GRN
-                                            </button>
+                                            @if ($dp->status == "Menunggu Pesanan")
+                                                <button wire:click="printGRN({{ $dp->id }})" class="bg-green-500 px-2 py-1 rounded-md">
+                                                    Cetak GRN
+                                                </button>
+                                            @else
+                                                <button wire:click="" class="bg-red-500 px-2 py-1 rounded-md" disabled>
+                                                    Sudah Cetak
+                                                </button>
+                                            @endif
+                                            
                                         </div>
                                     </td>
                                 </tr>
@@ -410,7 +417,35 @@
                 </div>
             </div>
             {{--  --}}
+            <div class="py-3 px-6">
+                <div class="flex justify-between">
+                    <div class="flex gap-4">
+                        <button wire:click="" class="py-2 px-6 my-2 text-center rounded-lg bg-yellow-500 text-white">
+                            Download Purchase Order
+                        </button>
+                    </div>
+                    
+                    <div class="flex gap-4">
+                        @if ($this->status_id == "Pending")
+                            <button wire:click="" class="py-2 px-6 my-2 text-center rounded-lg bg-green-500 text-white">
+                                Approve 
+                            </button>
+                        @elseif ($this->status_id == "Working")
+                            <button wire:click="" class="py-2 px-6 my-2 text-center rounded-lg bg-green-500 text-white">
+                                Selesai  
+                            </button>
+                        @elseif ($this->status_id == "Complete")
+                            <button wire:click="" class="py-2 px-6 my-2 text-center rounded-lg bg-red-500 text-white" disabled>
+                                Selesai  
+                            </button>
+                        @endif
+                        
+                    </div>
+                </div>
+            </div>
         </div>
+
+        
 
         {{-- SECTION EDIT DETAIL PO --}}
         @if ($showingEditPO)

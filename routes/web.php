@@ -12,16 +12,22 @@ use App\Http\Livewire\ContractIndex;
 use App\Http\Livewire\MeasurementIndex;
 use App\Http\Livewire\MaterialIndex;
 use App\Http\Livewire\CustomerIndex;
+use App\Http\Livewire\DeliveryIndex;
 use App\Http\Livewire\DetailSetGoodIndex;
 use App\Http\Livewire\GoodReceiveIndex;
+use App\Http\Livewire\LogisticGoodIndex;
 use App\Http\Livewire\LogisticMaterialIndex;
 use App\Http\Livewire\PlanningCostIndex;
 use App\Http\Livewire\ProductionIndex;
 use App\Http\Livewire\PurchaseOrderIndex;
 use App\Http\Livewire\PurchaseRequestIndex;
 use App\Http\Livewire\QualityControlIndex;
+use App\Http\Livewire\ReturIndex;
 use App\Http\Livewire\SetGoodIndex;
 use App\Http\Livewire\SupplierIndex;
+use App\Http\Livewire\UserDetailIndex;
+use App\Models\DetailUser;
+use App\Models\QualityControl;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -50,11 +56,15 @@ Route::group(['middleware' => ['auth:sanctum',config('jetstream.auth_session'), 
     Route::get('/contract', ContractIndex::class)->name('contract');
     Route::get('/production', ProductionIndex::class)->name('production');
     Route::get('/logistic', LogisticMaterialIndex::class)->name('logistic');
-    // Route::get('/retur', ReturMaterialIndex::class)->name('retur');
+    Route::get('/retur', ReturIndex::class)->name('retur');
     Route::get('/qualitycontrol', QualityControlIndex::class)->name('qualitycontrol');
     Route::get('/purchaserequest', PurchaseRequestIndex::class)->name('purchaserequest');
     Route::get('/purchaseorder', PurchaseOrderIndex::class)->name('purchaseorder');
     Route::get('/goodreceive', GoodReceiveIndex::class)->name('goodreceive');
+    Route::get('/qualitycontrol', QualityControlIndex::class)->name('qualitycontrol');
+    Route::get('/logisticgood', LogisticGoodIndex::class)->name('logisticgood');
+    Route::get('/delivery', DeliveryIndex::class)->name('delivery');
+    Route::get('/detailuser', UserDetailIndex::class)->name('detailuser');
 });
 
 // Untuk masterdata

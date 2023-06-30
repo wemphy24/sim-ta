@@ -21,7 +21,7 @@ return new class extends Migration
             $table->integer('qty');
             $table->integer('price');
             $table->date('print_date');
-            $table->foreignId('suppliers_id')->constrained('supplier')->onUpdate('CASCADE');
+            $table->foreignId('suppliers_id')->constrained('suppliers')->onUpdate('CASCADE');
             $table->foreignId('status_id')->constrained('status')->onUpdate('CASCADE');
             $table->foreignId('users_id')->constrained('users')->onUpdate('CASCADE');
             $table->timestamps();

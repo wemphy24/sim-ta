@@ -3,9 +3,11 @@
 namespace App\Http\Livewire;
 
 use App\Models\DetailPo;
+use App\Models\GoodReceive;
 use App\Models\Material;
 use App\Models\PurchaseOrder;
 use App\Models\Supplier;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -36,6 +38,9 @@ class PurchaseOrderIndex extends Component
 
     // For display price
     public $real_price, $total_discount, $total_ppn;
+
+    // Assign table good receive
+    public $good_receive_code;
 
     public function render()
     {
@@ -202,9 +207,47 @@ class PurchaseOrderIndex extends Component
         $this->reset();
     }
 
+    public function createGRCode()
+    {
+        // Membuat kode GR
+        $countGR = GoodReceive::count();
+        if($countGR == 0) {
+            $this->good_receive_code = 'GR.' . 1001;
+        } else {
+            $getLastGR = GoodReceive::all()->last();
+            $convertGR = (int)substr($getLastGR->good_receive_code, -4) + 1;
+            $this->good_receive_code = 'GR.' . $convertGR;
+        }
+    }
+
     public function printGRN($id)
     {
+        // Membuat kode gr
+        $this->createGRCode();
 
+        // Memasukkan data ke tabel good receive
+        GoodReceive::create([
+            'purchase_orders_id' => DetailPo::where('id','=',$id)->first(['purchase_orders_id'])->purchase_orders_id,
+            'good_receive_code' => $this->good_receive_code,
+            'materials_id' => DetailPo::where('id','=',$id)->first(['materials_id'])->materials_id,
+            'qty' => DetailPo::where('id','=',$id)->first(['qty'])->qty,
+            'price' => DetailPo::where('id','=',$id)->first(['total_price'])->total_price,
+            'print_date' => Carbon::now()->format('Y-m-d'),
+            'suppliers_id' => PurchaseOrder::where('id','=',$this->purchase_orders_id)->first(['suppliers_id'])->suppliers_id,
+            'status_id' => 1,
+            'users_id' => Auth::user()->id,
+        ]);
+
+        // Mengupdate status material yang sudah di cetak gr
+        DetailPo::where('purchase_orders_id','=',$this->purchase_orders_id)->update([
+            'status' => "Sudah Cetak"
+        ]);
+
+        PurchaseOrder::where('id','=',$this->purchase_orders_id)->update([
+            'status_id' => 2,
+        ]);
+
+        $this->dispatchBrowserEvent('update-success');
     }
 
     public function closeEditPO()

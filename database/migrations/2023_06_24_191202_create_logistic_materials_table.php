@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('logistic_materials', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('set_goods_id')->constrained('set_goods')->onUpdate('CASCADE');
+            $table->foreignId('set_goods_id')->nullable()->constrained('set_goods')->onUpdate('CASCADE');
             $table->string('logistic_code');
             // $table->string('name');
             $table->foreignId('materials_id')->constrained('materials')->onUpdate('CASCADE');

@@ -94,11 +94,11 @@
                                 <td class="py-1 px-3">
                                     <div class="flex items-center gap-4">
                                         @if ($pr->status['name'] == "Pending")
-                                            <button title="Approve" wire:click="approve({{ $pr->id }})" class="text-white bg-green-500 p-2 rounded-lg font-medium">
+                                            <button title="Approve" wire:click="approve({{ $pr->id }})" class="text-white bg-green-500 p-2 rounded-lg font-medium hover:scale-105 hover:-translate-x-0 hover:duration-150">
                                                 Sudah Dipesan
                                             </button>
                                         @else
-                                            <button title="Selesai" wire:click="" class="text-white bg-red-500 p-2 rounded-lg font-medium hover:scale-105 hover:-translate-x-0 hover:duration-150" disabled>
+                                            <button title="Selesai" wire:click="" class="text-white bg-red-500 p-2 rounded-lg font-medium" disabled>
                                                 Request Selesai
                                             </button>
                                         @endif

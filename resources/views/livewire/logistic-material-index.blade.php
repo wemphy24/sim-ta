@@ -41,7 +41,7 @@
                         </select>
                         <input wire:model.debounce.500ms="search" class="border-gray-300/50 rounded-lg p-2 text-sm" type="text" placeholder="Search">
                         <select wire:model="searchBy" class="border-gray-300/50 rounded-lg text-sm">
-                            <option value="production_code">KODE LOGISTIK</option>
+                            <option value="logistic_code">KODE LOGISTIK</option>
                             <option value="name">NAMA</option>
                             <option value="categories_id">KATEGORI</option>
                             <option value="description">KETERANGAN</option>
@@ -75,11 +75,16 @@
                                 <td class="py-1 px-3">{{ ($logistics ->currentpage()-1) * $logistics ->perpage() + $loop->index + 1 }}</td>
                                 <td class="py-1 px-3 font-medium">{{ $logistic->logistic_code }}</td>
                                 <td class="py-1 px-3">{{ $logistic->material['name'] }}</td>
-                                <td class="py-1 px-3">{{ $logistic->set_good['name'] }}</td>
+                                @if ($logistic->set_goods_id != NULL)
+                                    <td class="py-1 px-3">{{ $logistic->set_good['name'] }}</td>
+                                @else
+                                    <td class="py-1 px-3">-</td>
+                                @endif
+                                {{-- <td class="py-1 px-3">{{ $logistic->set_good['name'] }}</td> --}}
                                 <td class="py-1 px-3">{{ $logistic->category['name'] }}</td>
                                 <td class="py-1 px-3">{{ $logistic->qty_ask }}</td>
                                 <td class="py-1 px-3">{{ $logistic->qty_stock }}</td>
-                                <td class="py-1 px-3">{{ $logistic->type }}</td>
+                                <td class="py-1 px-3 font-medium">{{ $logistic->type }}</td>
                                 <td class="py-1 px-3">
                                     @if ($logistic->status['name'] == "Working")
                                         <div class="bg-yellow-200 w-24 py-1.5 rounded-full font-medium text-center">
@@ -97,12 +102,21 @@
                                 </td>
                                 <td class="py-1 px-3">
                                     <div class="flex items-center gap-4">
-                                        {{-- <button wire:click="detail({{ $logistic->id }})" class="bg-blue-500 px-2 py-1 rounded-md">
-                                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 21h7a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v11m0 5l4.879-4.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242z"></path></svg>
-                                        </button> --}}
-                                        @if ($logistic->qty_stock >= $logistic->qty_ask)
+                                        @if ($logistic->type == "Barang Keluar" && $logistic->status['name'] == "Complete")
+                                            <button title="Sudah Diambil" wire:click="" class="text-white bg-red-500 p-2 rounded-lg font-medium" disabled>
+                                                Sudah Diambil
+                                            </button>
+                                         @elseif ($logistic->type == "Barang Keluar")
+                                            <button title="Sudah Diambil" wire:click="approveBarang({{ $logistic->id }})" class="text-white bg-yellow-500 p-2 rounded-lg font-medium">
+                                                Approve
+                                            </button>
+                                        @elseif($logistic->qty_stock >= $logistic->qty_ask && $logistic->status['name'] == "Pending")
                                             <button title="Approve" wire:click="approve({{ $logistic->id }})" class="text-white bg-green-500 p-2 rounded-lg font-medium hover:scale-105 hover:-translate-x-0 hover:duration-150">
                                                 Approve
+                                            </button>
+                                        @elseif ($logistic->status['name'] == "Complete")
+                                            <button title="Sudah Diambil" wire:click="" class="text-white bg-red-500 p-2 rounded-lg font-medium" disabled>
+                                                Sudah Diambil
                                             </button>
                                         @else
                                             <button title="RequestPR" wire:click="requestPR({{ $logistic->id }})" class="text-white bg-yellow-500 p-2 rounded-lg font-medium hover:scale-105 hover:-translate-x-0 hover:duration-150">

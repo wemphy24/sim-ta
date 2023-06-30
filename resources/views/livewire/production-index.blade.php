@@ -181,7 +181,7 @@
                     <div class="md:flex gap-2 form py-1">
                         <div class="md:w-1/2">
                             <label>Deadline:</label>
-                            <input class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-gray-100" type="text" disabled
+                            <input class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-gray-100" type="date" disabled
                                 wire:model="deadline" 
                             />
                         </div>
@@ -194,13 +194,13 @@
                                     disabled
                                 />
                             @elseif ($status_id == "Working")
-                                <input class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-yellow-200"
+                                <input class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-yellow-200 font-bold"
                                     type="text"
                                     wire:model="status_id"
                                     disabled
                                 />
                             @else
-                                <input class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-green-200"
+                                <input class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-green-200 font-bold"
                                     type="text"
                                     wire:model="status_id"
                                     disabled
@@ -255,12 +255,16 @@
                                                     Mulai Produksi
                                                 </button>
                                             @elseif ($detailrabp->set_good->status == "Sedang Dirakit")
-                                                <button wire:click="" class="bg-yellow-500 px-2 py-1 rounded-md" disabled>
-                                                    Sedang Dirakit
-                                                </button>
-                                            @else
-                                                <button wire:click="" class="bg-red-500 px-2 py-1 rounded-md" disabled>
+                                                <button wire:click="doneProduction({{ $detailrabp->set_goods_id }})" class="bg-yellow-500 px-2 py-1 rounded-md">
                                                     Selesai Dirakit
+                                                </button>
+                                            @elseif ($detailrabp->set_good->status == "Selesai Dirakit")
+                                                <button wire:click="startQC({{ $detailrabp->set_goods_id }})" class="bg-yellow-500 px-2 py-1 rounded-md">
+                                                    Mulai QC
+                                                </button>
+                                            @elseif ($detailrabp->set_good->status == "Selesai Produksi")
+                                                <button wire:click="" class="bg-red-500 px-2 py-1 rounded-md" disabled>
+                                                    Selesai
                                                 </button>
                                             @endif
                                         </div>
@@ -315,7 +319,11 @@
                                                 <button class="text-white rounded-md px-2 py-1  bg-blue-500" wire:click="editProgress({{ $sbm->id }})">Edit</button>
                                                 @if ($sbm->status == "Belum Diambil")
                                                     <button class="text-white rounded-md px-2 py-1 bg-green-500" wire:click="printMaterial({{ $sbm->materials_id }})">Ambil</button>  
-                                                @else
+                                                @elseif ($sbm->status == "Sedang Diambil")
+                                                    <button class="text-white rounded-md px-2 py-1 bg-yellow-500" wire:click="" disabled>Sedang Diambil</button>
+                                                @elseif ($sbm->status == "Sudah Diambil")
+                                                    <button class="text-white rounded-md px-2 py-1 bg-red-500" wire:click="" disabled>Sudah Diambil</button>
+                                                @elseif ($sbm->status == "Sudah Retur")
                                                     <button class="text-white rounded-md px-2 py-1 bg-red-500" wire:click="" disabled>Sudah Diambil</button>
                                                 @endif
                                             </div>

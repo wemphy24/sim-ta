@@ -44,6 +44,11 @@ class PurchaseOrder extends Model
         return $this->belongsTo('App\Models\User', 'users_id', 'id');
     }
 
+    public function good_receive()
+    {
+        return $this->hasMany('App\Models\GoodReceive', 'purchase_orders_id');
+    }
+
     public function scopeSearch($query, $term)
     {
         $term = "%$term%";

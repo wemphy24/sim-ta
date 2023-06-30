@@ -195,7 +195,7 @@ class RabpIndex extends Component
         // } else {
         //     $this->total_price_production = ((DetailRabp::where('rabps_id','=',$this->rabps_id)->first(['price'])->price) + $this->preliminary + $this->overhead); //////////////
         // }
-        // $this->total_price_production = ((DetailRabp::where('rabps_id','=',$this->rabps_id)->first(['price'])->price) + $this->preliminary + $this->overhead); //////////////
+        $this->total_price_production = ((DetailRabp::where('rabps_id','=',$this->rabps_id)->first(['price'])->price) + $this->preliminary + $this->overhead); //////////////
         $this->total_ppn = ($this->total_price_production + $this->total_profit) * (0.11);
 
         // Display data daftar material dari barang
@@ -515,7 +515,7 @@ class RabpIndex extends Component
         if($countContract == 0) {
             $this->contract_code = 'KONT.' . 1001;
         } else {
-            $getLastCont = Production::all()->last();
+            $getLastCont = Contract::all()->last();
             $convertCont = (int)substr($getLastCont->contract_code, -4) + 1;
             $this->contract_code = 'KONT.' . $convertCont;
         }
@@ -544,7 +544,7 @@ class RabpIndex extends Component
             'quotations_id' => $this->rabp->quotation['id'],
             'contract_code' => $this->contract_code,
             'project_code' => "0",
-            'name' => "Kontrak" . substr($this->name, 4),
+            'name' => "Kontrak" . substr($this->name, 20),
             'contract_value' => $assignContractValue,
             'start_date' => Carbon::now()->format('Y-m-d'),
             'finish_date' => $this->date,

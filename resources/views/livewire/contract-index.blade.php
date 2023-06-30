@@ -45,7 +45,7 @@
                             <option value="name">NAMA</option>
                             <option value="contract_value">JUMLAH KONTRAK</option>
                             <option value="description">KETERANGAN</option>
-                            <option value="finish_date">DEADLINE</option>
+                            <option value="finish_date">SELESAI</option>
                             <option value="status_id">STATUS</option>
                         </select>
                         <select wire:model="orderAsc" class="border-gray-300/50 rounded-lg text-sm">
@@ -61,7 +61,7 @@
                             <th scope="col" class="py-3 px-3">Kode Kontrak</th>
                             <th scope="col" class="py-3 px-3">Nama</th>
                             <th scope="col" class="py-3 px-3">Jumlah Kontrak</th>
-                            <th scope="col" class="py-3 px-3">Deadline</th>
+                            <th scope="col" class="py-3 px-3">Selesai</th>
                             <th scope="col" class="py-3 px-3">Status</th>
                             <th scope="col" class="py-3 px-3">Aksi</th>
                         </tr>
@@ -178,7 +178,7 @@
                         </div>
                         <div class="md:w-1/2">
                             <label>Akhir Kontrak:</label>
-                            <input class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-gray-100" type="text" disabled
+                            <input class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-gray-100" type="date" disabled
                                 wire:model="finish_date"
                             />
                         </div>
@@ -188,9 +188,13 @@
                     <div class="md:flex gap-2 form py-1">
                         <div class="md:w-1/2">
                             <label>Status:</label>
-                            <input class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-red-200 font-bold" type="text" disabled
-                                wire:model="status_id"
-                            />
+                                @if ($status_id == "Pending")
+                                    <input wire:model="status_id" type="text" class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-red-200 font-bold" disabled/>
+                                @elseif ($status_id == "Working")
+                                    <input wire:model="status_id" type="text" class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-yellow-200 font-bold" disabled/>
+                                @else
+                                    <input wire:model="status_id" type="text" class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-green-200 font-bold" disabled/>
+                                @endif
                         </div>
                     </div>
 

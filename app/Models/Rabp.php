@@ -62,6 +62,11 @@ class Rabp extends Model
         return $this->hasOne('App\Models\QualityControl', 'rabps_id');
     }
 
+    public function delivery()
+    {
+        return $this->hasOne('App\Models\Rabp', 'rabps_id');
+    }
+
     public function scopeSearch($query, $term)
     {
         $term = "%$term%";

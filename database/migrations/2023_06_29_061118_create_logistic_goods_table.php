@@ -13,17 +13,19 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('set_goods', function (Blueprint $table) {
+        Schema::create('logistic_goods', function (Blueprint $table) {
             $table->id();
-            $table->string('set_goods_code');
-            $table->string('name');
-            $table->integer('qty');
+            $table->foreignId('set_goods_id')->nullable()->constrained('set_goods')->onUpdate('CASCADE');
+            $table->string('logistic_good_code');
+            $table->foreignId('materials_id')->constrained('materials')->onUpdate('CASCADE');
+            $table->integer('qty_ask');
+            $table->integer('qty_stock');
             $table->integer('price');
+            $table->string('type'); //Berubah
             $table->foreignId('categories_id')->constrained('categories')->onUpdate('CASCADE');
             $table->foreignId('measurements_id')->constrained('measurements')->onUpdate('CASCADE');
-            $table->foreignId('quotations_id')->constrained('quotations')->onUpdate('CASCADE'); // Tambahan
-            $table->enum('status', ['Siap Dirakit', 'Sedang Dirakit', 'Selesai Dirakit','Selesai Produksi', 'Sedang QC', 'Selesai QC']); // Tambahan
-            $table->string('status_delivery')->nullable();
+            $table->foreignId('users_id')->constrained('users')->onUpdate('CASCADE');
+            $table->foreignId('status_id')->constrained('status')->onUpdate('CASCADE');
             $table->timestamps();
         });
     }
@@ -35,7 +37,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('fk_set_goods_to_categories');
-        Schema::dropIfExists('fk_set_goods_to_measurements');
+        Schema::dropIfExists('logistic_goods');
     }
 };

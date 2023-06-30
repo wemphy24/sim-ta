@@ -6,9 +6,11 @@ use App\Models\DetailRabp;
 use App\Models\LogisticMaterial;
 use App\Models\Material;
 use App\Models\Production;
+use App\Models\QualityControl;
 use App\Models\Rabp;
 use App\Models\SetBillMaterial;
 use App\Models\SetGood;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -37,6 +39,9 @@ class ProductionIndex extends Component
 
     // Assign ke tabel logistic material
     public $logistic_code;
+
+    // Assign ke tabel quality control
+    public $quality_code;
 
     public function render()
     {
@@ -135,12 +140,12 @@ class ProductionIndex extends Component
 
     public function createLogisticCode()
     {
-        // Membuat kode kontrak
+        // Membuat kode logistik
         $countLogistic = LogisticMaterial::count();
         if($countLogistic == 0) {
             $this->logistic_code = 'LOGI.' . 1001;
         } else {
-            $getLastLog = Production::all()->last();
+            $getLastLog = LogisticMaterial::all()->last();
             $convertLog = (int)substr($getLastLog->logistic_code, -4) + 1;
             $this->logistic_code = 'LOGI.' . $convertLog;
         }
@@ -158,15 +163,68 @@ class ProductionIndex extends Component
             'qty_ask' => SetBillMaterial::where('materials_id', '=', $id)->first('qty')->qty,
             'qty_stock' => Material::where('id', '=', $id)->first('stock')->stock,
             'price' => Material::where('id', '=', $id)->first('price')->price,
-            'type' => "Barang Keluar",
+            'type' => "Material Keluar",
             'categories_id' => Material::where('id', '=', $id)->first('categories_id')->categories_id,
             'measurements_id' => Material::where('id', '=', $id)->first('measurements_id')->measurements_id,
             'status_id' => 1,
             'users_id' => Auth::user()->id,
         ]);
 
+        SetBillMaterial::where('materials_id', '=', $id)->update([
+            'status' => "Sedang Diambil",
+        ]);
+
         $this->dispatchBrowserEvent('store-success');
         $this->closeEditProgress();
+    }
+
+    public function doneProduction($id)
+    {
+        SetGood::where('id','=',$id)->update(
+            [
+                'status' => "Selesai Dirakit",
+            ]
+        );
+
+        $this->dispatchBrowserEvent('store-success');
+    }
+
+    public function createQCCode()
+    {
+        // Membuat kode kontrak
+        $countQuality = QualityControl::count();
+        if($countQuality == 0) {
+            $this->quality_code = 'QC.' . 1001;
+        } else {
+            $getLastQuality = QualityControl::all()->last();
+            $convertQuality = (int)substr($getLastQuality->quality_code, -4) + 1;
+            $this->quality_code = 'QC.' . $convertQuality;
+        }
+    }
+
+    public function startQC($id)
+    {
+        $this->createQCCode();
+
+        QualityControl::create([
+            'productions_id' => Production::where('rabps_id','=',$this->rabps_id)->first('id')->id,
+            'rabps_id' => $this->rabps_id,
+            'quality_control_code' => $this->quality_code,
+            'name' => "Quality Control " . substr($this->name, 9),
+            'description' => "Menunggu QC",
+            'start_qc' => Carbon::now()->format('Y-m-d'),
+            'end_qc' => NULL,
+            'status_id' => 1,
+            'users_id' => Auth::user()->id,
+        ]);
+
+        SetGood::where('id','=',$id)->update(
+            [
+                'status' => "Selesai Produksi",
+            ]
+        );
+
+        $this->dispatchBrowserEvent('store-success');
     }
 
     public function closeEditProgress()

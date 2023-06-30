@@ -20,6 +20,7 @@ return new class extends Migration
             $table->foreignId('materials_id')->constrained('materials')->onUpdate('CASCADE');
             $table->integer('qty');
             $table->integer('price');
+            $table->string('retur_date');
             $table->foreignId('status_id')->constrained('status')->onUpdate('CASCADE');
             $table->foreignId('users_id')->constrained('users')->onUpdate('CASCADE');
             $table->timestamps();

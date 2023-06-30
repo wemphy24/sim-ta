@@ -75,4 +75,19 @@ class Status extends Model
     {
         return $this->hasMany('App\Models\QualityCotrol', 'status_id');
     }
+
+    public function good_receive()
+    {
+        return $this->hasMany('App\Models\GoodReceive', 'status_id');
+    }
+
+    public function retur()
+    {
+        return $this->hasMany('App\Models\Retur', 'status_id');
+    }
+
+    public function delivery()
+    {
+        return $this->hasMany('App\Models\Delivery', 'status_id');
+    }
 }

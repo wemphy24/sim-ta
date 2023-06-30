@@ -271,10 +271,9 @@
                             </div>
                             <div class="md:w-1/2">
                                 <label>Qty:</label>
-                                <input class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-gray-100"
+                                <input class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm"
                                     type="number"
                                     wire:model="qty"
-                                    disabled
                                 />
                             </div>
                         </div>

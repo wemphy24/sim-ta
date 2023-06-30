@@ -63,6 +63,16 @@ class Material extends Model
         return $this->hasMany('App\Models\DetailPO', 'materials_id');
     }
 
+    public function good_receive()
+    {
+        return $this->hasMany('App\Models\GoodReceive', 'materials_id');
+    }
+
+    public function retur()
+    {
+        return $this->hasMany('App\Models\Retur', 'materials_id');
+    }
+
     public function scopeSearch($query, $term)
     {
         $term = "%$term%";

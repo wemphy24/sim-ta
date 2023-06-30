@@ -68,40 +68,84 @@
                     </thead>
 
                     <tbody>
-                        {{-- @foreach ($goodreceives as $gr)
+                        @foreach ($goodreceives as $gr)
                             <tr class="bg-white border-b hover:bg-gray-50 hover:text-black text-sm">
                                 <td class="py-1 px-3">{{ ($goodreceives ->currentpage()-1) * $goodreceives ->perpage() + $loop->index + 1 }}</td>
-                                <td class="py-1 px-3 font-medium">{{ $gr->purchase_order_code }}</td>
-                                <td class="py-1 px-3">{{ $gr->name }}</td>
+                                <td class="py-1 px-3 font-medium">{{ $gr->good_receive_code }}</td>
+                                <td class="py-1 px-3">{{ $gr->material['name'] }}</td>
                                 <td class="py-1 px-3">{{ $gr->qty }}</td>
                                 <td class="py-1 px-3">{{ $gr->supplier['name'] }}</td>
                                 <td class="py-1 px-3">{{ $gr->print_date }}</td>
                                 <td class="py-1 px-3">
                                     @if ($gr->status['name'] == "Pending")
-                                        <div class="bg-yellow-200 w-24 py-1.5 rounded-full font-medium text-center">
-                                            {{ $po->status['name'] }}
+                                        <div class="bg-red-200 w-24 py-1.5 rounded-full font-medium text-center">
+                                            {{ $gr->status['name'] }}
                                         </div>
-                                    @else 
+                                    @elseif ($gr->status['name'] == "Complete")
                                         <div class="bg-green-200 w-24 py-1.5 rounded-full font-medium text-center">
-                                            {{ $po->status['name'] }}
+                                            {{ $gr->status['name'] }}
+                                        </div>
+                                    @else
+                                        <div class="bg-yellow-200 w-24 py-1.5 rounded-full font-medium text-center">
+                                            {{ $gr->status['name'] }}
                                         </div>
                                     @endif
                                 </td>
                                 <td class="py-1 px-3">
                                     <div class="flex items-center gap-4">
-                                        <button title="Detail" wire:click="detail({{ $po->id }})" class="text-white bg-blue-500 px-2 py-1 rounded-lg font-medium">
-                                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 21h7a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v11m0 5l4.879-4.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242z"></path></svg>
-                                        </button>
+                                        @if ($gr->qty == 0 && $gr->status['name'] == "Working")
+                                            <button title="Approve" wire:click="approve2" class="text-white bg-green-500 p-2 rounded-lg font-medium hover:scale-105 hover:-translate-x-0 hover:duration-150">
+                                                Selesai
+                                            </button>
+                                        @elseif ($gr->qty == 0)
+                                            <button title="Approve" wire:click="" class="text-white bg-red-500 p-2 rounded-lg font-medium" disabled>
+                                                Sudah Diambil
+                                            </button>
+                                        @else
+                                            <button title="Approve" wire:click="showApprove({{ $gr->id }})" class="text-white bg-green-500 p-2 rounded-lg font-medium hover:scale-105 hover:-translate-x-0 hover:duration-150">
+                                                Approve
+                                            </button>
+                                        @endif
+                                        
                                     </div>
                                 </td>
                             </tr>
-                        @endforeach --}}
+                        @endforeach
                     </tbody>
                 </table>
             </div>
             <div class="rounded-lg mt-6">
-                {{-- {{ $goodreceives->links() }} --}}
+                {{ $goodreceives->links() }}
             </div>
         </div>
+
+        {{-- INPUT TERIMA MODAL --}}
+        @if ($showingReceived)
+            <div class="bg-black bg-opacity-50 fixed inset-0 flex justify-center items-center">
+                <div class="bg-white p-4 rounded-lg shadow-md w-[350px] h-[500px] overflow-auto sm:w-fit sm:h-fit">
+                    <div class="flex justify-between items-center">
+                        <h1 class="font-medium text-xl">Masukkan Jumlah Material</h1>
+                        <button wire:click="closeModal">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="flex items-center gap-0 justify-between p-1 flex-wrap sm:gap-2">
+                        <h1>Material Diterima</h1>
+                        <input class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm"
+                            type="number"
+                            wire:model="qty_received"
+                        />
+                    </div>
+                    <div class="mt-4">
+                        <div class="flex justify-end">
+                            <button wire:click="store" class="text-white bg-zinc-800 py-2 px-6 rounded-lg hover:scale-105 hover:-translate-x-0 hover:duration-150">
+                                Submit
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
     @endif
 </div>

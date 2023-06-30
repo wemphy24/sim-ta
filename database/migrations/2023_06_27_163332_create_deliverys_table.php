@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('description');
             $table->date('send_date');
-            $table->date('done_date');
+            $table->date('received_date')->nullable();
             $table->foreignId('status_id')->constrained('status')->onUpdate('CASCADE');
             $table->foreignId('users_id')->constrained('users')->onUpdate('CASCADE');
             $table->timestamps();

@@ -164,11 +164,11 @@
                             </div>
                             <div class="flex items-center gap-0 justify-between p-1 flex-wrap sm:gap-2">
                                 <h1>Keterangan</h1>
-                                <input wire:model="description" type="text" class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm" maxlength="128"/>
+                                <input wire:model="description" type="text" class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm" maxlength="128" disabled/>
                             </div>
                             <div class="flex items-center gap-0 justify-between p-1 flex-wrap sm:gap-2">
                                 <h1>Tanggal</h1>
-                                <input wire:model.lazy="date" type="date" class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm" />
+                                <input wire:model.lazy="date" type="date" class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm bg-gray-100" disabled/>
                             </div>
 
                             <div class="mt-4">
@@ -244,11 +244,11 @@
                             <div class="md:w-1/2">
                                 <label>Status:</label>
                                 @if ($status_id == "Pending")
-                                    <input wire:model="status_id" type="text" class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-red-200" disabled/>
+                                    <input wire:model="status_id" type="text" class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-red-200 font-bold" disabled/>
                                 @elseif ($status_id == "Working")
-                                    <input wire:model="status_id" type="text" class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-yellow-200" disabled/>
+                                    <input wire:model="status_id" type="text" class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-yellow-200 font-bold" disabled/>
                                 @else
-                                    <input wire:model="status_id" type="text" class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-green-200" disabled/>
+                                    <input wire:model="status_id" type="text" class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-green-200 font-bold" disabled/>
                                 @endif
                             </div>
                         </div>
@@ -264,7 +264,7 @@
                 {{-- BUTTON ACTION --}}
                 <div class="pt-3 px-6">
                     <div class="flex justify-end">
-                        <button wire:click="updateRabp" class="text-white bg-zinc-800 py-2 px-6 rounded-lg">
+                        <button wire:click="updateRabp" class="text-white bg-zinc-800 py-2 px-6 rounded-lg hover:scale-105 hover:-translate-x-0 hover:duration-150">
                             Simpan
                         </button>
                     </div>
@@ -336,7 +336,7 @@
                 {{-- BUTTON ACTION --}}
                 <div class="pt-3 px-6">
                     <div class="flex justify-end">
-                        <button wire:click="updateCost" class="text-white bg-zinc-800 py-2 px-6 rounded-lg">
+                        <button wire:click="updateCost" class="text-white bg-zinc-800 py-2 px-6 rounded-lg hover:scale-105 hover:-translate-x-0 hover:duration-150">
                             Simpan
                         </button>
                     </div>
@@ -364,13 +364,13 @@
                                         <td class="py-2 px-6">Rp. {{ number_format($detailrabp->price) }}</td>
                                         <td class="py-2 px-6">Rp. {{ number_format($detailrabp->price * $detailrabp->qty) }}</td>
                                         <td class="py-2 px-6 text-blue-600">
-                                            <button wire:click="editSetGood({{ $detailrabp->id }})" class="bg-yellow-500 px-2 py-1 rounded-md">
+                                            <button wire:click="editSetGood({{ $detailrabp->id }})" class="bg-yellow-500 px-2 py-1 rounded-md hover:scale-105 hover:-translate-x-0 hover:duration-150">
                                                 <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"></path></svg>
                                             </button>
-                                            <button wire:click="detailGood({{ $detailrabp->set_goods_id }})" class="bg-blue-500 px-2 py-1 rounded-md">
+                                            <button wire:click="detailGood({{ $detailrabp->set_goods_id }})" class="bg-blue-500 px-2 py-1 rounded-md hover:scale-105 hover:-translate-x-0 hover:duration-150">
                                                 <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 21h7a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v11m0 5l4.879-4.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242z"></path></svg>
                                             </button>
-                                            <button wire:click="printPdf({{ $detailrabp->set_goods_id }})" class="bg-zinc-500 px-2 py-1 rounded-md">
+                                            <button wire:click="printPdf({{ $detailrabp->set_goods_id }})" class="bg-zinc-500 px-2 py-1 rounded-md hover:scale-105 hover:-translate-x-0 hover:duration-150">
                                                 <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6.72 13.829c-.24.03-.48.062-.72.096m.72-.096a42.415 42.415 0 0110.56 0m-10.56 0L6.34 18m10.94-4.171c.24.03.48.062.72.096m-.72-.096L17.66 18m0 0l.229 2.523a1.125 1.125 0 01-1.12 1.227H7.231c-.662 0-1.18-.568-1.12-1.227L6.34 18m11.318 0h1.091A2.25 2.25 0 0021 15.75V9.456c0-1.081-.768-2.015-1.837-2.175a48.055 48.055 0 00-1.913-.247M6.34 18H5.25A2.25 2.25 0 013 15.75V9.456c0-1.081.768-2.015 1.837-2.175a48.041 48.041 0 011.913-.247m10.5 0a48.536 48.536 0 00-10.5 0m10.5 0V3.375c0-.621-.504-1.125-1.125-1.125h-8.25c-.621 0-1.125.504-1.125 1.125v3.659M18 10.5h.008v.008H18V10.5zm-3 0h.008v.008H15V10.5z"></path></svg>
                                             </button>
                                         </td>
@@ -390,7 +390,7 @@
                                         </select>
                                     </td>
                                     <td class="py-2 px-2">
-                                        <input wire:model="qty_bg" type="number" class="w-full border-gray-300/50 rounded-lg text-sm text-center" min="1"/>
+                                        <input wire:model="qty_bg" type="number" class="w-full border-gray-300/50 rounded-lg text-sm text-center" min="1" disabled/>
                                     </td>
                                     <td class="py-2 px-2">
                                         <input wire:model="price_bg" type="number" class="w-full border-gray-300/50  rounded-lg text-sm text-center" disabled/>
@@ -399,7 +399,7 @@
                                         <input wire:model="total_price_bg" type="number" class="w-full border-gray-300/50  rounded-lg text-sm text-center" disabled/>
                                     </td>
                                     <td class="py-2 px-6">
-                                        <button class="bg-zinc-800 px-2 py-1 rounded-md" wire:click="storeGood">
+                                        <button class="bg-zinc-800 px-2 py-1 rounded-md hover:scale-105 hover:-translate-x-0 hover:duration-150" wire:click="storeGood">
                                             <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                                             <path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z"></path></svg>
                                         </button>
@@ -452,17 +452,17 @@
                                     Proses Produksi
                                 </button>
                             @elseif ($status_id == 'Working')
-                                <button wire:click="viewPdf" class="py-2 px-6 my-2 text-center rounded-lg bg-yellow-500 text-white">
+                                <button wire:click="viewPdf" class="py-2 px-6 my-2 text-center rounded-lg bg-yellow-500 text-white hover:scale-105 hover:-translate-x-0 hover:duration-150">
                                     Download Penawaran
                                 </button>
                                 <button wire:click="showProduction" class="py-2 px-6 my-2 text-center rounded-lg bg-red-500 text-white" disabled>
                                     Proses Produksi
                                 </button>
                             @else   
-                                <button wire:click="viewPdf" class="py-2 px-6 my-2 text-center rounded-lg bg-yellow-500 text-white">
+                                <button wire:click="viewPdf" class="py-2 px-6 my-2 text-center rounded-lg bg-yellow-500 text-white hover:scale-105 hover:-translate-x-0 hover:duration-150">
                                     Download Penawaran
                                 </button>
-                                <button wire:click="showProduction" class="py-2 px-6 my-2 text-center rounded-lg bg-blue-500 text-white">
+                                <button wire:click="showProduction" class="py-2 px-6 my-2 text-center rounded-lg bg-blue-500 text-white hover:scale-105 hover:-translate-x-0 hover:duration-150">
                                     Proses Produksi
                                 </button>
                             @endif
@@ -474,16 +474,16 @@
                                     Revisi
                                 </button>
                             @else
-                                <button wire:click="showRevision" class="py-2 px-6 my-2 text-center rounded-lg bg-indigo-500 text-white">
+                                <button wire:click="showRevision" class="py-2 px-6 my-2 text-center rounded-lg bg-indigo-500 text-white hover:scale-105 hover:-translate-x-0 hover:duration-150">
                                     Revisi
                                 </button>
                             @endif
                             @if ($status_id == 'Pending')
-                                <button wire:click="approve1" class="py-2 px-6 my-2 text-center rounded-lg bg-green-500 text-white">
+                                <button wire:click="approve1" class="py-2 px-6 my-2 text-center rounded-lg bg-green-500 text-white hover:scale-105 hover:-translate-x-0 hover:duration-150">
                                     Approve 1
                                 </button>
                             @elseif ($status_id == 'Working')
-                                <button wire:click="approve2" class="py-2 px-6 my-2 text-center rounded-lg bg-green-500 text-white">
+                                <button wire:click="approve2" class="py-2 px-6 my-2 text-center rounded-lg bg-green-500 text-white hover:scale-105 hover:-translate-x-0 hover:duration-150">
                                     Approve 2
                                 </button>
                             @else
@@ -493,12 +493,6 @@
                             @endif
                         </div>
                     </div>
-                    {{-- <button wire:click="viewPdf" class="py-2 px-6 text-center rounded-lg bg-yellow-500 w-full text-white">
-                        <div class="flex items-center gap-1 justify-center">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"></path></svg>
-                            <span>Download Penawaran</span>
-                        </div> 
-                    </button> --}}
                 </div>
 
                 <!-- PRODUCTION MODAL -->
@@ -522,7 +516,7 @@
                                 </div>
                                 <div class="mt-4">
                                     <div class="flex justify-end">
-                                        <button wire:click="storeProduction" class="text-white bg-zinc-800 py-2 px-6 rounded-lg">
+                                        <button wire:click="storeProduction" class="text-white bg-zinc-800 py-2 px-6 rounded-lg hover:scale-105 hover:-translate-x-0 hover:duration-150">
                                             Submit
                                         </button>
                                     </div>
@@ -551,7 +545,7 @@
                                 </div>
                                 <div class="mt-4">
                                     <div class="flex justify-end">
-                                        <button wire:click="storeRevision" class="text-white bg-zinc-800 py-2 px-6 rounded-lg">
+                                        <button wire:click="storeRevision" class="text-white bg-zinc-800 py-2 px-6 rounded-lg hover:scale-105 hover:-translate-x-0 hover:duration-150">
                                             Submit
                                         </button>
                                     </div>

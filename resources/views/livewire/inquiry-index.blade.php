@@ -162,13 +162,15 @@
                             <input class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm"
                                 type="description"
                                 wire:model="description"
+                                disabled
                             />
                         </div>
                         <div class="flex items-center gap-0 justify-between p-1 flex-wrap sm:gap-2">
                             <h1>Tanggal</h1>
-                            <input class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm" required
+                            <input class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm bg-gray-100" required
                                 type="date"
                                 wire:model="date"
+                                disabled
                             />
                         </div>
                         <div class="flex items-center gap-0 justify-between p-1 flex-wrap sm:gap-2">

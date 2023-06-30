@@ -20,4 +20,9 @@ class Role extends Model
         'updated_at',
         'created_at',
     ];
+
+    public function detail_user()
+    {
+        return $this->hasMany('App\Models\DetailUser', 'roles_id');
+    }
 }
