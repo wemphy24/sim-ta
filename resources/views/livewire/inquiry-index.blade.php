@@ -17,7 +17,7 @@
 
         {{-- TABLE DATA --}}
         <div class="m-6">
-            {{-- ACTION BUTTON --}}
+
             <div class="flex items-center justify-start gap-4 mb-6 lg:justify-end">
                 <button class="py-2 px-4 text-center rounded-lg border hover:bg-zinc-800 hover:text-white">
                     <div class="flex items-center gap-1">
@@ -33,7 +33,7 @@
                 </button> 
             </div> 
 
-            <div class="bg-white overflow-x-auto shadow-sm sm:rounded-lg">
+            <div class="bg-white overflow-x-auto shadow-sm sm:rounded-lg border border-gray-300/50">
                 <div class="border-b-2 py-3 px-6 flex">
                     <div class="flex items-center gap-4">
                         <select wire:model="showPage" class="border-gray-300/50 rounded-lg text-sm">
@@ -56,7 +56,7 @@
                         </select>
                     </div>       
                 </div>
-                <table class="w-full text-sm text-left text-black">
+                <table class="w-full text-sm text-left text-black border border-gray-300/50">
                     <thead class="bg-zinc-200 text-zinc-800">
                         <tr>
                             <th scope="col" class="py-2 px-4">#</th>
@@ -76,7 +76,7 @@
                         @foreach ($inquiries as $inquiry)
                         <tr class="bg-white border-b hover:bg-zinc-100 text-sm">
                             <td class="py-1 px-4">{{ ($inquiries ->currentpage()-1) * $inquiries ->perpage() + $loop->index + 1 }}</td>
-                            <td class="py-1 px-3 font-medium">INQ.016.3.2023.1002</td>
+                            <td class="py-1 px-3 font-medium">{{ $inquiry->inquiry_code }}</td>
                             <td class="py-1 px-3">{{ $inquiry->name }}</td>
                             <td class="py-1 px-3"><a class="text-blue-700" href="{{ url('storage/inquiry/'.$inquiry->inquiry_file) }}">{{ $inquiry->inquiry_file }}</a></td>
                             @if ($inquiry->purchase_order_file == NULL)
@@ -218,29 +218,13 @@
         
         <div class="m-6">
 
-            {{-- PROGRESS BAR --}}
-            {{-- <div class="mb-6">
-                <div class="w-full bg-gray-200 rounded-full mb-2">
-                    @if ($status_id == "Complete")
-                        <div class="bg-zinc-800 h-2.5 rounded-full" style="width:100%"></div>
-                    @else
-                        <div class="bg-zinc-800 h-2.5 rounded-full" style="width:50%"></div>
-                    @endif
-                </div>
-                <div class="flex justify-between font-medium">
-                    <label>Pending</label>
-                    <label>Working</label>
-                    <label>Complete</label>
-                </div>
-            </div> --}}
-
             <div class="overflow-x-auto sm:rounded-lg border border-gray-300/50">
                 <div class="bg-white py-3 px-6">
                     {{--  --}}
                     <div class="md:flex gap-2 form py-1">
                         <div class="md:w-1/2">
                             <label>Kode Inquiry:</label>
-                            <input class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm"
+                            <input class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-gray-100" disabled
                                 type="text"
                                 wire:model="inquiry_code"
                             />
@@ -278,7 +262,7 @@
                     <div class="md:flex gap-2 form py-1">
                         <div class="md:w-1/2">
                             <label>Tanggal:</label>
-                            <input class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm"
+                            <input class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-gray-100" disabled
                                 type="date"
                                 wire:model="date"
                             />
@@ -292,13 +276,13 @@
                                     disabled
                                 />
                             @elseif ($status_id == "Working")
-                                <input class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-yellow-200"
+                                <input class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-yellow-200 font-bold"
                                     type="text"
                                     wire:model="status_id"
                                     disabled
                                 />
                             @else
-                                <input class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-green-200"
+                                <input class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-green-200 font-bold"
                                     type="text"
                                     wire:model="status_id"
                                     disabled
@@ -367,9 +351,16 @@
                     <button wire:click="updateInquiry" class="py-2 px-6 my-2 text-center rounded-lg bg-zinc-800 text-white hover:scale-105 hover:-translate-x-0 hover:duration-150">
                         Simpan
                     </button>
-                    <button wire:click="doneInquiry" class="py-2 px-6 my-2 text-center rounded-lg bg-green-500 text-white hover:scale-105 hover:-translate-x-0 hover:duration-150">
-                        Approve
-                    </button>
+                    @if ($inquiry->status['name'] == "Working")
+                        <button wire:click="doneInquiry" class="py-2 px-6 my-2 text-center rounded-lg bg-green-500 text-white hover:scale-105 hover:-translate-x-0 hover:duration-150">
+                            Selesai
+                        </button>
+                    @else
+                        <button wire:click="" class="py-2 px-6 my-2 text-center rounded-lg bg-red-500 text-white" disabled>
+                            Inquiry Selesai
+                        </button>
+                    @endif
+                    
                 </div>
                 
             </div>

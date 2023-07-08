@@ -39,10 +39,10 @@ class Production extends Model
         return $this->belongsTo('App\Models\User', 'users_id', 'id');
     }
 
-    public function purchase_request()
-    {
-        return $this->hasMany('App\Models\PurchaseRequest', 'productions_id');
-    }
+    // public function purchase_request()
+    // {
+    //     return $this->hasMany('App\Models\PurchaseRequest', 'productions_id');
+    // }
 
     public function quality_control()
     {

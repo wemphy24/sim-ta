@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('purchase_order_code')->unique();
             $table->string('name');
             $table->string('description');
-            $table->date('deadline');
+            $table->date('po_date');
             $table->integer('total_price')->nullable();
             $table->integer('discount')->nullable();
             $table->foreignId('suppliers_id')->constrained('suppliers')->onUpdate('CASCADE');

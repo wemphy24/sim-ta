@@ -16,7 +16,7 @@
 
         {{-- TABLE DATA --}}
         <div class="m-6">
-            <div class="flex items-center justify-start gap-4 mb-6 lg:justify-end">
+            {{-- <div class="flex items-center justify-start gap-4 mb-6 lg:justify-end">
                 <button class="py-2 px-4 text-center rounded-lg border hover:bg-zinc-800 hover:text-white">
                     <div class="flex items-center gap-1">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"></path></svg>
@@ -29,7 +29,7 @@
                         <span>Buat Kontrak</span>
                     </div>
                 </button> 
-            </div> 
+            </div>  --}}
 
             <div class="bg-white overflow-x-auto shadow-sm sm:rounded-lg border border-gray-300/50">
                 <div class="border-b-2 py-3 px-6 flex justify-between gap-4">

@@ -16,7 +16,7 @@ class SupplierIndex extends Component
 
     public $showingSupplierModal = false;
     public $isEditMode = false;
-    public $name, $email, $phone, $address;
+    public $name, $email, $phone, $address, $officer;
 
     public $supplier;
 
@@ -45,6 +45,7 @@ class SupplierIndex extends Component
             'email' => $this->email,
             'phone' => $this->phone,
             'address' => $this->address,
+            'officer' => $this->officer,
         ]);
 
         $this->reset();
@@ -60,6 +61,7 @@ class SupplierIndex extends Component
         $this->email = $this->supplier->email;
         $this->phone = $this->supplier->phone;
         $this->address = $this->supplier->address;
+        $this->officer = $this->supplier->officer;
 
         $this->showingSupplierModal = true;
         $this->isEditMode = true;
@@ -72,6 +74,7 @@ class SupplierIndex extends Component
             'email' => $this->email,
             'phone' => $this->phone,
             'address' => $this->address,
+            'officer' => $this->officer,
         ]);
 
         $this->reset();

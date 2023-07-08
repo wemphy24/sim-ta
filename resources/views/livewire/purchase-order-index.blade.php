@@ -44,8 +44,8 @@
                             <option value="purchase_order_code">KODE PO</option>
                             <option value="name">NAMA</option>
                             <option value="description">KETERANGAN</option>
-                            <option value="deadline">DEADLINE</option>
                             <option value="suppliers_id">SUPPLIER</option>
+                            <option value="po_date">TANGGAL PO</option>
                             <option value="status_id">STATUS</option>
                         </select>
                         <select wire:model="orderAsc" class="border-gray-300/50 rounded-lg text-sm">
@@ -62,7 +62,7 @@
                             <th scope="col" class="py-3 px-3">Nama</th>
                             <th scope="col" class="py-3 px-3">Keterangan</th>
                             <th scope="col" class="py-3 px-3">Supplier</th>
-                            <th scope="col" class="py-3 px-3">Deadline</th>
+                            <th scope="col" class="py-3 px-3">Tanggal</th>
                             <th scope="col" class="py-3 px-3">Status</th>
                             <th scope="col" class="py-3 px-3">Aksi</th>
                         </tr>
@@ -76,7 +76,7 @@
                                 <td class="py-1 px-3">{{ $po->name }}</td>
                                 <td class="py-1 px-3">{{ $po->description }}</td>
                                 <td class="py-1 px-3">{{ $po->supplier['name'] }}</td>
-                                <td class="py-1 px-3">{{ $po->deadline }}</td>
+                                <td class="py-1 px-3">{{ $po->po_date }}</td>
                                 <td class="py-1 px-3">
                                     @if ($po->status['name'] == "Working")
                                         <div class="bg-yellow-200 w-24 py-1.5 rounded-full font-medium text-center">
@@ -94,7 +94,7 @@
                                 </td>
                                 <td class="py-1 px-3">
                                     <div class="flex items-center gap-4">
-                                        <button title="Detail" wire:click="detail({{ $po->id }})" class="text-white bg-blue-500 px-2 py-1 rounded-lg font-medium">
+                                        <button title="Detail" wire:click="detail({{ $po->id }})" class="text-white bg-blue-500 px-2 py-1 rounded-lg font-medium hover:scale-105 hover:-translate-x-0 hover:duration-150">
                                             <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 21h7a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v11m0 5l4.879-4.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242z"></path></svg>
                                         </button>
                                     </div>
@@ -124,22 +124,19 @@
                     <div class="mt-4">
                         <div class="flex items-center gap-0 justify-between p-1 flex-wrap sm:gap-2">
                             <h1>Kode PO</h1>
-                            <input class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm bg-gray-100"
-                                type="text"
+                            <input class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm bg-gray-100" type="text" disabled
                                 wire:model="purchase_order_code"
-                                disabled
                             />
                         </div>
                         <div class="flex items-center gap-0 justify-between p-1 flex-wrap sm:gap-2">
                             <h1>Nama</h1>
-                            <input class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm"
-                                type="text"
+                            <input class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm" type="text"
                                 wire:model="name"
                             />
                         </div>
                         <div class="flex items-center gap-0 justify-between p-1 flex-wrap sm:gap-2">
-                            <h1>Description</h1>
-                            <input class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm" type="text"
+                            <h1>Keterangan</h1>
+                            <input class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm bg-gray-100" type="text" disabled
                                 wire:model="description"
                             />
                         </div>
@@ -153,9 +150,9 @@
                             </select>
                         </div>
                         <div class="flex items-center gap-0 justify-between p-1 flex-wrap sm:gap-2">
-                            <h1>Deadline</h1>
-                            <input class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm" type="date"
-                                wire:model.lazy="deadline"
+                            <h1>Tanggal</h1>
+                            <input class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm bg-gray-100" type="date" disabled
+                                wire:model.lazy="po_date"
                             />
                         </div>
                     
@@ -200,16 +197,13 @@
                     <div class="md:flex gap-2 form py-1">
                         <div class="md:w-1/2">
                             <label>Kode PO:</label>
-                            <input class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-gray-100"
-                                type="text"
+                            <input class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-gray-100" type="text" disabled
                                 wire:model="purchase_order_code"
-                                disabled
                             />
                         </div>
                         <div class="md:w-1/2">
                             <label>Nama:</label>
-                            <input class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm"
-                                type="text"
+                            <input class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm" type="text"
                                 wire:model="name"
                             />
                         </div>
@@ -219,8 +213,7 @@
                     <div class="md:flex gap-2 form py-1">
                         <div class="md:w-1/2">
                             <label>Keterangan:</label>
-                            <input class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm"
-                                type="text"
+                            <input class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-gray-100" type="text" disabled
                                 wire:model="description"
                             />
                         </div>
@@ -237,30 +230,25 @@
                     {{--  --}}
                     <div class="md:flex gap-2 form py-1">
                         <div class="md:w-1/2">
-                            <label>Deadline:</label>
+                            <label>Tanggal:</label>
                             <input class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-gray-100" type="date" disabled
-                                wire:model="deadline"
+                                wire:model="po_date"
                             />
                         </div>
                         <div class="md:w-1/2">
                             <label>Status:</label>
                             @if ($status_id == "Pending")
-                                <input class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-red-200 font-bold"
-                                    type="text"
+                                <input class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-red-200 font-bold"type="text" disabled
                                     wire:model="status_id"
-                                    disabled
                                 />
                             @elseif ($status_id == "Working")
-                                <input class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-yellow-200"
-                                    type="text"
+                                <input class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-yellow-200 font-bold" type="text" disabled
                                     wire:model="status_id"
-                                    disabled
+                                    
                                 />
                             @else
-                                <input class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-green-200"
-                                    type="text"
+                                <input class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-green-200 font-bold" type="text" disabled 
                                     wire:model="status_id"
-                                    disabled
                                 />
                             @endif
                         </div>
@@ -269,25 +257,23 @@
                     {{--  --}}
                     <div class="md:flex gap-2 form py-1">
                         <div class="md:w-1/2">
-                            <label>Diskon:</label>
-                            <input class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm"
-                                type="number"
+                            <label>Diskon (%):</label>
+                            <input class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm" type="number"
                                 wire:model="discount"
                             />
                         </div>
                         <div class="md:w-1/2">
-                            <label>Total Harga:</label>
-                            @if ($this->total_price == NULL)
-                                <input class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm text-red-600 bg-gray-100" disabled
-                                    type="text"
-                                    value="Belum Tersedia"
-                                />
-                            @else
-                                <input class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-gray-100" disabled
-                                    type="number"
-                                    wire:model="total_price"
-                                />
-                            @endif
+                            <label>Harga:</label>
+                            <div class="w-full border border-gray-300/50 rounded-lg shadow-sm bg-blue-200">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-4 py-10 bg-blue-400 rounded-l-lg"></div>
+                                    @if ($this->total_price == NULL)
+                                        <div class="text-2xl font-medium">Belum Tersedia</div>
+                                    @else
+                                        <div class="text-2xl font-medium">Rp. {{ number_format($total_price) }}</div>
+                                    @endif
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -329,11 +315,12 @@
                                     <td class="py-1 px-6">Rp. {{ number_format($dp->total_price) }}</td>
                                     <td class="py-1 px-6 text-white">
                                         <div class="flex items-center gap-4">
-                                            <button wire:click="editOrderPO({{ $dp->id }})" class="bg-yellow-500 px-2 py-1 rounded-md hover:scale-105 hover:-translate-x-0 hover:duration-150">
-                                                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"></path></svg>
-                                            </button>
+                                            
                                             @if ($dp->status == "Menunggu Pesanan")
-                                                <button wire:click="printGRN({{ $dp->id }})" class="bg-green-500 px-2 py-1 rounded-md">
+                                                <button wire:click="editOrderPO({{ $dp->id }})" class="bg-yellow-500 px-2 py-1 rounded-md hover:scale-105 hover:-translate-x-0 hover:duration-150">
+                                                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"></path></svg>
+                                                </button>
+                                                <button wire:click="printGRN({{ $dp->id }})" class="bg-green-500 px-2 py-1 rounded-md hover:scale-105 hover:-translate-x-0 hover:duration-150">
                                                     Cetak GRN
                                                 </button>
                                             @else
@@ -348,6 +335,7 @@
                             @endforeach
                         </tbody>
 
+                        @if ($this->status_id != "Working" && $this->status_id != "Complete")
                         <tfoot>
                             <tr class="font-medium">
                                 <input wire:model="set_goods_id" type="hidden" />
@@ -391,6 +379,7 @@
                                 </td>
                             </tr>
                         </tfoot>
+                        @endif
                     </table>
 
                     {{-- SECTION HARGA PRODUKSI --}}
@@ -420,26 +409,32 @@
             <div class="py-3 px-6">
                 <div class="flex justify-between">
                     <div class="flex gap-4">
-                        <button wire:click="" class="py-2 px-6 my-2 text-center rounded-lg bg-yellow-500 text-white">
-                            Download Purchase Order
-                        </button>
+                        @if ($this->status_id == "Pending")
+                            <button wire:click="" class="py-2 px-6 my-2 text-center rounded-lg bg-red-500 text-white" disabled>
+                                Download Purchase Order
+                            </button>
+                        @else
+                            <button wire:click="viewPdf" class="py-2 px-6 my-2 text-center rounded-lg bg-yellow-500 text-white hover:scale-105 hover:-translate-x-0 hover:duration-150">
+                                Download Purchase Order
+                            </button>
+                        @endif
+                        
                     </div>
                     
                     <div class="flex gap-4">
                         @if ($this->status_id == "Pending")
-                            <button wire:click="" class="py-2 px-6 my-2 text-center rounded-lg bg-green-500 text-white">
+                            <button wire:click="approvePO" class="py-2 px-6 my-2 text-center rounded-lg bg-green-500 text-white hover:scale-105 hover:-translate-x-0 hover:duration-150">
                                 Approve 
                             </button>
                         @elseif ($this->status_id == "Working")
-                            <button wire:click="" class="py-2 px-6 my-2 text-center rounded-lg bg-green-500 text-white">
+                            <button wire:click="completePO" class="py-2 px-6 my-2 text-center rounded-lg bg-green-500 text-white hover:scale-105 hover:-translate-x-0 hover:duration-150">
                                 Selesai  
                             </button>
                         @elseif ($this->status_id == "Complete")
                             <button wire:click="" class="py-2 px-6 my-2 text-center rounded-lg bg-red-500 text-white" disabled>
-                                Selesai  
+                                PO Selesai  
                             </button>
                         @endif
-                        
                     </div>
                 </div>
             </div>
@@ -492,7 +487,7 @@
                                             <input wire:model="total_price_e" type="number" class="w-24 border-gray-300/50  rounded-lg text-sm text-center bg-gray-100" disabled/>
                                         </td>
                                         <td class="py-2 px-6">
-                                            <button wire:click="storeEditPO" class="py-2 px-6 my-2 text-center rounded-lg bg-zinc-800 text-white">
+                                            <button wire:click="storeEditPO" class="py-2 px-6 my-2 text-center rounded-lg bg-zinc-800 text-white hover:scale-105 hover:-translate-x-0 hover:duration-150">
                                                 Simpan
                                             </button>
                                         </td>

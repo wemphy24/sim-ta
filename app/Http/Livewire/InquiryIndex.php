@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use Livewire\WithFileUploads;
 use App\Models\Customer;
 use App\Models\Inquiry;
+use App\Models\Quotation;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
@@ -75,13 +76,13 @@ class InquiryIndex extends Component
 
     public function storeInquiry()
     {
-        $this->validate([
-            'name' => 'required|string|max:60',
-            'inquiry_file' => 'required|mimes:pdf,png,jpg,jpeg',
-            'description' => 'required',
-            'date' => 'required|date',
-            'customers_id' => 'required',
-        ]);
+        // $this->validate([
+        //     'name' => 'required|string|max:60',
+        //     'inquiry_file' => 'required|mimes:pdf,png,jpg,jpeg',
+        //     'description' => 'required',
+        //     'date' => 'required|date',
+        //     'customers_id' => 'required',
+        // ]);
 
         $filename = $this->inquiry_file->getClientOriginalName();
         if(!empty($this->inquiry_file)) {
@@ -148,6 +149,7 @@ class InquiryIndex extends Component
             'inquiry_file' => $this->inquiry_file != NULL ?  $filenameInq : $this->inquiry->inquiry_file,
             'purchase_order_file' => $this->purchase_order_file != NULL ?  $filenamePO : $this->inquiry->purchase_order_file,
             'description' => $this->description,
+            'customers_id' => $this->customers_id,
         ]);
 
         $this->reset();
@@ -158,6 +160,11 @@ class InquiryIndex extends Component
     {
         // Mengubah status inquiry ke complete
         $this->inquiry->update([
+            'status_id' => 3,
+        ]);
+
+        // Mengubah status penawaran menjadi complete
+        Quotation::where('inquiries_id','=',$this->inquiry->id)->update([
             'status_id' => 3,
         ]);
 

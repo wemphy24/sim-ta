@@ -1,4 +1,4 @@
-<div class="main-content bg-gray-50 flex-1 md:ml-64 h-screen">
+<div class="main-content bg-zinc-100 flex-1 md:ml-64 h-screen">
 
     @section('title', 'Material')
 
@@ -95,6 +95,11 @@
                                         <button title="Hapus" wire:click="deleteMaterial({{ $material->id }})">
                                             <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                                         </button>
+                                        @if ($material->stock == $material->min_stock && $material->category['name'] != "Barang Jadi")
+                                            <button title="Request PR" wire:click="showRequest({{ $material->id }})" class="text-white bg-yellow-500 p-2 rounded-lg font-medium hover:scale-105 hover:-translate-x-0 hover:duration-150">
+                                                Request PR
+                                            </button> 
+                                        @endif
                                     </div>
                                 </td>
                             </tr>
@@ -225,6 +230,44 @@
                                     </button>
                                 @endif
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
+
+        @if ($showingRequest)
+            <div class="bg-black bg-opacity-50 fixed inset-0 flex justify-center items-center">
+                <div class="bg-white p-4 rounded-lg shadow-md w-[350px] h-[500px] overflow-auto sm:w-fit sm:h-fit">
+                    <div class="flex justify-between items-center">
+                        <h1 class="font-medium text-xl">Material Diminta</h1>
+                        <button wire:click="closeModal">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="flex items-center gap-0 justify-between p-1 flex-wrap sm:gap-2">
+                        <label>Jumlah: </label>
+                        <input class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm"
+                            type="number"
+                            wire:model="qty_ask"
+                            placeholder="Request Jumlah"
+                        />
+                    </div>
+                    <div class="flex items-center gap-0 justify-between p-1 flex-wrap sm:gap-2">
+                        <label>Deadline: </label>
+                        <input class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm"
+                            type="date"
+                            wire:model="deadline"
+                        />
+                    </div>
+                    {{-- <p class="text-red-500">Material diterima telah melebihi jumlah maksimal</p> --}}
+                    {{-- @error('qty_received') <p class="error text-red-500">Material diterima melebihi jumlah maksimal</p> @enderror --}}
+                    <div class="mt-4">
+                        <div class="flex justify-end">
+                            <button wire:click="requestPR" class="text-white bg-zinc-800 py-2 px-6 rounded-lg hover:scale-105 hover:-translate-x-0 hover:duration-150">
+                                Submit
+                            </button>
                         </div>
                     </div>
                 </div>

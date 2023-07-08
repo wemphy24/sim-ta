@@ -45,6 +45,7 @@ class LogisticGoodIndex extends Component
         // Menambah stok pada master data
         Material::where('id', '=', $getMaterialId)->update([
             'stock' => (Material::where('id', '=', $getMaterialId)->first('stock')->stock) + (LogisticGood::where('materials_id', '=', $getMaterialId)->first('qty_ask')->qty_ask),
+            'price' => LogisticGood::where('materials_id', '=', $getMaterialId)->first('price')->price,
         ]);
 
         $this->dispatchBrowserEvent('store-success');

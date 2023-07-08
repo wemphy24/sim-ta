@@ -10,7 +10,7 @@ use App\Models\Rabp;
 use App\Models\RabpCost;
 use App\Models\SetBillMaterial;
 use App\Models\SetGood;
-use Carbon\Carbon;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
@@ -68,13 +68,13 @@ class RabpIndex extends Component
     
 
     public $test;
-    public $mbud;
+    public $listMaterials;
 
     public function render()
     {
         return view('livewire.rabp-index', [
             'rabps' => Rabp::with('quotation','status')->search(trim($this->search))->orderBy($this->searchBy,$this->orderAsc ? 'asc' : 'desc')->paginate($this->showPage),
-            'quotations' => Quotation::all(),
+            'quotations' => Quotation::where('status_id','=',2)->get(),
             'setgoods' => SetGood::where('quotations_id','=',$this->rabps_id )->get(),
             'detailrabps' => DetailRabp::where('rabps_id','=',$this->rabps_id)->get(),
             'rabpcosts' => RabpCost::all(),
@@ -101,11 +101,12 @@ class RabpIndex extends Component
         // Membuat kode rabp
         $countRabp = Rabp::count();
         if($countRabp == 0) {
-            $this->rabp_code = 'RABP.' . 1001;
+            // $this->rabp_code = 'RABP.' . 1001;
+            $this->rabp_code = 'RABP.' . "0" . (Carbon::now()->day) . "." . (Carbon::now()->month) . "." . (Carbon::now()->year) . '.' . 1001;
         } else {
             $getLastRabp = Rabp::all()->last();
             $convertRabp = (int)substr($getLastRabp->rabp_code, -4) + 1;
-            $this->rabp_code = 'RABP.' . $convertRabp;
+            $this->rabp_code = 'RABP.' . "0" . (Carbon::now()->day) . "." . (Carbon::now()->month) . "." . (Carbon::now()->year) . '.' . $convertRabp;
         }
     }
     
@@ -165,10 +166,12 @@ class RabpIndex extends Component
     // DETAIL RABP SECTION
     public function showDetail($id)
     {
+        // $getGoodName = DetailRabp::where('rabps_id','=', $id)->first('set_goods_id')->set_goods_id;
+
+        
         $this->showingDetail = true;
         $this->showingMainPage = false;
         $this->rabps_id = $id;
-        $this->qty_bg = 1;
 
         // Menampilkan detail data rabp
         $this->rabp = Rabp::findOrFail($id);
@@ -188,6 +191,9 @@ class RabpIndex extends Component
         $this->ppn = $this->rabp_cost->ppn;
         $this->total_price = $this->rabp_cost->total_price;
         $this->total_profit = $this->rabp_cost->total_profit;
+
+        // $getQtySetGood = SetGood::where('quotations_id','=', $this->rabp->quotations_id)->first('qty')->qty;
+        $this->qty_bg = 1;
         
         // Display data total cost barang
         // if(DetailRabp::where('rabps_id','=',$this->rabps_id)->first(['price'])->price == NULL) {
@@ -195,7 +201,8 @@ class RabpIndex extends Component
         // } else {
         //     $this->total_price_production = ((DetailRabp::where('rabps_id','=',$this->rabps_id)->first(['price'])->price) + $this->preliminary + $this->overhead); //////////////
         // }
-        $this->total_price_production = ((DetailRabp::where('rabps_id','=',$this->rabps_id)->first(['price'])->price) + $this->preliminary + $this->overhead); //////////////
+
+        // $this->total_price_production = ((DetailRabp::where('rabps_id','=',$this->rabps_id)->first(['price'])->price) + $this->preliminary + $this->overhead); ////////////// ----
         $this->total_ppn = ($this->total_price_production + $this->total_profit) * (0.11);
 
         // Display data daftar material dari barang
@@ -209,11 +216,10 @@ class RabpIndex extends Component
         // $haha = SetBillMaterial::whereIn('set_goods_id','=', [$test])->get();
         // dd($haha);
 
-        // AMBIL DATA ID RABP
+        // AMBIL DATA SET GOODS ID
         $this->test = DetailRabp::where('rabps_id','=',$this->rabps_id)->pluck('set_goods_id');
 
-        $this->mbud = SetBillMaterial::whereIn('set_goods_id', $this->test)->orderBy('materials_id', 'asc')->get();
-        // dd($this->mbud);
+        $this->listMaterials = SetBillMaterial::whereIn('set_goods_id', $this->test)->orderBy('materials_id', 'asc')->get();
 
         
         // dd($mbud);
@@ -316,6 +322,7 @@ class RabpIndex extends Component
     // GOOD SECTION
     public function storeGood()
     {
+        // PERBAIKI DENGAN DIKALI QUANTITY
         $this->validate([
             'set_goods_id' => 'required|integer',
             'qty_bg' => 'required|integer',
@@ -332,6 +339,20 @@ class RabpIndex extends Component
             'qty' => $this->qty_bg,
             'price' => $this->price_bg,
         ]);
+
+
+        // Caranya
+        // $getUserId = DB::table('users')->insertGetId([
+        //                     'name' => $this->name,
+        //                     'email' => $this->email,
+        //                     'password' => Hash::make("haha123"),
+        //                 ]);
+
+
+
+        // Update quantity per set
+        // SetBillMaterial::where('')
+
 
         // Hitung harga barang + overhead + preliminary
         $countOverPrelim = DetailRabp::where('rabps_id','=', $this->rabps_id)->sum('price') + $this->overhead + $this->preliminary; 
@@ -353,6 +374,8 @@ class RabpIndex extends Component
         // Reset total harga dan total profit
         $this->total_price = RabpCost::where('id','=',$this->rabps_id)->first(['total_price'])->total_price;
         $this->total_profit = RabpCost::where('id','=',$this->rabps_id)->first(['total_profit'])->total_profit;
+
+        $this->total_ppn = (DetailRabp::where('rabps_id','=',$this->rabps_id)->first(['price'])->price + $this->total_profit) * (0.11);
 
         $this->reset();
         $this->dispatchBrowserEvent('store-success');
@@ -442,16 +465,16 @@ class RabpIndex extends Component
     // END ---------
 
     // APPROVAL SECTION
-    public function approvee($id)
-    {
-        Rabp::findOrFail($id)->update([
-            'status_id' => 2,
-            'description' => "Menunggu Deal Penawaran",
-        ]);
+    // public function approvee($id)
+    // {
+    //     Rabp::findOrFail($id)->update([
+    //         'status_id' => 2,
+    //         'description' => "Menunggu Deal Penawaran",
+    //     ]);
 
-        $this->reset();
-        $this->dispatchBrowserEvent('update-success');
-    }
+    //     $this->reset();
+    //     $this->dispatchBrowserEvent('update-success');
+    // }
 
     public function approve1()
     {
@@ -500,11 +523,11 @@ class RabpIndex extends Component
         // Membuat kode produksi
         $countProduction = Production::count();
         if($countProduction == 0) {
-            $this->production_code = 'PROD.' . 1001;
+            $this->production_code = 'PROD.' . "0" . (Carbon::now()->day) . "." . (Carbon::now()->month) . "." . (Carbon::now()->year) . '.' . 1001;
         } else {
             $getLastProd = Production::all()->last();
             $convertProd = (int)substr($getLastProd->production_code, -4) + 1;
-            $this->production_code = 'PROD.' . $convertProd;
+            $this->production_code = 'PROD.' . "0" . (Carbon::now()->day) . "." . (Carbon::now()->month) . "." . (Carbon::now()->year) . '.' . $convertProd;
         }
     }
 
@@ -513,11 +536,12 @@ class RabpIndex extends Component
         // Membuat kode kontrak
         $countContract = Contract::count();
         if($countContract == 0) {
-            $this->contract_code = 'KONT.' . 1001;
+            // $this->contract_code = 'KONT.' . 1001;
+            $this->contract_code = 'KONT.' . "0" . (Carbon::now()->day) . "." . (Carbon::now()->month) . "." . (Carbon::now()->year) . '.' . 1001;
         } else {
             $getLastCont = Contract::all()->last();
             $convertCont = (int)substr($getLastCont->contract_code, -4) + 1;
-            $this->contract_code = 'KONT.' . $convertCont;
+            $this->contract_code = 'KONT.' . "0" . (Carbon::now()->day) . "." . (Carbon::now()->month) . "." . (Carbon::now()->year) . '.' . $convertCont;
         }
     }
 
@@ -578,6 +602,12 @@ class RabpIndex extends Component
             $this->b_price = SetGood::where('id','=',$this->s_good_id)->first(['price'])->price;
             $this->b_total_price = ($this->b_qty * $this->b_price);
         }
+
+        // if($this->quotations_id !=NULL) {
+        //     $this->name = "RABP " . Quotation::where('id','=',$this->quotations_id)->first('name')->name;
+        // } else {
+        //     $this->name = NULL;
+        // }
     }
 
     public function updateProfitPrice()
@@ -642,11 +672,14 @@ class RabpIndex extends Component
 
         // Ambild data biaya berdasarkan rabps
         $dataBiaya = RabpCost::where('rabps_id', '=', $this->rabps_id)->get();
+
+        // 
+        $getFileName = Quotation::where('id', '=', $this->rabp->quotation['id'])->first('quotation_code')->quotation_code;
         
         $pdfContent = FacadePdf::loadView('pdf.penawaran', ['dataPenawaran' => $dataPenawaran, 'dataBarang' => $dataBarang, 'dataBiaya' => $dataBiaya])->output();
         return response()->streamDownload(
         fn () => print($pdfContent),
-        "filename.pdf"
+        "Penawaran." . $getFileName . ".pdf"
         );
         
     }

@@ -11,6 +11,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 
 class PurchaseOrderIndex extends Component
 {
@@ -26,7 +27,7 @@ class PurchaseOrderIndex extends Component
     public $showingEditPO = false;
 
     // Tabel purchase orders
-    public $purchase_order_code, $name, $description, $deadline, $total_price, $discount, $suppliers_id, $status_id, $users_id;
+    public $purchase_order_code, $name, $description, $po_date, $total_price, $discount, $suppliers_id, $status_id, $users_id;
     public $purchase_order;
 
     // Tabel detail pos
@@ -70,7 +71,8 @@ class PurchaseOrderIndex extends Component
         // Membuat kode PO
         $countPO = PurchaseOrder::count();
         if($countPO == 0) {
-            $this->purchase_order_code = 'PO.' . 1001;
+            // $this->purchase_order_code = 'PO.' . 1001;
+            $this->purchase_order_code = 'PO.' . "0" . (Carbon::now()->day) . "." . (Carbon::now()->month) . "." . (Carbon::now()->year) . '.' . 1001;
         } else {
             $getLastPO = PurchaseOrder::all()->last();
             $convertPO = (int)substr($getLastPO->purchase_order_code, -4) + 1;
@@ -82,9 +84,10 @@ class PurchaseOrderIndex extends Component
     {
         $this->showingPO = true;
 
-        $this->description = "Menunggu Pembelian";
         $this->createPOCode();
-        $this->name = $this->purchase_order_code;
+        $this->description = "Menunggu Pembelian";
+        $this->name = "Pembelian Material untuk " . $this->purchase_order_code;
+        $this->po_date = Carbon::now()->format('Y-m-d');
     }
 
     public function store()
@@ -92,8 +95,8 @@ class PurchaseOrderIndex extends Component
         PurchaseOrder::create([
             'purchase_order_code' => $this->purchase_order_code,
             'name' => $this->name,
-            'description' => "Menunggu Pembelian",
-            'deadline' => $this->deadline,
+            'description' => $this->description,
+            'po_date' => $this->po_date,
             // 'total_price' => $this->total_price,
             // 'discount' => $this->discount,
             'suppliers_id' => $this->suppliers_id,
@@ -123,7 +126,7 @@ class PurchaseOrderIndex extends Component
         $this->name = $this->purchase_order->name;
         $this->description = $this->purchase_order->description;
         $this->suppliers_id = $this->purchase_order->suppliers_id;
-        $this->deadline = $this->purchase_order->deadline;
+        $this->po_date = $this->purchase_order->po_date;
         $this->total_price = $this->purchase_order->total_price;
         $this->discount = $this->purchase_order->discount;
         $this->status_id = $this->purchase_order->status['name'];
@@ -212,17 +215,17 @@ class PurchaseOrderIndex extends Component
         // Membuat kode GR
         $countGR = GoodReceive::count();
         if($countGR == 0) {
-            $this->good_receive_code = 'GR.' . 1001;
+            // $this->good_receive_code = 'GR.' . 1001;
+            $this->good_receive_code = 'GR.' . "0" . (Carbon::now()->day) . "." . (Carbon::now()->month) . "." . (Carbon::now()->year) . '.' . 1001;
         } else {
             $getLastGR = GoodReceive::all()->last();
             $convertGR = (int)substr($getLastGR->good_receive_code, -4) + 1;
-            $this->good_receive_code = 'GR.' . $convertGR;
+            $this->good_receive_code = 'GR.' . "0" . (Carbon::now()->day) . "." . (Carbon::now()->month) . "." . (Carbon::now()->year) . '.' . $convertGR;
         }
     }
 
     public function printGRN($id)
     {
-        // Membuat kode gr
         $this->createGRCode();
 
         // Memasukkan data ke tabel good receive
@@ -239,13 +242,13 @@ class PurchaseOrderIndex extends Component
         ]);
 
         // Mengupdate status material yang sudah di cetak gr
-        DetailPo::where('purchase_orders_id','=',$this->purchase_orders_id)->update([
+        DetailPo::where('id','=',$id)->update([
             'status' => "Sudah Cetak"
         ]);
 
-        PurchaseOrder::where('id','=',$this->purchase_orders_id)->update([
-            'status_id' => 2,
-        ]);
+        // PurchaseOrder::where('id','=',$this->purchase_orders_id)->update([
+        //     'status_id' => 2,
+        // ]);
 
         $this->dispatchBrowserEvent('update-success');
     }
@@ -254,37 +257,59 @@ class PurchaseOrderIndex extends Component
     {
         $this->showingEditPO = false;
     }
+
+    public function approvePO()
+    {
+        PurchaseOrder::where('id', '=', $this->purchase_orders_id)->update([
+            'status_id' => 2,
+        ]);
+
+        $this->dispatchBrowserEvent('update-success');
+        $this->reset();
+    }
+
+    public function completePO()
+    {
+        PurchaseOrder::where('id', '=', $this->purchase_orders_id)->update([
+            'status_id' => 3,
+        ]);
+    }
+
+    public function viewPdf()
+    {
+
+        $dataSupplier = Supplier::where('id', '=', $this->suppliers_id)->get();
+        $dataMaterialPO = DetailPO::where('id', '=', $this->purchase_orders_id)->get();
+        $dataBiayaPO = PurchaseOrder::where('id', '=', $this->purchase_orders_id)->get();
+        $codePO = PurchaseOrder::where('id', '=', $this->purchase_orders_id)->first('purchase_order_code')->purchase_order_code;
+        $getTotalPrice = DetailPo::where('purchase_orders_id','=',$this->purchase_orders_id)->sum('total_price'); 
+        $getPriceAfterDisc = $getTotalPrice - ($getTotalPrice * ($this->discount * 0.01));
+
+        $pdfContent = FacadePdf::loadView('pdf.purchase-order', [
+            'dataSupplier' => $dataSupplier, 
+            'dataMaterialPO' => $dataMaterialPO, 
+            'dataBiayaPO' => $dataBiayaPO, 
+            'codePO' => $codePO, 
+            'getTotalPrice' => $getTotalPrice, 
+            'getPriceAfterDisc' => $getPriceAfterDisc, 
+            ])->output();
+        return response()->streamDownload(
+        fn () => print($pdfContent),
+        "PurchaseOrder." . $this->purchase_order_code . ".pdf"
+        );
+    }
     // END --------------------------------
 
     public function updated($key, $value)
     {
-        // Realtime update value set good
-        // if($this->name != NULL) {
-        //     $this->categories_id = Material::where('name','=',$this->name)->first(['categories_id'])->categories_id;
-        //     $this->measurements_id = Material::where('name','=',$this->name)->first(['measurements_id'])->measurements_id;
-        // } else {
-        //     $this->categories_id = NULL;
-        //     $this->measurements_id = NULL;
-        // }
-
-
-
         // Realtime update value detail pos ketika insert data
         if($this->materials_id != NULL) {
-            // $this->price = Material::where('id','=',$this->materials_id)->first(['price'])->price;
             $this->total_price_m = ($this->qty * $this->price);
         } elseif ($this->materials_id_e != NULL) {
             $this->total_price_e = ($this->qty_e * $this->price_e);
         }
         else {
-            // $this->price = NULL;
             $this->total_price_m = NULL;
         }
-
-        // Realtime update value detail pos ketika update data
-        // if($this->m_id != NULL) {
-        //     $this->m_price = Material::where('id','=',$this->m_id)->first(['price'])->price;
-        //     $this->m_total_price = ($this->m_qty * $this->m_price);
-        // }
     }
 }

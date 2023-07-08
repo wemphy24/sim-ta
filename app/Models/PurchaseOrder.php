@@ -19,7 +19,7 @@ class PurchaseOrder extends Model
         'purchase_order_code', 
         'name',
         'description', 
-        'deadline', 
+        'po_date', 
         'total_price',  
         'discount',  
         'suppliers_id',  
@@ -56,7 +56,7 @@ class PurchaseOrder extends Model
             $query->where('purchase_order_code', 'like', $term)
             ->orWhere('name', 'like', $term)
             ->orWhere('description', 'like', $term)
-            ->orWhere('deadline', 'like', $term)
+            ->orWhere('po_date', 'like', $term)
             ->orWhere('total_price', 'like', $term)
             ->orWhereHas('supplier', function($query) use ($term) {
                 $query->where('name', 'like', $term);

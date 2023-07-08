@@ -32,7 +32,7 @@ class QuotationIndex extends Component
         return view('livewire.quotation-index', [
             'quotations' => Quotation::with('customer','status')->search(trim($this->search))->orderBy($this->searchBy,$this->orderAsc ? 'asc' : 'desc')->paginate($this->showPage),
             'customers' => Customer::all(),
-            'inquiries' => Inquiry::all(),
+            'inquiries' => Inquiry::where('status_id','=',1)->get(),
         ])->layout('layouts.admin');
     }
 
@@ -88,6 +88,10 @@ class QuotationIndex extends Component
             'users_id' => Auth::user()->id,
         ]);
 
+        Inquiry::where('id','=', $this->inquiries_id)->update([
+            'status_id' => 2,
+        ]);
+
         $this->reset();
         $this->closeModal();
 
@@ -138,6 +142,16 @@ class QuotationIndex extends Component
     public function approve()
     {
         $this->quotation->update([
+            'status_id' => 2,
+        ]);
+
+        $this->reset();
+        $this->dispatchBrowserEvent('update-success');
+    }
+
+    public function completeQO()
+    {
+        $this->quotation->update([
             'status_id' => 3,
         ]);
 
@@ -155,6 +169,12 @@ class QuotationIndex extends Component
 
     public function updated($key, $value)
     {
+        if($this->inquiries_id !=NULL) {
+            $this->name = "Penawaran " . substr(Inquiry::where('id','=',$this->inquiries_id)->first('name')->name, 11);
+        } else {
+            $this->name = NULL;
+        }
+
         // Realtime update value
         if($this->inquiries_id != NULL) {
             $this->customers_id = Inquiry::where('id','=',$this->inquiries_id)->first(['customers_id'])->customers_id;

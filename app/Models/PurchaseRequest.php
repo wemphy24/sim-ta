@@ -31,10 +31,10 @@ class PurchaseRequest extends Model
         'created_at',
     ];
 
-    public function production()
-    {
-        return $this->belongsTo('App\Models\Production', 'productions_id', 'id');
-    }
+    // public function production()
+    // {
+    //     return $this->belongsTo('App\Models\Production', 'productions_id', 'id');
+    // }
 
     public function material()
     {
@@ -68,9 +68,6 @@ class PurchaseRequest extends Model
             $query->where('purchase_request_code', 'like', $term)
             ->orWhere('description', 'like', $term)
             ->orWhere('deadline', 'like', $term)
-            ->orWhereHas('production', function($query) use ($term) {
-                $query->where('name', 'like', $term);
-            })
             ->orWhereHas('status', function($query) use ($term) {
                 $query->where('name', 'like', $term);
             });

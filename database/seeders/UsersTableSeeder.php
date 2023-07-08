@@ -33,6 +33,30 @@ class UsersTableSeeder extends Seeder
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
             ],
+            [
+                'name' => 'Livy',
+                'email' => 'livy@gmail.com',
+                'password' => Hash::make('okebitch24'),
+                'remember_token' => NULL,
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
+            ],
+            [
+                'name' => 'Jacelline',
+                'email' => 'jacelline@gmail.com',
+                'password' => Hash::make('okebitch24'),
+                'remember_token' => NULL,
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
+            ],
+            [
+                'name' => 'Rio',
+                'email' => 'rio@gmail.com',
+                'password' => Hash::make('okebitch24'),
+                'remember_token' => NULL,
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
+            ],
         ];
         User::insert($users);
     }

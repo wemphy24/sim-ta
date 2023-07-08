@@ -7,12 +7,14 @@ use App\Models\Delivery;
 use App\Models\DetailRabp;
 use App\Models\LogisticMaterial;
 use App\Models\Material;
+use App\Models\Quotation;
 use App\Models\Rabp;
 use App\Models\SetGood;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 
 class DeliveryIndex extends Component
 {
@@ -25,8 +27,9 @@ class DeliveryIndex extends Component
     public $showingMainPage = true;
     public $showingDetail = false;
     public $showingDelivery = false;
+    public $showingReceived = false;
 
-    public $delivery_code, $rabps_id, $name, $contracts_id, $description, $send_date, $received_date, $status_id;
+    public $delivery_code, $rabps_id, $name, $contracts_id, $description, $send_date, $received_date, $plate_number, $status_id;
     public $delivery;
 
     public $logistic_code;
@@ -37,7 +40,7 @@ class DeliveryIndex extends Component
             'deliverys' => Delivery::with('contract','status')->search(trim($this->search))->orderBy($this->searchBy,$this->orderAsc ? 'asc' : 'desc')->paginate($this->showPage),
             'detailrabps' => DetailRabp::where('rabps_id','=',$this->rabps_id)->get(),
             'contracts' => Contract::all(),
-            'rabps' => Rabp::all(),
+            'rabps' => Rabp::where('status_id','=', 3)->get(),
         ])->layout('layouts.admin');
     }
 
@@ -59,11 +62,12 @@ class DeliveryIndex extends Component
         // Membuat kode pengiriman
         $countDelivery = Delivery::count();
         if($countDelivery == 0) {
-            $this->delivery_code = 'DELIVERY.' . 1001;
+            // $this->delivery_code = 'DELIVERY.' . 1001;
+            $this->delivery_code = 'DELIVERY.' . "0" . (Carbon::now()->day) . "." . (Carbon::now()->month) . "." . (Carbon::now()->year) . '.' . 1001;
         } else {
             $getLastDel = Delivery::all()->last();
             $convertDel = (int)substr($getLastDel->delivery_code, -4) + 1;
-            $this->delivery_code = 'DELIVERY.' . $convertDel;
+            $this->delivery_code = 'DELIVERY.' . "0" . (Carbon::now()->day) . "." . (Carbon::now()->month) . "." . (Carbon::now()->year) . '.' . $convertDel;
         }
     }
 
@@ -118,6 +122,7 @@ class DeliveryIndex extends Component
     {
         $this->delivery->update([
             'name' => $this->name,
+            'plate_number' => $this->plate_number,
         ]);
 
         $this->reset();
@@ -141,17 +146,33 @@ class DeliveryIndex extends Component
     {
         $this->delivery->update([
             'status_id' => 2,
+            'description' => "Sedang Dikirim",
         ]);
 
         $this->reset();
         $this->dispatchBrowserEvent('store-success');
     }
 
-    public function updateStatus()
+
+    public function showReceived()
+    {
+        $this->showingReceived = true;
+    }
+
+    public function closeModalReceived()
+    {
+        $this->showingReceived = false;
+    }
+
+    public function completeDelivery()
     {
         $this->delivery->update([
             'status_id' => 3,
-            'received_date' => Carbon::now()->format('Y-m-d'),
+            'received_date' => $this->received_date,
+        ]);
+
+        Contract::where('id','=', $this->contracts_id)->update([
+            'status_id' => 3,
         ]);
 
         $this->reset();
@@ -186,5 +207,49 @@ class DeliveryIndex extends Component
         ]);
 
         $this->dispatchBrowserEvent('store-success');
+    }
+
+    public function viewPdf()
+    {
+        
+        // Untuk mendownload file pdf
+        // return response()->streamDownload(function () {
+        //     $pdf = App::make('dompdf.wrapper');
+        //     $pdf->loadView('pdf.penawaran');
+        //     echo $pdf->stream();
+        // }, 'pen.pdf');
+
+        $contractCode = Contract::where('id','=',$this->contracts_id)->first('contract_code')->contract_code;
+        $dateSuratJalan = Delivery::where('id','=',$this->delivery->id)->first('send_date')->send_date;
+        $plateNumber = Delivery::where('id','=',$this->delivery->id)->first('plate_number')->plate_number;
+        $getQuotationId = Contract::where('id','=',$this->contracts_id)->first('quotations_id')->quotations_id;
+
+        $dataCustomer = Quotation::where('id','=',$getQuotationId)->get();
+
+        // Ambil data barang berdasarkan rabps
+        $dataBarang = DetailRabp::where('rabps_id','=',$this->rabps_id)->get();
+        
+        $pdfContent = FacadePdf::loadView('pdf.surat-jalan', [
+            'dataBarang' => $dataBarang, 
+            'contractCode' => $contractCode, 
+            'dateSuratJalan' => $dateSuratJalan, 
+            'dataCustomer' => $dataCustomer, 
+            'plateNumber' => $plateNumber, 
+            ])->output();
+        return response()->streamDownload(
+        fn () => print($pdfContent),
+        "SuratJalan." . $this->delivery_code . ".pdf"
+        );
+        
+    }
+
+    public function updated($key, $value)
+    {
+        // Realtime update value set good ketika insert data
+        if($this->contracts_id !=NULL) {
+            $this->name = substr(Contract::where('id','=',$this->contracts_id)->first('name')->name, 8);
+        } else {
+            $this->name = NULL;
+        }
     }
 }

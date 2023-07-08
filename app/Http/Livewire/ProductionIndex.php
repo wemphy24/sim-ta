@@ -108,6 +108,7 @@ class ProductionIndex extends Component
         Production::where('id','=',$this->productions_id)->update(
             [
                 'status_id' => 2,
+                'description' => "Sedang Dirakit",
             ]
         );
         $this->dispatchBrowserEvent('store-success');
@@ -154,23 +155,26 @@ class ProductionIndex extends Component
     public function printMaterial($id)
     {
         $this->createLogisticCode();
-        
-        // Meminta material yang untuk produksi
+        $getMaterialId = SetBillMaterial::where('id','=',$id)->first('materials_id')->materials_id;
+        $getQtyMaterial = SetBillMaterial::where('id', '=', $id)->first('qty')->qty;
+
+        // Meminta material bahan untuk produksi
         LogisticMaterial::create([
             'set_goods_id' => $this->getBMId,
             'logistic_code' => $this->logistic_code,
-            'materials_id' => Material::where('id', '=', $id)->first('id')->id,
-            'qty_ask' => SetBillMaterial::where('materials_id', '=', $id)->first('qty')->qty,
-            'qty_stock' => Material::where('id', '=', $id)->first('stock')->stock,
-            'price' => Material::where('id', '=', $id)->first('price')->price,
+            'materials_id' => $getMaterialId,
+            'qty_ask' => $getQtyMaterial,
+            'qty_stock' => Material::where('id', '=', $getMaterialId)->first('stock')->stock,
+            'price' => Material::where('id', '=', $getMaterialId)->first('price')->price,
             'type' => "Material Keluar",
-            'categories_id' => Material::where('id', '=', $id)->first('categories_id')->categories_id,
-            'measurements_id' => Material::where('id', '=', $id)->first('measurements_id')->measurements_id,
+            'categories_id' => Material::where('id', '=', $getMaterialId)->first('categories_id')->categories_id,
+            'measurements_id' => Material::where('id', '=', $getMaterialId)->first('measurements_id')->measurements_id,
             'status_id' => 1,
             'users_id' => Auth::user()->id,
         ]);
 
-        SetBillMaterial::where('materials_id', '=', $id)->update([
+        // Mengupdate status material yang akan diambil
+        SetBillMaterial::where('id', '=', $id)->update([
             'status' => "Sedang Diambil",
         ]);
 
@@ -186,19 +190,27 @@ class ProductionIndex extends Component
             ]
         );
 
+        Production::where('id','=',$this->productions_id)->update(
+            [
+                'status_id' => 3,
+                'description' => "Selesai Dirakit",
+            ]
+        );
+
         $this->dispatchBrowserEvent('store-success');
     }
 
     public function createQCCode()
     {
-        // Membuat kode kontrak
+        // Membuat kode QC
         $countQuality = QualityControl::count();
         if($countQuality == 0) {
-            $this->quality_code = 'QC.' . 1001;
+            // $this->quality_code = 'QC.' . 1001;
+            $this->quality_code = 'QC.' . "0" . (Carbon::now()->day) . "." . (Carbon::now()->month) . "." . (Carbon::now()->year) . '.' . 1001;
         } else {
             $getLastQuality = QualityControl::all()->last();
-            $convertQuality = (int)substr($getLastQuality->quality_code, -4) + 1;
-            $this->quality_code = 'QC.' . $convertQuality;
+            $convertQuality = (int)substr($getLastQuality->quality_control_code, -4) + 1;
+            $this->quality_code = 'QC.' . "0" . (Carbon::now()->day) . "." . (Carbon::now()->month) . "." . (Carbon::now()->year) . '.' . $convertQuality;
         }
     }
 
@@ -221,6 +233,12 @@ class ProductionIndex extends Component
         SetGood::where('id','=',$id)->update(
             [
                 'status' => "Selesai Produksi",
+            ]
+        );
+
+        Production::where('id','=',$this->productions_id)->update(
+            [
+                'description' => "Selesai Produksi",
             ]
         );
 

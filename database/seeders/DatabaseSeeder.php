@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\DetailUser;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -29,6 +31,7 @@ class DatabaseSeeder extends Seeder
             StatusTableSeeder::class,
             SuppliersTableSeeder::class,
             CustomersTableSeeder::class,
+            DetailUsersTableSeeder::class,
             // QuotationsTableSeeder::class,
         ]);
     }

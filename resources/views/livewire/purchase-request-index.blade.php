@@ -73,7 +73,7 @@
                                 <td class="py-1 px-3">{{ ($purchaserequests ->currentpage()-1) * $purchaserequests ->perpage() + $loop->index + 1 }}</td>
                                 <td class="py-1 px-3 font-medium">{{ $pr->purchase_request_code }}</td>
                                 <td class="py-1 px-3">{{ $pr->material['name'] }}</td>
-                                <td class="py-1 px-3">{{ $pr->production['name'] }}</td>
+                                {{-- <td class="py-1 px-3">{{ $pr->production['name'] }}</td> --}}
                                 <td class="py-1 px-3">{{ $pr->description }}</td>
                                 <td class="py-1 px-3">{{ $pr->deadline }}</td>
                                 <td class="py-1 px-3">
@@ -136,7 +136,7 @@
                                 disabled
                             />
                         </div>
-                        <div class="flex items-center gap-0 justify-between p-1 flex-wrap sm:gap-2">
+                        {{-- <div class="flex items-center gap-0 justify-between p-1 flex-wrap sm:gap-2">
                             <h1>Nama Produksi</h1>
                             <select wire:model="productions_id" class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm">
                                 <option value="">Pilih Produksi</option>
@@ -144,7 +144,7 @@
                                     <option value="{{ $production->id }}">{{ $production->name }}</option>
                                 @endforeach
                             </select>
-                        </div>
+                        </div> --}}
                         <div class="flex items-center gap-0 justify-between p-1 flex-wrap sm:gap-2">
                             <h1>Nama Material</h1>
                             <select wire:model="materials_id" class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm">

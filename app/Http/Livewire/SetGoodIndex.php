@@ -45,7 +45,7 @@ class SetGoodIndex extends Component
             'categories' => Category::all(),
             'measurements' => Measurement::all(),
             'set_bill_materials' => SetBillMaterial::where('set_goods_id','=',$this->set_goods_id)->get(),
-            'quotations' => Quotation::all(),
+            'quotations' => Quotation::where('status_id','=',2)->get(),
         ])->layout('layouts.admin');
     }
 

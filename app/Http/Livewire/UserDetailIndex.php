@@ -52,7 +52,7 @@ class UserDetailIndex extends Component
             'phone' => $this->phone,
             'address' => $this->address,
             'department' => $this->department,
-            'roles_id' => $this->roles_id,
+            'roles_id' => 1,
         ]);
 
         $this->closeModal();

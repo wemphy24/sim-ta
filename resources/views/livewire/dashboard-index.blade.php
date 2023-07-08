@@ -437,8 +437,8 @@
                                             Approve 2
                                         </button>
                                     @else
-                                        <button title="Approve" wire:click="" class="text-white bg-red-500 p-2 rounded-lg font-medium hover:scale-105 hover:-translate-x-0 hover:duration-150" disabled>
-                                            Approve 2
+                                        <button title="Approve" wire:click="" class="text-white bg-red-500 p-2 rounded-lg font-medium" disabled>
+                                            Approved
                                         </button>
                                     @endif
                                     

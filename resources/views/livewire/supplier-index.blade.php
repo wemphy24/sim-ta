@@ -62,6 +62,7 @@
                             <th scope="col" class="py-3 px-6">Email</th>
                             <th scope="col" class="py-3 px-6">Telepon</th>
                             <th scope="col" class="py-3 px-6">Alamat</th>
+                            <th scope="col" class="py-3 px-6">Petugas</th>
                             <th scope="col" class="py-3 px-6">Dibuat</th>
                             <th scope="col" class="py-3 px-6">Diperbarui</th>
                             <th scope="col" class="py-3 px-6">Aksi</th>
@@ -78,6 +79,7 @@
                                 <td class="py-4 px-6">{{ $supplier->email }}</td>
                                 <td class="py-4 px-6">{{ $supplier->phone }}</td>
                                 <td class="py-4 px-6">{{ $supplier->address }}</td>
+                                <td class="py-4 px-6">{{ $supplier->officer }}</td>
                                 <td class="py-4 px-6">{{ $supplier->created_at->format('m/d/Y') }}</td>
                                 <td class="py-4 px-6">{{ $supplier->updated_at->format('m/d/Y') }}</td>
                                 <td class="py-4 px-6">
@@ -157,6 +159,14 @@
                             <input
                                 type="text"
                                 wire:model="address"
+                                class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm"
+                            />
+                        </div>
+                        <div class="flex items-center gap-8 justify-between p-1">
+                            <h1>Petugas</h1>
+                            <input
+                                type="text"
+                                wire:model="officer"
                                 class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm"
                             />
                         </div>

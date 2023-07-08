@@ -21,7 +21,7 @@
 
         {{-- TABLE DATA --}}
         <div class="m-6">
-            <div class="flex items-center justify-start gap-4 mb-6 lg:justify-end">
+            {{-- <div class="flex items-center justify-start gap-4 mb-6 lg:justify-end">
                 <button class="py-2 px-4 text-center rounded-lg border hover:bg-zinc-800 hover:text-white">
                     <div class="flex items-center gap-1">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"></path></svg>
@@ -34,7 +34,7 @@
                         <span>Buat QC</span>
                     </div>
                 </button> 
-            </div> 
+            </div>  --}}
 
             <div class="bg-white overflow-x-auto shadow-sm sm:rounded-lg border border-gray-300/50">
                 <div class="border-b-2 py-3 px-6 flex justify-between gap-4">
@@ -103,7 +103,7 @@
                                 </td>
                                 <td class="py-1 px-6">
                                     <div class="flex items-center gap-4">
-                                        <button wire:click="detail( {{ $qc->id }} )" class="bg-blue-500 px-2 py-1 rounded-md">
+                                        <button wire:click="detail( {{ $qc->id }} )" class="bg-blue-500 px-2 py-1 rounded-md hover:scale-105 hover:-translate-x-0 hover:duration-150">
                                             <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 21h7a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v11m0 5l4.879-4.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242z"></path></svg>
                                         </button>
                                     </div>
@@ -177,7 +177,7 @@
                         </div>
                         <div class="md:w-1/2">
                             <label>Keterangan:</label>
-                            <input class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm" type="text"
+                            <input class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-gray-100" type="text" disabled
                                 wire:model="description"
                             />
                         </div>
@@ -231,7 +231,7 @@
             {{-- BUTTON ACTION--}}
             <div class="py-3 px-6">
                 <div class="flex justify-end gap-4">
-                    <button wire:click="updateProduction" class="py-2 px-6 my-2 text-center rounded-lg bg-zinc-800 text-white">
+                    <button wire:click="updateProduction" class="py-2 px-6 my-2 text-center rounded-lg bg-zinc-800 text-white hover:scale-105 hover:-translate-x-0 hover:duration-150">
                         Simpan
                     </button>
                 </div>
@@ -262,15 +262,15 @@
                                     <td class="py-2 px-6">{{ $detailrabp->set_good->status }}</td>
                                     <td class="py-2 px-6 text-white">
                                         <div class="flex items-center gap-4">
-                                            <button wire:click="detailMaterial({{ $detailrabp->set_goods_id }})" class="bg-blue-500 px-2 py-1 rounded-md">
+                                            <button wire:click="detailMaterial({{ $detailrabp->set_goods_id }})" class="bg-blue-500 px-2 py-1 rounded-md hover:scale-105 hover:-translate-x-0 hover:duration-150">
                                                 <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 21h7a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v11m0 5l4.879-4.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242z"></path></svg>
                                             </button>
                                             @if ($detailrabp->set_good->status == "Selesai Produksi")
-                                                <button wire:click="changeStatus({{ $detailrabp->set_goods_id }})" class="bg-green-500 px-2 py-1 rounded-md">
+                                                <button wire:click="changeStatus({{ $detailrabp->set_goods_id }})" class="bg-green-500 px-2 py-1 rounded-md hover:scale-105 hover:-translate-x-0 hover:duration-150">
                                                     Mulai QC
                                                 </button>
                                             @elseif ($detailrabp->set_good->status == "Sedang QC")
-                                                <button wire:click="doneRetur({{ $detailrabp->set_goods_id }})" class="bg-green-500 px-2 py-1 rounded-md">
+                                                <button wire:click="doneRetur({{ $detailrabp->set_goods_id }})" class="bg-green-500 px-2 py-1 rounded-md hover:scale-105 hover:-translate-x-0 hover:duration-150">
                                                     Selesai QC
                                                 </button>
                                             @elseif ($detailrabp->set_good->status == "Selesai QC")

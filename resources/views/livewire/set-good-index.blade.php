@@ -158,15 +158,6 @@
                                 </select>
                             </div>
 
-                            {{-- <div class="flex items-center gap-0 justify-between p-1 flex-wrap sm:gap-2">
-                                <h1>Qty</h1>
-                                <input class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm"
-                                    type="number"
-                                    wire:model="qty"
-                                    min="1"
-                                />
-                            </div> --}}
-
                             <div class="flex items-center gap-0 justify-between p-1 flex-wrap sm:gap-2">
                                 <h1>Satuan</h1>
                                 <select class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm bg-gray-100"
@@ -179,15 +170,6 @@
                                     @endforeach
                                 </select>
                             </div>
-
-                            {{-- <div class="flex items-center gap-0 justify-between p-1 flex-wrap sm:gap-2">
-                                <h1>Harga</h1>
-                                <input class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm bg-gray-100"
-                                    disabled
-                                    type="number"
-                                    wire:model="price"
-                                />
-                            </div> --}}
 
                             <div class="mt-4">
                                 <div class="flex justify-end">
@@ -294,13 +276,6 @@
                                 </select>
                             </div>
                             <div class="md:w-1/2">
-                                
-                            </div>
-                        </div>
-                        
-                        {{--  --}}
-                        <div class="md:flex gap-2 form py-1">
-                            <div class="md:w-1/2">
                                 <label>Harga:</label>
                                 <div class="w-full border border-gray-300/50 rounded-lg shadow-sm bg-blue-200">
                                     <div class="flex items-center gap-2">
@@ -309,10 +284,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="md:w-1/2">
-                                
-                            </div>
                         </div>
+                        
                     </div>
                 </div>
 

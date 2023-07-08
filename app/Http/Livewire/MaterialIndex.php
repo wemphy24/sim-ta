@@ -5,7 +5,10 @@ namespace App\Http\Livewire;
 use App\Models\Category;
 use App\Models\Material;
 use App\Models\Measurement;
+use App\Models\PurchaseRequest;
 use Livewire\Component;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Livewire\WithPagination;
 
 class MaterialIndex extends Component
@@ -17,10 +20,13 @@ class MaterialIndex extends Component
     public $orderAsc = true;
 
     public $showingMaterialModal = false;
+    public $showingRequest = false;
     public $isEditMode = false;
     public $categories_id, $measurements_id, $material_code, $name, $stock, $price, $min_stock, $max_stock;
 
-    public $material;
+    public $material, $getMaterialId;
+
+    public $purchase_request_code, $qty_ask, $deadline;
 
     public function render()
     {
@@ -40,6 +46,7 @@ class MaterialIndex extends Component
     public function closeModal()
     {
         $this->showingMaterialModal = false;
+        $this->showingRequest = false;
     }
 
     public function storeMaterial()
@@ -104,11 +111,58 @@ class MaterialIndex extends Component
         $this->dispatchBrowserEvent('delete-success');
     }
 
+    public function createPRCode() 
+    {
+        // Membuat kode PR
+        $countPR = PurchaseRequest::count();
+        if($countPR == 0) {
+            $this->purchase_request_code = 'PR.' . "0" . (Carbon::now()->day) . "." . (Carbon::now()->month) . "." . (Carbon::now()->year) . '.' . 1001;
+        } else {
+            $getLastPR = PurchaseRequest::all()->last();
+            $convertPR = (int)substr($getLastPR->purchase_request_code, -4) + 1;
+            $this->purchase_request_code = 'PR.' . "0" . (Carbon::now()->day) . "." . (Carbon::now()->month) . "." . (Carbon::now()->year) . '.' . $convertPR;
+        }
+    }
+
+    public function showRequest($id) 
+    {
+        $this->getMaterialId = $id;
+        $this->showingRequest = true;
+    }
+
+    public function requestPR()
+    {
+        $this->createPRCode();
+
+        PurchaseRequest::create([
+            'purchase_request_code' => $this->purchase_request_code,
+            'materials_id' => $this->getMaterialId,
+            'qty_ask' => $this->qty_ask,
+            'description' => "Meminta Request",
+            'deadline' => $this->deadline,
+            'categories_id' => Material::where('id','=', $this->getMaterialId)->first('categories_id')->categories_id,
+            'measurements_id' => Material::where('id','=', $this->getMaterialId)->first('measurements_id')->measurements_id,
+            'status_id' => 1,
+            'users_id' => Auth::user()->id,
+        ]);
+
+        $this->closeModal();
+        $this->dispatchBrowserEvent('store-success');
+    }
+
     public function updated($key, $value)
     {
         // Realtime update value
         $countMaterial = Material::count();
         $getLastMaterialCode = Material::all()->last();
+
+        if($this->categories_id == 3) {
+            $this->price = 0;
+            $this->stock = 0;
+            $this->min_stock = 0;
+            $this->max_stock = 0;
+        }
+
         if($countMaterial == 0) {
             if($this->categories_id == 1) {
                 $this->material_code = "BB.00" . 1;

@@ -26,7 +26,30 @@
 </style>
 
 <div class="body_">
-    <h3 class="title_">Detail Material</h3>
+  <table style="text-align: center">
+    <tr>
+      <td><h3>Panel Maker & Electrical Engineering</h3></td>
+    </tr>
+    <tr>
+      <td>Jl. Imam Bonjol 332, Badung Bali</td>
+    </tr>
+    <tr>
+      <td>Telp. 0361 8989 7632</td>
+    </tr>
+    <tr>
+      <td>Email. naradaofficial@gmail.com</td>
+    </tr>
+  </table>
+  <hr
+    style="
+      width: 80%;
+      height: 2px;
+      border-width: 0;
+      color: gray;
+      background-color: gray;
+    "
+  />
+  <h2 class="title_">Detail Material</h2>
 
     <table>
         @foreach ($namaBarang as $nb)
@@ -38,10 +61,10 @@
 
     <table class="border_">
         <tr>
-            <th class="border_">No</th>
-            <th class="border_">Nama</th>
-            <th class="border_">Satuan</th>
-            <th class="border_">Qty</th>
+            <th style="background-color: #27272a; color: white" class="border_">No</th>
+            <th style="background-color: #27272a; color: white" class="border_">Nama</th>
+            <th style="background-color: #27272a; color: white" class="border_">Satuan</th>
+            <th style="background-color: #27272a; color: white" class="border_">Qty</th>
         </tr>
         @foreach ($dataMaterial as $dm)
         <tr>

@@ -151,7 +151,7 @@
                             />
                         </div>
                         <div class="flex items-center gap-0 justify-between p-1 flex-wrap sm:gap-2">
-                            <h1>Nama Penawaran</h1>
+                            <h1>Nama</h1>
                             <input class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm"
                                 type="text"
                                 wire:model="name"
@@ -223,28 +223,13 @@
         </div>
 
         <div class="m-6">
-            {{-- PROGRESS BAR --}}
-            {{-- <div class="mb-6">
-                <div class="w-full bg-gray-200 rounded-full mb-2">
-                    @if ($status_id == "Complete")
-                        <div class="bg-zinc-800 h-2.5 rounded-full" style="width:100%"></div>
-                    @else
-                        <div class="bg-zinc-800 h-2.5 rounded-full" style="width:0%"></div>
-                    @endif
-                </div>
-                <div class="flex justify-between font-medium">
-                    <label>Pending</label>
-                    <label>Review</label>
-                    <label>Complete</label>
-                </div>
-            </div> --}}
 
             <div class="overflow-x-auto sm:rounded-lg border border-gray-300/50">
                 <div class="bg-white py-3 px-6">
                     {{--  --}}
                     <div class="md:flex gap-2 form py-1">
                         <div class="md:w-1/2">
-                            <label>Kode Penawaran:</label>
+                            <label>Kode Penawaran: </label>
                             <input class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-gray-100"
                                 type="text"
                                 wire:model="quotation_code"
@@ -259,6 +244,11 @@
                                     <option value="{{ $inquiry->id }}">{{ $inquiry->name }}</option>
                                 @endforeach
                             </select>
+                            {{-- <input class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-gray-100"
+                                type="text"
+                                wire:model="inquiries_id"
+                                disabled
+                            /> --}}
                         </div>
                     </div>
 
@@ -304,7 +294,7 @@
                     <div class="md:flex gap-2 form py-1">
                         <div class="md:w-1/2">
                             <label>Tanggal:</label>
-                            <input class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm"
+                            <input class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-gray-100" disabled
                                 type="date"
                                 wire:model="date"
                             />
@@ -318,13 +308,13 @@
                                     disabled
                                 />
                             @elseif ($status_id == "Working")
-                                <input class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-yellow-200"
+                                <input class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-yellow-200 font-bold"
                                     type="text"
                                     wire:model="status_id"
                                     disabled
                                 />
                             @else
-                                <input class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-green-200"
+                                <input class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-green-200 font-bold"
                                     type="text"
                                     wire:model="status_id"
                                     disabled
@@ -378,12 +368,15 @@
                         <button wire:click="approve" class="py-2 px-6 my-2 text-center rounded-lg bg-green-500 text-white hover:scale-105 hover:-translate-x-0 hover:duration-150">
                             Approve
                         </button>
-                    @else
-                        <button wire:click="" class="py-2 px-6 my-2 text-center rounded-lg bg-red-500 text-white hover:scale-105 hover:-translate-x-0 hover:duration-150" disabled>
-                            Approve
+                    @elseif ($quotation->status['name'] == "Working")
+                        <button wire:click="completeQO" class="py-2 px-6 my-2 text-center rounded-lg bg-green-500 text-white hover:scale-105 hover:-translate-x-0 hover:duration-150">
+                            Selesai
                         </button>
-                    @endif
-                    
+                    @else
+                        <button wire:click="" class="py-2 px-6 my-2 text-center rounded-lg bg-red-500 text-white" disabled>
+                             Penawaran Selesai
+                        </button>
+                    @endif             
                 </div>
             </div>
         </div>

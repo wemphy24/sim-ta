@@ -23,6 +23,7 @@ class Delivery extends Model
         'description', 
         'send_date', 
         'received_date',  
+        'plate_number',  
         'status_id',  
         'users_id',  
         'updated_at',

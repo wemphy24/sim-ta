@@ -63,10 +63,10 @@ class LogisticMaterialIndex extends Component
         $getMaterialId = LogisticMaterial::where('id', '=', $id)->first('materials_id')->materials_id;
 
         // Menambah data set bill material setelah di approve oleh logistik
-        // SetBillMaterial::where('materials_id', '=', $getMaterialId)->update([
-        //     'qty_received' => LogisticMaterial::where('materials_id', '=', $getMaterialId)->first('qty_ask')->qty_ask,
-        //     'status' => "Sudah Diambil",
-        // ]);
+        SetBillMaterial::where('materials_id', '=', $getMaterialId)->update([
+            'qty_received' => LogisticMaterial::where('materials_id', '=', $getMaterialId)->first('qty_ask')->qty_ask,
+            'status' => "Sudah Diambil",
+        ]);
 
         // Update status logistic material
         LogisticMaterial::where('id', '=', $id)->update([
@@ -96,7 +96,7 @@ class LogisticMaterialIndex extends Component
 
         // Mengurangi stok pada master data
         Material::where('id', '=', $getMaterialId)->update([
-            'stock' => (Material::where('id', '=', $getMaterialId)->first('stock')->stock) - (LogisticMaterial::where('materials_id', '=', $id)->first('qty_ask')->qty_ask),
+            'stock' => (Material::where('id', '=', $getMaterialId)->first('stock')->stock) - (LogisticMaterial::where('materials_id', '=', $getMaterialId)->first('qty_ask')->qty_ask),
         ]);
 
         SetGood::where('id','=',$getSetGoodId)->update([
@@ -129,9 +129,9 @@ class LogisticMaterialIndex extends Component
         $this->createPRCode();
 
         PurchaseRequest::create([
-            'productions_id' => $this->productions_id,
+            // 'productions_id' => $this->productions_id, /////////////
             'purchase_request_code' => $this->purchase_request_code,
-            'name' => LogisticMaterial::where('id', '=', $id)->first('materials_id')->materials_id,
+            'materials_id' => LogisticMaterial::where('id', '=', $id)->first('materials_id')->materials_id,
             'qty_ask' => LogisticMaterial::where('id', '=', $id)->first('qty_ask')->qty_ask,
             'description' => "Request Pembelian",
             'deadline' => $this->deadline,

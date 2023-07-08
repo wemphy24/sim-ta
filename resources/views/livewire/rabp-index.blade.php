@@ -67,8 +67,8 @@
                             <tr>
                                 <th scope="col" class="py-3 px-4">#</th>
                                 <th scope="col" class="py-3 px-3">Kode RABP</th>
+                                <th scope="col" class="py-3 px-3">Nama</th>
                                 <th scope="col" class="py-3 px-3">Nama Penawaran</th>
-                                <th scope="col" class="py-3 px-3">Nama RABP</th>
                                 <th scope="col" class="py-3 px-3">Keterangan</th>
                                 <th scope="col" class="py-3 px-3">Tanggal</th>
                                 <th scope="col" class="py-3 px-3">Status</th>
@@ -81,8 +81,8 @@
                             <tr class="bg-white border-b hover:bg-gray-50 hover:text-black text-sm">
                                 <td class="py-1 px-3">{{ ($rabps->currentpage()-1) * $rabps ->perpage() + $loop->index + 1 }}</td>
                                 <td class="py-1 px-3 font-medium">{{ $rabp->rabp_code }}</td>
-                                <td class="py-1 px-3">{{ $rabp->quotation['name'] }}</td>
                                 <td class="py-1 px-3">{{ $rabp->name }}</td>
+                                <td class="py-1 px-3">{{ $rabp->quotation['name'] }}</td>
                                 <td class="py-1 px-3">{{ $rabp->description }}</td>
                                 <td class="py-1 px-3">{{ $rabp->date }}</td>
                                 <td class="py-1 px-3">
@@ -114,8 +114,8 @@
                                                 Approve 2
                                             </button>
                                         @else
-                                            <button title="Approve" wire:click="" class="text-white bg-red-500 p-2 rounded-lg font-medium hover:scale-105 hover:-translate-x-0 hover:duration-150" disabled>
-                                                Approve 2
+                                            <button title="Approve" wire:click="" class="text-white bg-red-500 p-2 rounded-lg font-medium" disabled>
+                                                Approved
                                             </button>
                                         @endif
                                         
@@ -164,7 +164,7 @@
                             </div>
                             <div class="flex items-center gap-0 justify-between p-1 flex-wrap sm:gap-2">
                                 <h1>Keterangan</h1>
-                                <input wire:model="description" type="text" class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm" maxlength="128" disabled/>
+                                <input wire:model="description" type="text" class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm bg-gray-100" maxlength="128" disabled/>
                             </div>
                             <div class="flex items-center gap-0 justify-between p-1 flex-wrap sm:gap-2">
                                 <h1>Tanggal</h1>
@@ -239,7 +239,7 @@
                         <div class="md:flex gap-2 form py-1">
                             <div class="md:w-1/2">
                                 <label>Tanggal:</label>
-                                <input wire:model="date" type="date" class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm"/>
+                                <input wire:model="date" type="date" class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-gray-100" disabled/>
                             </div>
                             <div class="md:w-1/2">
                                 <label>Status:</label>
@@ -254,9 +254,13 @@
                         </div>
 
                         {{--  --}}
-                        <div class="form">
+                        <div class="md:w-1/2">
                             <label>Dibuat:</label>
-                            <input wire:model="users_id" type="text" class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-gray-100" disabled/>
+                            <input class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-gray-100" disabled
+                                type="text"
+                                wire:model="users_id"
+                                maxlength="128"
+                            />
                         </div>
                     </div>
                 </div>
@@ -364,9 +368,11 @@
                                         <td class="py-2 px-6">Rp. {{ number_format($detailrabp->price) }}</td>
                                         <td class="py-2 px-6">Rp. {{ number_format($detailrabp->price * $detailrabp->qty) }}</td>
                                         <td class="py-2 px-6 text-blue-600">
+                                            @if ($description != "Produksi Berhasil")
                                             <button wire:click="editSetGood({{ $detailrabp->id }})" class="bg-yellow-500 px-2 py-1 rounded-md hover:scale-105 hover:-translate-x-0 hover:duration-150">
                                                 <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"></path></svg>
                                             </button>
+                                            @endif
                                             <button wire:click="detailGood({{ $detailrabp->set_goods_id }})" class="bg-blue-500 px-2 py-1 rounded-md hover:scale-105 hover:-translate-x-0 hover:duration-150">
                                                 <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 21h7a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v11m0 5l4.879-4.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242z"></path></svg>
                                             </button>
@@ -379,6 +385,7 @@
                                 @endforeach
                             </tbody>
 
+                            @if ($description != "Produksi Berhasil")
                             <tfoot>
                                 <tr class="font-medium">
                                     <td class="py-2 px-2">
@@ -406,6 +413,7 @@
                                     </td>
                                 </tr>
                             </tfoot>
+                            @endif
                         </table>
 
                         {{-- <div class="mt-3 flex justify-center">
@@ -419,7 +427,11 @@
                             
                             <div class="flex gap-3 items-center justify-between font-medium">
                                 <h1>Total Produksi:</h1>
-                                <div class="text-xl font-bold">Rp. {{ number_format($total_price_production) }}</div>
+                                @if ($total_price_production == NULL)
+                                    <div class="text-xl font-bold">Rp. 0</div>
+                                @else
+                                    <div class="text-xl font-bold">Rp. {{ number_format($total_price_production) }}</div>
+                                @endif
                             </div>
                         
                             <div class="flex gap-3 items-center justify-between font-medium">
@@ -458,7 +470,14 @@
                                 <button wire:click="showProduction" class="py-2 px-6 my-2 text-center rounded-lg bg-red-500 text-white" disabled>
                                     Proses Produksi
                                 </button>
-                            @else   
+                            @elseif ($status_id == 'Complete' && $description == "Produksi Berhasil")  
+                                <button wire:click="viewPdf" class="py-2 px-6 my-2 text-center rounded-lg bg-yellow-500 text-white hover:scale-105 hover:-translate-x-0 hover:duration-150">
+                                    Download Penawaran
+                                </button>
+                                <button wire:click="" class="py-2 px-6 my-2 text-center rounded-lg bg-red-500 text-white" disabled>
+                                    Proses Produksi
+                                </button>
+                            @elseif ($status_id == 'Complete')  
                                 <button wire:click="viewPdf" class="py-2 px-6 my-2 text-center rounded-lg bg-yellow-500 text-white hover:scale-105 hover:-translate-x-0 hover:duration-150">
                                     Download Penawaran
                                 </button>
@@ -487,8 +506,8 @@
                                     Approve 2
                                 </button>
                             @else
-                                <button wire:click="approve2" class="py-2 px-6 my-2 text-center rounded-lg bg-red-500 text-white" disabled>
-                                    Approve 2
+                                <button wire:click="" class="py-2 px-6 my-2 text-center rounded-lg bg-red-500 text-white" disabled>
+                                    Approved
                                 </button>
                             @endif
                         </div>
@@ -570,9 +589,8 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($mbud as $t)
+                                @foreach ($listMaterials as $t)
                                     <tr class="bg-white hover:bg-gray-50 hover:text-black font-medium">
-                                        {{-- <td class="py-2 px-6">{{ $t->set_good['name'] }}</td> --}}
                                         <td class="py-2 px-6">{{ $t->material['name'] }}</td>
                                         <td class="py-2 px-6">{{ $t->qty }}</td>
                                         <td class="py-2 px-6">Rp. {{ number_format($t->price) }}</td>

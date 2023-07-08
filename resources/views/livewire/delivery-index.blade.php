@@ -115,7 +115,7 @@
             </div>
         </div>
 
-        {{-- QUOTATION MODAL --}}
+        {{-- DELIVERY MODAL --}}
         @if ($showingDelivery)
             <div class="bg-black bg-opacity-50 fixed inset-0 flex justify-center items-center">
                 <div class="bg-white p-4 rounded-lg shadow-md w-[350px] h-[500px] overflow-auto sm:w-fit sm:h-fit">
@@ -189,7 +189,6 @@
                 </div>
             </div>
         @endif
-
     @endif
 
     {{-- DETAIL MODAL --}}
@@ -279,6 +278,12 @@
                     {{--  --}}
                     <div class="md:flex gap-2 form py-1">
                         <div class="md:w-1/2">
+                            <div class="md:w-1/2">
+                                <label>Nomor Kendaraan:</label>
+                                <input class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm" type="text"
+                                    wire:model="plate_number" 
+                                />
+                            </div>
                             <label>Status:</label>
                             @if ($status_id == "Pending")
                                 <input class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-red-200 font-bold"
@@ -368,31 +373,62 @@
             <div class="py-3 px-6">
                 <div class="flex justify-between">
                     <div class="flex gap-4">
-                        <button wire:click="" class="py-2 px-6 my-2 text-center rounded-lg bg-yellow-500 text-white">
-                            Download Surat Jalan
-                        </button>
-                    </div>
-                    
-                    <div class="flex gap-4">
                         @if ($this->status_id == "Pending")
-                            <button wire:click="approve" class="py-2 px-6 my-2 text-center rounded-lg bg-green-500 text-white">
-                                Approve  
-                            </button>
-                        @elseif ($this->status_id == "Working")
-                            <button wire:click="updateStatus" class="py-2 px-6 my-2 text-center rounded-lg bg-green-500 text-white">
-                                Selesai  
-                            </button>
-                        @elseif ($this->status_id == "Complete")
                             <button wire:click="" class="py-2 px-6 my-2 text-center rounded-lg bg-red-500 text-white" disabled>
-                                Selesai  
+                                Download Surat Jalan
+                            </button>
+                        @else
+                            <button wire:click="viewPdf" class="py-2 px-6 my-2 text-center rounded-lg bg-yellow-500 text-white hover:scale-105 hover:-translate-x-0 hover:duration-150">
+                                Download Surat Jalan
                             </button>
                         @endif
                         
                     </div>
+                    
+                    <div class="flex gap-4">
+                        @if ($this->status_id == "Pending")
+                            <button wire:click="approve" class="py-2 px-6 my-2 text-center rounded-lg bg-green-500 text-white hover:scale-105 hover:-translate-x-0 hover:duration-150">
+                                Approve  
+                            </button>
+                        @elseif ($this->status_id == "Working")
+                            <button wire:click="showReceived" class="py-2 px-6 my-2 text-center rounded-lg bg-green-500 text-white hover:scale-105 hover:-translate-x-0 hover:duration-150">
+                                Selesai  
+                            </button>
+                        @elseif ($this->status_id == "Complete")
+                            <button wire:click="" class="py-2 px-6 my-2 text-center rounded-lg bg-red-500 text-white" disabled>
+                                Pengiriman Selesai  
+                            </button>
+                        @endif
+                    </div>
                 </div>
             </div>
-
-
         </div>
+        {{-- INPUT TERIMA MODAL --}}
+        @if ($showingReceived)
+            <div class="bg-black bg-opacity-50 fixed inset-0 flex justify-center items-center">
+                <div class="bg-white p-4 rounded-lg shadow-md w-[350px] h-[500px] overflow-auto sm:w-fit sm:h-fit">
+                    <div class="flex justify-between items-center">
+                        <h1 class="font-medium text-xl">Tanggal Diterima</h1>
+                        <button wire:click="closeModalReceived">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="flex items-center gap-0 justify-between p-1 flex-wrap sm:gap-2">
+                        <input class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm"
+                            type="date"
+                            wire:model="received_date"
+                        />
+                    </div>
+                    <div class="mt-4">
+                        <div class="flex justify-end">
+                            <button wire:click="completeDelivery" class="text-white bg-zinc-800 py-2 px-6 rounded-lg hover:scale-105 hover:-translate-x-0 hover:duration-150">
+                                Submit
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
     @endif
 </div>

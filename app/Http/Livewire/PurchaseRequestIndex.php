@@ -27,7 +27,7 @@ class PurchaseRequestIndex extends Component
     public function render()
     {
         return view('livewire.purchase-request-index', [
-            'purchaserequests' => PurchaseRequest::with('production','status')->search(trim($this->search))->orderBy($this->searchBy,$this->orderAsc ? 'asc' : 'desc')->paginate($this->showPage),
+            'purchaserequests' => PurchaseRequest::with('status')->search(trim($this->search))->orderBy($this->searchBy,$this->orderAsc ? 'asc' : 'desc')->paginate($this->showPage),
             'productions' =>Production::all(),
             'materials' =>Material::where('categories_id','=',1)->orWhere('categories_id','=','2')->get(),
         ])->layout('layouts.admin');

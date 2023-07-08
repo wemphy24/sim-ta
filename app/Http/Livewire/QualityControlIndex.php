@@ -111,6 +111,7 @@ class QualityControlIndex extends Component
         QualityControl::where('id','=',$this->quality_controls_id)->update(
             [
                 'status_id' => 2,
+                'description' => "Sedang QC",
             ]
         );
         $this->dispatchBrowserEvent('store-success');
@@ -181,6 +182,7 @@ class QualityControlIndex extends Component
         QualityControl::where('id','=', $this->quality_controls_id,)->update([
             'end_qc' => Carbon::now()->format('Y-m-d'),
             'status_id' => 3,
+            'description' => "Selesai QC",
         ]);
 
         LogisticGood::create([
