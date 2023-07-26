@@ -45,4 +45,10 @@ class Category extends Model
     {
         return $this->hasMany('App\Models\PurchaseRequest', 'categories_id');
     }
+
+    // AFTER REVISION
+    public function good()
+    {
+        return $this->hasMany('App\Models\Good', 'categories_id');
+    }
 }

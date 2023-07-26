@@ -3,11 +3,13 @@
 namespace App\Http\Livewire;
 
 use App\Models\DetailRabp;
+use App\Models\Good;
 use App\Models\LogisticGood;
 use App\Models\LogisticMaterial;
 use App\Models\Material;
 use App\Models\Production;
 use App\Models\QualityControl;
+use App\Models\RabpMaterial;
 use App\Models\Retur;
 use App\Models\SetBillMaterial;
 use App\Models\SetGood;
@@ -37,6 +39,9 @@ class QualityControlIndex extends Component
     // Tabel set bill material
     public $getBMId, $good_name, $count_material, $qty_received, $qty_install, $qty_remaining, $getEditBMId;
 
+    // Tabel good
+    public $status_qc;
+
     // Assign ke tabel retur
     public $retur_code;
 
@@ -50,8 +55,10 @@ class QualityControlIndex extends Component
         return view('livewire.quality-control-index', [
             'qualitycontrols' => QualityControl::with('production','status')->search(trim($this->search))->orderBy($this->searchBy,$this->orderAsc ? 'asc' : 'desc')->paginate($this->showPage),
             'detailrabps' => DetailRabp::where('rabps_id','=',$this->rabps_id)->get(),
-            'setbillmaterials' => SetBillMaterial::where('set_goods_id','=',$this->getBMId)->get(),
-            'editsetbillmaterials' => SetBillMaterial::where('id','=',$this->getEditBMId)->get(),
+            // 'setbillmaterials' => SetBillMaterial::where('set_goods_id','=',$this->getBMId)->get(),
+            // 'editsetbillmaterials' => SetBillMaterial::where('id','=',$this->getEditBMId)->get(),
+            'editrabpmaterials' => RabpMaterial::where('id','=',$this->getEditBMId)->get(),
+            'rabpmaterials' => RabpMaterial::where('goods_id','=',$this->getBMId)->get(),
             'productions' => Production::all(),
         ])->layout('layouts.admin');
     }
@@ -90,8 +97,9 @@ class QualityControlIndex extends Component
         // Menampilkan modal detail material
         $this->showingDetailMaterial = true;
         $this->getBMId = $id;
-        $this->good_name = SetGood::where('id','=',$id)->first(['name'])->name;
-        $this->count_material = DetailRabp::where('rabps_id','=',$this->rabps_id)->orWhere('set_goods_id','=',$this->getBMId)->first(['qty'])->qty;
+        $this->good_name = Good::where('id','=',$id)->first(['name'])->name;
+        $this->status_qc = Good::where('id','=',$id)->first(['status_qc'])->status_qc;
+        // $this->count_material = DetailRabp::where('rabps_id','=',$this->rabps_id)->orWhere('set_goods_id','=',$this->getBMId)->first(['qty'])->qty;
     }
 
     public function closeDetailMaterial()
@@ -100,11 +108,30 @@ class QualityControlIndex extends Component
         $this->showingDetailMaterial = false;
     }
 
+    public function qcOk()
+    {
+        Good::where('id','=',$this->getBMId)->update([
+            'status_qc' => "OK",
+        ]);
+
+        $this->dispatchBrowserEvent('store-success');
+        $this->showingDetailMaterial = false;
+    }
+
+    public function qcOnHold()
+    {
+        Good::where('id','=',$this->getBMId)->update([
+            'status_qc' => "On Hold",
+        ]);
+        $this->dispatchBrowserEvent('store-success');
+        $this->showingDetailMaterial = false;
+    }
+
     public function changeStatus($id)
     {
-        SetGood::where('id','=',$id)->update(
+        Good::where('id','=',$id)->update(
             [
-                'status' => "Sedang QC",
+                'status_production' => "Sedang QC",
             ]
         );
 
@@ -125,7 +152,7 @@ class QualityControlIndex extends Component
             $this->retur_code = 'RETUR.' . 1001;
         } else {
             $getLastRetur = Retur::all()->last();
-            $convertRetur = (int)substr($getLastRetur->logistic_code, -4) + 1;
+            $convertRetur = (int)substr($getLastRetur->retur_code, -4) + 1;
             $this->retur_code = 'RETUR.' . $convertRetur;
         }
     }
@@ -135,17 +162,18 @@ class QualityControlIndex extends Component
         $this->createReturCode();
 
         Retur::create([
-            'set_goods_id' => SetBillMaterial::where('id','=',$id)->first('set_goods_id')->set_goods_id,
+            // 'set_goods_id' => SetBillMaterial::where('id','=',$id)->first('set_goods_id')->set_goods_id,
+            'goods_id' => RabpMaterial::where('id','=',$id)->first('goods_id')->goods_id,
             'retur_code' => $this->retur_code,
-            'materials_id' => SetBillMaterial::where('id','=',$id)->first('materials_id')->materials_id,
-            'qty' => SetBillMaterial::where('id','=',$id)->first('qty_remaining')->qty_remaining,
-            'price' => SetBillMaterial::where('id','=',$id)->first('price')->price,
+            'materials_id' => RabpMaterial::where('id','=',$id)->first('materials_id')->materials_id,
+            'qty' => RabpMaterial::where('id','=',$id)->first('qty_remaining')->qty_remaining,
+            'price' => RabpMaterial::where('id','=',$id)->first('price')->price,
             'retur_date' => Carbon::now()->format('Y-m-d'),
             'status_id' => 1,
             'users_id' => Auth::user()->id,
         ]); 
 
-        SetBillMaterial::where('id','=',$id)->update([
+        RabpMaterial::where('id','=',$id)->update([
             'status' => "Sedang Retur",
         ]);
 
@@ -161,22 +189,29 @@ class QualityControlIndex extends Component
             $this->logistic_good_code = 'LOG.BARANG.' . 1001;
         } else {
             $getLastLog = LogisticMaterial::all()->last();
-            $convertLog = (int)substr($getLastLog->logistic_code, -4) + 1;
+            $convertLog = (int)substr($getLastLog->logistic_good_code, -4) + 1;
             $this->logistic_good_code = 'LOG.BARANG.' . $convertLog;
         }
     }
 
+    // public function showQCModal()
+    // {
+
+    // }
+    
     public function doneRetur($id)
     {
         $this->createLogisticCode();
 
-        $getMaterialName = SetGood::where('id','=',$id)->first('name')->name;
-        $getMaterialId = Material::where('name','=',$getMaterialName)->first('id')->id;
+        // $getMaterialName = Good::where('id','=',$id)->first('name')->name; ///
+        // $getMaterialId = Material::where('name','=',$getMaterialName)->first('id')->id; ///
+
+        // $getGoodId = Good::where('id','=',$id)->first('id')->id;
 
         // dd(SetGood::where('name', '=', $getMaterialName)->first('price')->price);
 
-        SetGood::where('id','=',$id)->update([
-            'status' => "Selesai QC"
+        Good::where('id','=',$id)->update([
+            'status_production' => "Selesai QC"
         ]);
 
         QualityControl::where('id','=', $this->quality_controls_id,)->update([
@@ -186,15 +221,15 @@ class QualityControlIndex extends Component
         ]);
 
         LogisticGood::create([
-            'set_goods_id' => $id,
+            'goods_id' => $id,
             'logistic_good_code' => $this->logistic_good_code,
-            'materials_id' => $getMaterialId,
-            'qty_ask' => SetGood::where('name', '=', $getMaterialName)->first('qty')->qty,
-            'qty_stock' => Material::where('id', '=', $getMaterialId)->first('stock')->stock,
-            'price' => SetGood::where('name', '=', $getMaterialName)->first('price')->price,
+            // 'materials_id' => $getMaterialId, ///
+            'qty_ask' => DetailRabp::where('goods_id', '=', $id)->first('qty')->qty,
+            'qty_stock' => Good::where('id', '=', $id)->first('stock')->stock, ///
+            'price' => DetailRabp::where('goods_id', '=', $id)->first('price')->price,
             'type' => "Barang Masuk",
-            'categories_id' => Material::where('id', '=', $getMaterialId)->first('categories_id')->categories_id,
-            'measurements_id' => Material::where('id', '=', $getMaterialId)->first('measurements_id')->measurements_id,
+            'categories_id' => Good::where('id', '=', $id)->first('categories_id')->categories_id, ///
+            'measurements_id' => Good::where('id', '=', $id)->first('measurements_id')->measurements_id, ///
             'status_id' => 1,
             'users_id' => Auth::user()->id,
         ]);

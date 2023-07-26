@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Material;
+use App\Models\RabpMaterial;
 use App\Models\Retur;
 use App\Models\SetBillMaterial;
 use Livewire\Component;
@@ -21,7 +22,7 @@ class ReturIndex extends Component
     public function render()
     {
         return view('livewire.retur-index', [
-            'returs' => Retur::with('set_good','material','status')->search(trim($this->search))->orderBy($this->searchBy,$this->orderAsc ? 'asc' : 'desc')->paginate($this->showPage),
+            'returs' => Retur::with('good','material','status')->search(trim($this->search))->orderBy($this->searchBy,$this->orderAsc ? 'asc' : 'desc')->paginate($this->showPage),
         ])->layout('layouts.admin');
     }
 
@@ -42,7 +43,7 @@ class ReturIndex extends Component
         ]);
 
         // Mengubah status pada set bill material menjadi sudah retur
-        SetBillMaterial::where('materials_id','=',$getMaterialId)->update([
+        RabpMaterial::where('materials_id','=',$getMaterialId)->update([
             'status' => "Sudah Retur",
         ]);
 

@@ -20,6 +20,8 @@ class GoodReceive extends Model
         'good_receive_code', 
         'materials_id',
         'qty', 
+        'qty_order', 
+        'qty_accept', 
         'price', 
         'print_date', 
         'suppliers_id',  

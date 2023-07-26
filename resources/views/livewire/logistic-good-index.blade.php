@@ -59,7 +59,7 @@
                             <th scope="col" class="py-3 px-4">#</th>
                             <th scope="col" class="py-3 px-3">Kode Logistik</th>
                             <th scope="col" class="py-3 px-3">Nama</th>
-                            <th scope="col" class="py-3 px-3">Barang Diproduksi</th>
+                            {{-- <th scope="col" class="py-3 px-3">Barang Diproduksi</th> --}}
                             <th scope="col" class="py-3 px-3">Kategori</th>
                             <th scope="col" class="py-3 px-3">Qty Terima</th>
                             <th scope="col" class="py-3 px-3">Qty Stok</th>
@@ -74,12 +74,12 @@
                             <tr class="bg-white border-b hover:bg-gray-50 hover:text-black text-sm">
                                 <td class="py-1 px-3">{{ ($logistics ->currentpage()-1) * $logistics ->perpage() + $loop->index + 1 }}</td>
                                 <td class="py-1 px-3 font-medium">{{ $logistic->logistic_good_code }}</td>
-                                <td class="py-1 px-3">{{ $logistic->material['name'] }}</td>
-                                @if ($logistic->set_goods_id != NULL)
+                                <td class="py-1 px-3">{{ $logistic->good['name'] }}</td>
+                                {{-- @if ($logistic->set_goods_id != NULL)
                                     <td class="py-1 px-3">{{ $logistic->set_good['name'] }}</td>
                                 @else
                                     <td class="py-1 px-3">-</td>
-                                @endif
+                                @endif --}}
                                 <td class="py-1 px-3">{{ $logistic->category['name'] }}</td>
                                 <td class="py-1 px-3">{{ $logistic->qty_ask }}</td>
                                 <td class="py-1 px-3">{{ $logistic->qty_stock }}</td>

@@ -15,9 +15,10 @@ return new class extends Migration
     {
         Schema::create('logistic_goods', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('set_goods_id')->nullable()->constrained('set_goods')->onUpdate('CASCADE');
+            // $table->foreignId('set_goods_id')->nullable()->constrained('set_goods')->onUpdate('CASCADE');
+            $table->foreignId('goods_id')->nullable()->constrained('goods')->onUpdate('CASCADE');
             $table->string('logistic_good_code');
-            $table->foreignId('materials_id')->constrained('materials')->onUpdate('CASCADE');
+            // $table->foreignId('materials_id')->constrained('materials')->onUpdate('CASCADE');
             $table->integer('qty_ask');
             $table->integer('qty_stock');
             $table->integer('price');

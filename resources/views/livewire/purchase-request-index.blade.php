@@ -57,12 +57,16 @@
                     <thead class="bg-zinc-200 text-zinc-800">
                         <tr>
                             <th scope="col" class="py-3 px-4">#</th>
-                            <th scope="col" class="py-3 px-3">Kode PR</th>
-                            <th scope="col" class="py-3 px-3">Nama Material</th>
-                            <th scope="col" class="py-3 px-3">Nama Barang</th>
-                            <th scope="col" class="py-3 px-3">Keterangan</th>
-                            <th scope="col" class="py-3 px-3">Deadline</th>
-                            <th scope="col" class="py-3 px-3">Status</th>
+                            <th scope="col" class="py-3 px-1">Kode PR</th>
+                            <th scope="col" class="py-3 px-1">Nama Material</th>
+                            <th scope="col" class="py-3 px-1">Satuan</th>
+                            <th scope="col" class="text-center py-3 px-1">Stok Logistik</th>
+                            <th scope="col" class="text-center py-3 px-1">Min Stok</th>
+                            <th scope="col" class="text-center py-3 px-1">Max Stok</th>
+                            <th scope="col" class="text-center py-3 px-1">Qty Minta</th>
+                            <th scope="col" class="py-3 px-1">Keterangan</th>
+                            <th scope="col" class="py-3 px-1">Deadline</th>
+                            <th scope="col" class="py-3 px-1">Status</th>
                             <th scope="col" class="py-3 px-3">Aksi</th>
                         </tr>
                     </thead>
@@ -71,12 +75,16 @@
                         @foreach ($purchaserequests as $pr)
                             <tr class="bg-white border-b hover:bg-gray-50 hover:text-black text-sm">
                                 <td class="py-1 px-3">{{ ($purchaserequests ->currentpage()-1) * $purchaserequests ->perpage() + $loop->index + 1 }}</td>
-                                <td class="py-1 px-3 font-medium">{{ $pr->purchase_request_code }}</td>
-                                <td class="py-1 px-3">{{ $pr->material['name'] }}</td>
-                                {{-- <td class="py-1 px-3">{{ $pr->production['name'] }}</td> --}}
-                                <td class="py-1 px-3">{{ $pr->description }}</td>
-                                <td class="py-1 px-3">{{ $pr->deadline }}</td>
-                                <td class="py-1 px-3">
+                                <td class="py-1 px-1 font-bold">{{ $pr->purchase_request_code }}</td>
+                                <td class="py-1 px-1">{{ $pr->material['name'] }}</td>
+                                <td class="py-1 px-1">{{ $pr->material->measurement['name'] }}</td>
+                                <td class="font-medium text-center text-red-500 py-1 px-1">{{ $pr->stock_logistic }}</td>
+                                <td class="font-medium text-center py-1 px-1">{{ $pr->material['min_stock'] }}</td>
+                                <td class="font-medium text-center py-1 px-1">{{ $pr->material['max_stock'] }}</td>
+                                <td class="font-medium text-center text-yellow-500 py-1 px-1">{{ $pr->qty_ask }}</td>
+                                <td class="py-1 px-1">{{ $pr->description }}</td>
+                                <td class="py-1 px-1">{{ date('d-m-Y', strtotime($pr->deadline)) }}</td>
+                                <td class="py-1 px-1">
                                     @if ($pr->status['name'] == "Working")
                                         <div class="bg-yellow-200 w-24 py-1.5 rounded-full font-medium text-center">
                                             {{ $pr->status['name'] }}
@@ -136,15 +144,6 @@
                                 disabled
                             />
                         </div>
-                        {{-- <div class="flex items-center gap-0 justify-between p-1 flex-wrap sm:gap-2">
-                            <h1>Nama Produksi</h1>
-                            <select wire:model="productions_id" class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm">
-                                <option value="">Pilih Produksi</option>
-                                @foreach ($productions as $production)
-                                    <option value="{{ $production->id }}">{{ $production->name }}</option>
-                                @endforeach
-                            </select>
-                        </div> --}}
                         <div class="flex items-center gap-0 justify-between p-1 flex-wrap sm:gap-2">
                             <h1>Nama Material</h1>
                             <select wire:model="materials_id" class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm">

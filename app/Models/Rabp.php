@@ -20,6 +20,8 @@ class Rabp extends Model
         'rabp_code', 
         'name', 
         'description', 
+        'discount', 
+        'rabp_value', 
         'date', 
         'status_id', 
         'users_id', 
@@ -64,7 +66,12 @@ class Rabp extends Model
 
     public function delivery()
     {
-        return $this->hasOne('App\Models\Rabp', 'rabps_id');
+        return $this->hasOne('App\Models\Delivery', 'rabps_id');
+    }
+
+    public function rabp_material()
+    {
+        return $this->hasMany('App\Models\RabpMaterial', 'rabps_id');
     }
 
     public function scopeSearch($query, $term)

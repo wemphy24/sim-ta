@@ -49,20 +49,20 @@ class SetGood extends Model
         return $this->hasOne('App\Models\SetBillMaterial', 'set_goods_id');
     }
 
-    public function detail_rabp()
-    {
-        return $this->hasMany('App\Models\DetailRabp', 'set_goods_id');
-    }
+    // public function detail_rabp()
+    // {
+    //     return $this->hasMany('App\Models\DetailRabp', 'set_goods_id');
+    // }
 
-    public function logistic_material()
-    {
-        return $this->hasMany('App\Models\LogisticMaterial', 'set_goods_id');
-    }
+    // public function logistic_material()
+    // {
+    //     return $this->hasMany('App\Models\LogisticMaterial', 'set_goods_id'); ///////
+    // }
 
-    public function retur()
-    {
-        return $this->hasMany('App\Models\Retur', 'set_goods_id');
-    }
+    // public function retur()
+    // {
+    //     return $this->hasMany('App\Models\Retur', 'set_goods_id');
+    // }
 
     public function scopeSearch($query, $term)
     {

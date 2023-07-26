@@ -13,16 +13,17 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('detail_pos', function (Blueprint $table) {
+        Schema::create('bill_materials', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('purchase_orders_id')->constrained('purchase_orders')->onUpdate('CASCADE');
+            $table->foreignId('goods_id')->constrained('goods')->onUpdate('CASCADE');
             $table->foreignId('materials_id')->constrained('materials')->onUpdate('CASCADE');
-            $table->integer('qty')->nullable();
-            $table->integer('price')->nullable();
-            $table->integer('total_price')->nullable();
-            $table->date('order_date'); // TAMBAHAN
-            $table->date('received_date')->nullable(); // TAMBAHAN
-            $table->string('status')->nullable();
+            $table->integer('qty');
+            $table->integer('price');
+            $table->integer('total_price');
+            $table->integer('qty_received');
+            $table->integer('qty_install');
+            $table->integer('qty_remaining');
+            $table->string('status');
             $table->timestamps();
         });
     }
@@ -34,6 +35,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('detail_pos');
+        Schema::dropIfExists('bill_materials');
     }
 };

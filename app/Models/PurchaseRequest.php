@@ -18,8 +18,8 @@ class PurchaseRequest extends Model
     protected $fillable = [
         'productions_id', 
         'purchase_request_code', 
-        // 'name',
         'materials_id',
+        'stock_logistic', 
         'qty_ask', 
         'description', 
         'deadline', 

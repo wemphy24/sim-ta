@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class BillMaterial extends Model
 {
-    // use HasFactory;
     public $table = 'bill_materials';
 
     protected $dates = [
@@ -16,35 +15,24 @@ class BillMaterial extends Model
     ];
 
     protected $fillable = [
-        'finish_goods_id', 
+        'goods_id', 
         'materials_id', 
-        'planning_costs_id', 
-        'quantity', 
+        'qty', 
         'price', 
         'total_price', 
+        'qty_received', 
+        'qty_install', 
+        'qty_remaining', 
+        'status', 
     ];
 
-    // public function budget_plan()
-    // {
-    //     return $this->belongsTo('App\Models\BudgetPlanCost', 'budget_plan_costs_id', 'id');
-    // }
-    public function finish_good()
+    public function good()
     {
-        return $this->belongsTo('App\Models\FinishGood', 'finish_goods_id', 'id');
+        return $this->belongsTo('App\Models\Good', 'goods_id', 'id');
     }
 
     public function material()
     {
         return $this->belongsTo('App\Models\Material', 'materials_id', 'id');
     }
-
-    public function planning_cost()
-    {
-        return $this->belongsTo('App\Models\PlanningCost', 'planning_costs_id', 'id');
-    }
-
-    // public function detail_bill_material()
-    // {
-    //     return $this->hasOne('App\Models\DetailBillMaterial', 'bill_materials_id');
-    // }
 }

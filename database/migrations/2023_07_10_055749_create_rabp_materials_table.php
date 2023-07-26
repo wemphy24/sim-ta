@@ -13,17 +13,18 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('returs', function (Blueprint $table) {
+        Schema::create('rabp_materials', function (Blueprint $table) {
             $table->id();
-            // $table->foreignId('set_goods_id')->constrained('set_goods')->onUpdate('CASCADE');
+            $table->foreignId('rabps_id')->constrained('rabps')->onUpdate('CASCADE');
             $table->foreignId('goods_id')->constrained('goods')->onUpdate('CASCADE');
-            $table->string('retur_code');
             $table->foreignId('materials_id')->constrained('materials')->onUpdate('CASCADE');
             $table->integer('qty');
             $table->integer('price');
-            $table->string('retur_date');
-            $table->foreignId('status_id')->constrained('status')->onUpdate('CASCADE');
-            $table->foreignId('users_id')->constrained('users')->onUpdate('CASCADE');
+            $table->integer('total_price');
+            $table->integer('qty_received')->nullable();
+            $table->integer('qty_install')->nullable();
+            $table->integer('qty_remaining')->nullable();
+            $table->string('status');
             $table->timestamps();
         });
     }
@@ -35,6 +36,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('returs');
+        Schema::dropIfExists('rabp_materials');
     }
 };

@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('rabp_code')->nullable();
             $table->string('name');
             $table->string('description')->nullable();
+            $table->integer('discount')->nullable(); // TAMBAHAN
+            $table->integer('rabp_value')->nullable(); // TAMBAHAN
             $table->date('date');
             $table->foreignId('status_id')->constrained('status')->onUpdate('CASCADE');
             $table->foreignId('users_id')->constrained('users')->onUpdate('CASCADE');

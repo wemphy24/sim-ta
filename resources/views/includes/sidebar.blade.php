@@ -1,4 +1,4 @@
-<nav class="fixed top-0 z-50 w-full bg-zinc-100 border-b border-gray-200">
+<nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200">
   <div class="px-3 py-3 lg:px-5 lg:pl-3">
     <div class="flex items-center justify-between">
       <div class="flex items-center justify-start">
@@ -46,7 +46,7 @@
 </nav>
 
 <aside id="logo-sidebar" class="fixed top-0 left-0 z-40 w-64 h-screen pt-14 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0" aria-label="Sidebar">
-   <div class="h-full px-3 py-4 overflow-y-auto bg-zinc-100 text-zinc-800">
+   <div class="h-full px-3 py-4 overflow-y-auto bg-white text-zinc-800">
       <ul class="space-y-2">
         {{-- DASHBOARD --}}
          <li>
@@ -58,7 +58,7 @@
 
          {{-- MASTER DATA --}}
          <li>
-            <button type="button" class="{{ request()->is(['masterdata/material','masterdata/customer','masterdata/supplier'],'masterdata/category','masterdata/measurement') ? 'bg-zinc-800 text-white' : '' }} border flex items-center w-full p-2 text-base font-normal transition duration-75 rounded-lg group hover:bg-zinc-800 hover:text-white group" aria-controls="dropdown-masterdata" data-collapse-toggle="dropdown-masterdata">
+            <button type="button" class="{{ request()->is(['masterdata/material','masterdata/customer','masterdata/supplier','masterdata/category','masterdata/measurement','masterdata/good']) ? 'bg-zinc-800 text-white' : '' }} border flex items-center w-full p-2 text-base font-normal transition duration-75 rounded-lg group hover:bg-zinc-800 hover:text-white group" aria-controls="dropdown-masterdata" data-collapse-toggle="dropdown-masterdata">
                   <svg class="flex-shrink-0 w-6 h-6 transition duration-75 group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                     <path d="M3 12v3c0 1.657 3.134 3 7 3s7-1.343 7-3v-3c0 1.657-3.134 3-7 3s-7-1.343-7-3z"></path>
                     <path d="M3 7v3c0 1.657 3.134 3 7 3s7-1.343 7-3V7c0 1.657-3.134 3-7 3S3 8.657 3 7z"></path>
@@ -68,43 +68,49 @@
             </button>
             <ul id="dropdown-masterdata" class="hidden py-2 space-y-2">
                   <li>
-                     <a href="{{ route('masterdata.material') }}" class="border flex items-center w-full p-2 text-base font-medium text-black transition duration-75 rounded-lg pl-11 hover:bg-zinc-800 hover:text-white group">Material</a>
+                     <a href="{{ route('masterdata.material') }}" class="{{ request()->is(['masterdata/material']) ? 'bg-zinc-800 text-white' : '' }} border flex items-center w-full p-2 text-base font-medium transition duration-75 rounded-lg pl-11 hover:bg-zinc-800 hover:text-white group">Material</a>
                   </li>
                   <li>
-                     <a href="{{ route('masterdata.customer') }}" class="border flex items-center w-full p-2 text-base font-medium text-black transition duration-75 rounded-lg pl-11 hover:bg-zinc-800 hover:text-white group">Customer</a>
+                     <a href="{{ route('masterdata.good') }}" class="{{ request()->is(['masterdata/good']) ? 'bg-zinc-800 text-white' : '' }} border flex items-center w-full p-2 text-base font-medium transition duration-75 rounded-lg pl-11 hover:bg-zinc-800 hover:text-white group">Barang</a>
                   </li>
                   <li>
-                     <a href="{{ route('masterdata.supplier') }}" class="border flex items-center w-full p-2 text-base font-medium text-black transition duration-75 rounded-lg pl-11 hover:bg-zinc-800 hover:text-white group">Supplier</a>
+                     <a href="{{ route('masterdata.customer') }}" class="{{ request()->is(['masterdata/customer']) ? 'bg-zinc-800 text-white' : '' }} border flex items-center w-full p-2 text-base font-medium transition duration-75 rounded-lg pl-11 hover:bg-zinc-800 hover:text-white group">Customer</a>
                   </li>
                   <li>
-                     <a href="{{ route('masterdata.category') }}" class="border flex items-center w-full p-2 text-base font-medium text-black transition duration-75 rounded-lg pl-11 hover:bg-zinc-800 hover:text-white group">Kategori</a>
+                     <a href="{{ route('masterdata.supplier') }}" class="{{ request()->is(['masterdata/supplier']) ? 'bg-zinc-800 text-white' : '' }} border flex items-center w-full p-2 text-base font-medium transition duration-75 rounded-lg pl-11 hover:bg-zinc-800 hover:text-white group">Supplier</a>
                   </li>
                   <li>
-                     <a href="{{ route('masterdata.measurement') }}" class="border flex items-center w-full p-2 text-base font-medium text-black transition duration-75 rounded-lg pl-11 hover:bg-zinc-800 hover:text-white group">Satuan</a>
+                     <a href="{{ route('masterdata.category') }}" class="{{ request()->is(['masterdata/category']) ? 'bg-zinc-800 text-white' : '' }} border flex items-center w-full p-2 text-base font-medium transition duration-75 rounded-lg pl-11 hover:bg-zinc-800 hover:text-white group">Kategori</a>
+                  </li>
+                  <li>
+                     <a href="{{ route('masterdata.measurement') }}" class="{{ request()->is(['masterdata/measurement']) ? 'bg-zinc-800 text-white' : '' }} border flex items-center w-full p-2 text-base font-medium transition duration-75 rounded-lg pl-11 hover:bg-zinc-800 hover:text-white group">Satuan</a>
                   </li>
             </ul>
          </li>
 
          {{-- SALES --}}
          <li>
-            <button type="button" class="{{ request()->is(['inquiry','quotation','rabp','setgood']) ? 'bg-zinc-800 text-white' : '' }} border flex items-center w-full p-2 text-base font-normal transition duration-75 rounded-lg group hover:bg-zinc-800 hover:text-white group" aria-controls="dropdown-penawaran" data-collapse-toggle="dropdown-penawaran">
+            <button type="button" class="{{ request()->is(['inquiry','quotation','rabp','setgood','rabp1']) ? 'bg-zinc-800 text-white' : '' }} border flex items-center w-full p-2 text-base font-normal transition duration-75 rounded-lg group hover:bg-zinc-800 hover:text-white group" aria-controls="dropdown-penawaran" data-collapse-toggle="dropdown-penawaran">
                   <svg class="flex-shrink-0 w-6 h-6 transition duration-75 group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                     <path clip-rule="evenodd" fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z"></path></svg>
                   <span class="flex-1 ml-3 text-left whitespace-nowrap font-medium" sidebar-toggle-item>Sales</span>
                   <svg sidebar-toggle-item class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
             </button>
             <ul id="dropdown-penawaran" class="hidden py-2 space-y-2">
-                  <li>
+                  {{-- <li>
                      <a href="{{ url('inquiry') }}" class="{{ request()->is(['inquiry']) ? 'bg-zinc-800 text-white' : '' }} border flex items-center w-full p-2 text-base font-medium transition duration-75 rounded-lg pl-11 hover:bg-zinc-800 hover:text-white group">Inquiry</a>
-                  </li>
+                  </li> --}}
                   <li>
                      <a href="{{ url('quotation') }}" class="{{ request()->is(['quotation']) ? 'bg-zinc-800 text-white' : '' }} border flex items-center w-full p-2 text-base font-medium transition duration-75 rounded-lg pl-11 hover:bg-zinc-800 hover:text-white group">Penawaran</a>
                   </li>
-                  <li>
+                  {{-- <li>
                      <a href="{{ url('setgood') }}" class="{{ request()->is(['setgood']) ? 'bg-zinc-800 text-white' : '' }} border flex items-center w-full p-2 text-base font-medium transition duration-75 rounded-lg pl-11 hover:bg-zinc-800 hover:text-white group">Set Barang</a>
-                  </li>
-                  <li>
+                  </li> --}}
+                  {{-- <li>
                      <a href="{{ url('rabp') }}" class="{{ request()->is(['rabp']) ? 'bg-zinc-800 text-white' : '' }} border flex items-center w-full p-2 text-base font-medium transition duration-75 rounded-lg pl-11 hover:bg-zinc-800 hover:text-white group">RABP</a>
+                  </li> --}}
+                  <li>
+                     <a href="{{ url('rabp1') }}" class="{{ request()->is(['rabp1']) ? 'bg-zinc-800 text-white' : '' }} border flex items-center w-full p-2 text-base font-medium transition duration-75 rounded-lg pl-11 hover:bg-zinc-800 hover:text-white group">RABP (New)</a>
                   </li>
             </ul>
          </li>

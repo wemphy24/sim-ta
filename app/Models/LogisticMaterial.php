@@ -16,7 +16,8 @@ class LogisticMaterial extends Model
     ];
 
     protected $fillable = [
-        'set_goods_id', 
+        // 'set_goods_id', 
+        'goods_id', 
         'categories_id', 
         'measurements_id', 
         'logistic_code', 
@@ -31,9 +32,14 @@ class LogisticMaterial extends Model
         'created_at',
     ];
 
-    public function set_good()
+    // public function set_good()
+    // {
+    //     return $this->belongsTo('App\Models\SetGood', 'set_goods_id', 'id');
+    // }
+
+    public function good()
     {
-        return $this->belongsTo('App\Models\SetGood', 'set_goods_id', 'id');
+        return $this->belongsTo('App\Models\Good', 'goods_id', 'id');
     }
 
     public function category()
@@ -67,7 +73,7 @@ class LogisticMaterial extends Model
         $query->where(function($query) use ($term) {
             $query->where('logistic_code', 'like', $term)
             ->orWhere('type', 'like', $term)
-            ->orWhereHas('set_good', function($query) use ($term) {
+            ->orWhereHas('good', function($query) use ($term) {
                 $query->where('name', 'like', $term);
             })
             ->orWhereHas('status', function($query) use ($term) {

@@ -27,6 +27,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
     ];
 
     /**
@@ -127,5 +128,10 @@ class User extends Authenticatable
     public function detail_user()
     {
         return $this->hasOne('App\Models\DetailUser', 'users_id');
+    }
+
+    public function good()
+    {
+        return $this->hasMany('App\Models\Good', 'users_id');
     }
 }

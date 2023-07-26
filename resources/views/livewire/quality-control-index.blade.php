@@ -75,16 +75,16 @@
                     <tbody>
                         @foreach ($qualitycontrols as $qc)
                             <tr class="bg-white border-b hover:bg-gray-50 hover:text-black text-sm">
-                                <td class="py-1 px-6">{{ ($qualitycontrols ->currentpage()-1) * $qualitycontrols ->perpage() + $loop->index + 1 }}</td>
-                                <td class="py-1 px-6 font-medium">{{ $qc->quality_control_code }}</td>
-                                <td class="py-1 px-6">{{ $qc->production['name'] }}</td>
-                                <td class="py-1 px-6">{{ $qc->name }}</td>
-                                <td class="py-1 px-6">{{ $qc->description }}</td>
-                                <td class="py-1 px-6">{{ $qc->start_qc }}</td>
+                                <td class="py-1 px-3">{{ ($qualitycontrols ->currentpage()-1) * $qualitycontrols ->perpage() + $loop->index + 1 }}</td>
+                                <td class="py-1 px-3 font-medium">{{ $qc->quality_control_code }}</td>
+                                <td class="py-1 px-3">{{ $qc->production['name'] }}</td>
+                                <td class="py-1 px-3">{{ $qc->name }}</td>
+                                <td class="py-1 px-3">{{ $qc->description }}</td>
+                                <td class="py-1 px-3">{{ date('d-m-Y', strtotime($qc->start_qc)) }}</td>
                                 @if ($qc->end_qc == NULL)
-                                    <td class="py-1 px-6">Belum Diketahui</td>
+                                    <td class="py-1 px-3">Belum Diketahui</td>
                                 @else
-                                    <td class="py-1 px-6">{{ $qc->end_qc }}</td>
+                                    <td class="py-1 px-3">{{ date('d-m-Y', strtotime($qc->end_qc)) }}</td>
                                 @endif
                                 <td class="py-1 px-3">
                                 @if ($qc->status['name'] == "Working")
@@ -101,7 +101,7 @@
                                     </div>
                                 @endif
                                 </td>
-                                <td class="py-1 px-6">
+                                <td class="py-1 px-3">
                                     <div class="flex items-center gap-4">
                                         <button wire:click="detail( {{ $qc->id }} )" class="bg-blue-500 px-2 py-1 rounded-md hover:scale-105 hover:-translate-x-0 hover:duration-150">
                                             <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 21h7a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v11m0 5l4.879-4.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242z"></path></svg>
@@ -241,7 +241,7 @@
             {{-- SECTION DAFTAR BARANG --}}
             <div class="bg-white overflow-x-auto sm:rounded-lg border border-gray-300/50 mt-6">
                 <div class="py-3 px-6">
-                    <div class="font-medium text-xl mb-3">Daftar Barang</div>
+                    <div class="font-medium text-xl mb-3">Daftar Barang Yang Di QC</div>
                     <table class="w-full text-sm text-left text-black">
                         <thead class="bg-zinc-200">
                             <tr>
@@ -249,6 +249,7 @@
                                 <th scope="col" class="py-3 px-6">Qty</th>
                                 <th scope="col" class="py-3 px-6">Satuan</th>
                                 <th scope="col" class="py-3 px-6">Status</th>
+                                <th scope="col" class="py-3 px-6">Keterangan</th>
                                 <th scope="col" class="py-3 px-6">Aksi</th>
                             </tr>
                         </thead>
@@ -256,24 +257,25 @@
                         <tbody>
                             @foreach ($detailrabps as $detailrabp)
                                 <tr class="bg-white hover:bg-gray-50 hover:text-black font-medium">
-                                    <td class="py-2 px-6">{{ $detailrabp->set_good['name'] }}</td>
+                                    <td class="py-2 px-6">{{ $detailrabp->good['name'] }}</td>
                                     <td class="py-2 px-6">{{ $detailrabp->qty }}</td>
-                                    <td class="py-2 px-6">{{ $detailrabp->set_good->measurement['name'] }}</td>
-                                    <td class="py-2 px-6">{{ $detailrabp->set_good->status }}</td>
+                                    <td class="py-2 px-6">{{ $detailrabp->good->measurement['name'] }}</td>
+                                    <td class="py-2 px-6">{{ $detailrabp->good->status_production }}</td>
+                                    <td class="py-2 px-6 text-green-500">{{ $detailrabp->good->status_qc }}</td>
                                     <td class="py-2 px-6 text-white">
                                         <div class="flex items-center gap-4">
-                                            <button wire:click="detailMaterial({{ $detailrabp->set_goods_id }})" class="bg-blue-500 px-2 py-1 rounded-md hover:scale-105 hover:-translate-x-0 hover:duration-150">
+                                            <button wire:click="detailMaterial({{ $detailrabp->goods_id }})" class="bg-blue-500 px-2 py-1 rounded-md hover:scale-105 hover:-translate-x-0 hover:duration-150">
                                                 <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 21h7a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v11m0 5l4.879-4.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242z"></path></svg>
                                             </button>
-                                            @if ($detailrabp->set_good->status == "Selesai Produksi")
-                                                <button wire:click="changeStatus({{ $detailrabp->set_goods_id }})" class="bg-green-500 px-2 py-1 rounded-md hover:scale-105 hover:-translate-x-0 hover:duration-150">
+                                            @if ($detailrabp->good->status_production == "Selesai Produksi")
+                                                <button wire:click="changeStatus({{ $detailrabp->goods_id }})" class="bg-green-500 px-2 py-1 rounded-md hover:scale-105 hover:-translate-x-0 hover:duration-150">
                                                     Mulai QC
                                                 </button>
-                                            @elseif ($detailrabp->set_good->status == "Sedang QC")
-                                                <button wire:click="doneRetur({{ $detailrabp->set_goods_id }})" class="bg-green-500 px-2 py-1 rounded-md hover:scale-105 hover:-translate-x-0 hover:duration-150">
+                                            @elseif ($detailrabp->good->status_production == "Sedang QC")
+                                                <button wire:click="doneRetur({{ $detailrabp->goods_id }})" class="bg-green-500 px-2 py-1 rounded-md hover:scale-105 hover:-translate-x-0 hover:duration-150">
                                                     Selesai QC
                                                 </button>
-                                            @elseif ($detailrabp->set_good->status == "Selesai QC")
+                                            @elseif ($detailrabp->good->status_production == "Selesai QC")
                                                 <button wire:click="" class="bg-red-500 px-2 py-1 rounded-md" disabled>
                                                     QC Selesai
                                                 </button>
@@ -308,7 +310,7 @@
                             <thead class="bg-gray-50">
                                 <tr>
                                     <th scope="col" class="py-3 px-6">Material</th>
-                                    <th scope="col" class="py-3 px-6">Qty</th>
+                                    <th scope="col" class="py-3 px-6">Qty Rencana</th>
                                     <th scope="col" class="py-3 px-6">Satuan</th>
                                     <th scope="col" class="py-3 px-6">Terima</th>
                                     <th scope="col" class="py-3 px-6">Pasang</th>
@@ -317,20 +319,20 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($setbillmaterials as $sbm)
+                                @foreach ($rabpmaterials as $rm)
                                     <tr class="bg-white hover:bg-gray-50 hover:text-black font-medium">
-                                        <td class="py-2 px-6">{{ $sbm->material['name'] }}</td>
-                                        <td class="py-2 px-6">{{ $sbm->qty * $count_material }}</td>
-                                        <td class="py-2 px-6">{{ $sbm->material->measurement['name'] }}</td>
-                                        <td class="py-2 px-6">{{ $sbm->qty_received }}</td>
-                                        <td class="py-2 px-6">{{ $sbm->qty_install }}</td>
-                                        <td class="py-2 px-6">{{ $sbm->qty_remaining }}</td>
+                                        <td class="py-2 px-6">{{ $rm->material['name'] }}</td>
+                                        <td class="py-2 px-6">{{ $rm->qty }}</td>
+                                        <td class="py-2 px-6">{{ $rm->material->measurement['name'] }}</td>
+                                        <td class="py-2 px-6">{{ $rm->qty_received }}</td>
+                                        <td class="py-2 px-6">{{ $rm->qty_install }}</td>
+                                        <td class="py-2 px-6">{{ $rm->qty_remaining }}</td>
                                         <td class="py-2 px-6">
-                                            @if ($sbm->status == "Sudah Diambil")
-                                                <button class="text-white rounded-md px-2 py-1  bg-green-500" wire:click="printRetur({{ $sbm->id }})">Retur</button> 
-                                            @elseif ($sbm->status == "Sedang Retur")
+                                            @if ($rm->status == "Sudah Diambil")
+                                                <button class="text-white rounded-md px-2 py-1  bg-green-500" wire:click="printRetur({{ $rm->id }})">Retur</button> 
+                                            @elseif ($rm->status == "Sedang Retur")
                                                 <button class="text-white rounded-md px-2 py-1 bg-yellow-500" wire:click="" disabled>Sedang Retur</button> 
-                                            @elseif ($sbm->status == "Sudah Retur")
+                                            @elseif ($rm->status == "Sudah Retur")
                                                 <button class="text-white rounded-md px-2 py-1 bg-red-500" wire:click="" disabled>Selesai Retur</button> 
                                             @endif
                                         </td>
@@ -338,6 +340,19 @@
                                 @endforeach
                             </tbody>
                         </table>
+                    </div>
+                    <div class="flex justify-center items-center gap-2">
+                        @if ($status_qc != NULL)
+                        
+                        @else
+                        <label class="font-medium">Kelayakan Barang: </label>
+                            <button wire:click="qcOk" class="text-white font-medium bg-green-500 my-2 px-2 py-1 rounded-md hover:scale-105 hover:-translate-x-0 hover:duration-150">
+                                OK
+                            </button>
+                            <button wire:click="qcOnhold" class="text-white font-medium bg-red-500 my-2 px-2 py-1 rounded-md hover:scale-105 hover:-translate-x-0 hover:duration-150">
+                                On Hold
+                            </button>
+                        @endif
                     </div>
                 </div>
             </div>

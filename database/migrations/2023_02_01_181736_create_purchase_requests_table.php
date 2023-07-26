@@ -18,6 +18,7 @@ return new class extends Migration
             // $table->foreignId('productions_id')->constrained('productions')->onUpdate('CASCADE');
             $table->string('purchase_request_code')->unique();
             $table->foreignId('materials_id')->constrained('materials')->onUpdate('CASCADE');
+            $table->integer('stock_logistic'); // TAMBAHAN
             $table->integer('qty_ask');
             $table->string('description')->nullable();
             $table->date('deadline');

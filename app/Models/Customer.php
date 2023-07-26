@@ -34,6 +34,11 @@ class Customer extends Model
         return $this->hasMany('App\Models\Inquiry', 'customers_id');
     }
 
+    public function good()
+    {
+        return $this->hasMany('App\Models\Good', 'customers_id');
+    }
+
     public function scopeSearch($query, $term)
     {
         $term = "%$term%";

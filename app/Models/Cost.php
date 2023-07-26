@@ -5,10 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Role extends Model
+class Cost extends Model
 {
-     // use HasFactory;
-    public $table = 'roles';
+    public $table = 'costs';
 
     protected $dates = [
         'updated_at',
@@ -16,13 +15,17 @@ class Role extends Model
     ];
 
     protected $fillable = [
-        'name', 
+        'overhead', 
+        'preliminary', 
+        'profit', 
+        // 'discount', 
+        'goods_id', 
         'updated_at',
         'created_at',
     ];
 
-    public function detail_user()
+    public function good()
     {
-        return $this->hasMany('App\Models\DetailUser', 'roles_id');
+        return $this->belongsTo('App\Models\Good', 'goods_id', 'id');
     }
 }

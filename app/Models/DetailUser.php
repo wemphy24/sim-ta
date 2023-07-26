@@ -20,7 +20,7 @@ class DetailUser extends Model
         'address', 
         'photo', 
         'departement', 
-        'roles_id', 
+        // 'roles_id', 
         'updated_at',
         'created_at',
     ];
@@ -30,8 +30,8 @@ class DetailUser extends Model
         return $this->belongsTo('App\Models\User', 'users_id', 'id');
     }
 
-    public function role()
-    {
-        return $this->belongsTo('App\Models\Role', 'roles_id', 'id');
-    }
+    // public function role()
+    // {
+    //     return $this->belongsTo('App\Models\Role', 'roles_id', 'id');
+    // }
 }

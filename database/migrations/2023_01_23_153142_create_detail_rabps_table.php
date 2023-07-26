@@ -16,9 +16,11 @@ return new class extends Migration
         Schema::create('detail_rabps', function (Blueprint $table) {
             $table->id();
             $table->foreignId('rabps_id')->constrained('rabps')->onUpdate('CASCADE');
-            $table->foreignId('set_goods_id')->constrained('set_goods')->onUpdate('CASCADE');
+            $table->foreignId('goods_id')->constrained('goods')->onUpdate('CASCADE');
+            // $table->foreignId('set_goods_id')->constrained('set_goods')->onUpdate('CASCADE'); REVISI
             $table->integer('qty')->nullable();
             $table->integer('price')->nullable();
+            $table->integer('total_price')->nullable(); // Tambahan
             $table->integer('quality')->nullable(); // Tambahan
             $table->timestamps();
         });

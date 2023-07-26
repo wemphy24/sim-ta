@@ -123,9 +123,9 @@
       @foreach ($dataBarang as $db)
       <tr>
         <td class="center_ border_">{{ $loop->index + 1 }}</td>
-        <td class="border_">{{ $db->set_good['name'] }}</td>
+        <td class="border_">{{ $db->good['name'] }}</td>
         <td class="center_ border_">{{ $db->qty }}</td>
-        <td class="center_ border_">{{ $db->set_good->measurement['name'] }}</td>
+        <td class="center_ border_">{{ $db->good->measurement['name'] }}</td>
       </tr>
       @endforeach
 

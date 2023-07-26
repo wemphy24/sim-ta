@@ -130,7 +130,7 @@
         <td class="border_">{{ $dmp->material['name'] }}</td>
         <td class="center_ border_">{{ $dmp->qty }}</td>
         <td class="center_ border_">{{ $dmp->material->measurement['name'] }}</td>
-        <td class="center_ border_">{{ number_format($dmp->price) }}</td>
+        <td class="center_ border_" style="text-align: right">Rp. {{ number_format($dmp->price) }}</td>
       </tr>
       @endforeach
 

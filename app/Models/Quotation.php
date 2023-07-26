@@ -16,10 +16,11 @@ class Quotation extends Model
     ];
 
     protected $fillable = [
-        'inquiries_id', 
+        // 'inquiries_id', REVISI
         'quotation_code', 
         'name', 
         'quotation_file', 
+        'inquiry_file', 
         'project', 
         'date', 
         'location', 
@@ -45,10 +46,10 @@ class Quotation extends Model
         return $this->belongsTo('App\Models\User', 'users_id', 'id');
     }
 
-    public function inquiry()
-    {
-        return $this->belongsTo('App\Models\Inquiry', 'inquiries_id', 'id');
-    }
+    // public function inquiry()
+    // {
+    //     return $this->belongsTo('App\Models\Inquiry', 'inquiries_id', 'id'); REVISI
+    // }
     
 
     // tabel budget_plans hanya mempunyai 1 quotations_id
@@ -61,11 +62,6 @@ class Quotation extends Model
     public function contract()
     {
         return $this->hasOne('App\Models\Contract', 'quotations_id');
-    }
-
-    public function planning_cost()
-    {
-        return $this->hasMany('App\Models\PlanningCost', 'quotations_id');
     }
 
     public function rabp()

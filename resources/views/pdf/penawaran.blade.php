@@ -57,20 +57,20 @@
   />
   <h2 class="title_">Penawaran</h2>
 
-  {{-- DATA CUSTOMER --}}
+  {{-- DATA PENAWARAN CUSTOMER --}}
   <table>
-    @foreach ($dataPenawaran as $pn)
+    @foreach ($dataPenawaran as $dp)
     <tr>
-      <td>Kepada : <span style="font-weight: bold">{{ $pn->customer['name'] }}</span></td>
-      <td>Kode Penawaran : <span style="font-weight: bold">{{ $pn->quotation_code }}</span></td>
+      <td>Kepada : <span style="font-weight: bold">{{ $dp->customer['name'] }}</span></td>
+      <td>Kode Penawaran : <span style="font-weight: bold">{{ $dp->quotation_code }}</span></td>
     </tr>
     <tr>
-      <td>Alamat : <span style="font-weight: bold">{{ $pn->location }}</span></td>
-      <td>Subjek Penawaran : <span style="font-weight: bold">{{ $pn->name }}</span></td>
+      <td>Alamat : <span style="font-weight: bold">{{ $dp->location }}</span></td>
+      <td>Subjek Penawaran : <span style="font-weight: bold">{{ $dp->name }}</span></td>
     </tr>
     <tr>
-      <td>Telepon : <span style="font-weight: bold">{{ $pn->customer['phone'] }}</span></td>
-      <td>Tanggal : <span style="font-weight: bold">24 January 2024</span></td>
+      <td>Telepon : <span style="font-weight: bold">{{ $dp->customer['phone'] }}</span></td>
+      <td>Tanggal : <span style="font-weight: bold">{{ $dp->date }}</span></td>
     </tr>
     @endforeach
   </table>
@@ -86,22 +86,32 @@
       <th style="background-color: #27272a; color: white" class="border_">Harga Satuan</th>
       <th style="background-color: #27272a; color: white" class="border_">Total Harga</th>
     </tr>
-    @foreach ($dataBarang as $bg)
+    @foreach ($dataBarang as $db)
     <tr>
         <td class="center_ border_">{{ $loop->index + 1 }}</td>
-        <td class="border_">{{ $bg->set_good['set_goods_code'] }}</td>
-        <td class="border_">{{ $bg->set_good['name'] }}</td>
-        <td class="center_ border_">{{ $bg->qty }}</td>
-        <td class="center_ border_">{{ $bg->set_good->measurement['name'] }}</td>
-        <td class="right_ border_">Rp.{{ number_format($bg->set_good['price']) }}</td>
-        <td class="right_ border_">Rp. {{ number_format($bg->price) }}</td>
+        <td class="border_">{{ $db->good['good_code'] }}</td>
+        <td class="border_">{{ $db->good['name'] }}</td>
+        <td class="center_ border_">{{ $db->qty }}</td>
+        <td class="center_ border_">{{ $db->good->measurement['name'] }}</td>
+        <td class="right_ border_">Rp.{{ number_format($db->price) }}</td>
+        <td class="right_ border_">Rp. {{ number_format($db->total_price) }}</td>
     </tr>
     @endforeach
-    @foreach ($dataBiaya as $ba)
+    @foreach ($dataRabpValue as $drv)
+    <tr>
+        <td colspan="5" style="border: none"> </td>
+        <td style="font-weight: bold" class="border_">DISKON {{ $drv->discount }} %</td>
+        <td style="font-weight: bold" class="right_ border_">- Rp. {{ number_format($jumlahDiskon) }}</td>    
+    </tr>
+    <tr>
+        <td colspan="5" style="border: none"> </td>
+        <td style="font-weight: bold" class="border_">PPN 11 %</td>
+        <td style="font-weight: bold" class="right_ border_">Rp. {{ number_format($jumlahPPN) }}</td>    
+    </tr>
     <tr>
         <td colspan="5" style="border: none"> </td>
         <td style="font-weight: bold" class="border_">GRAND TOTAL</td>
-        <td style="font-weight: bold" class="right_ border_">Rp. {{ number_format($ba->total_price) }}</td>    
+        <td style="font-weight: bold" class="right_ border_">Rp. {{ number_format($drv->rabp_value) }}</td>    
     </tr>
     @endforeach
   </table>

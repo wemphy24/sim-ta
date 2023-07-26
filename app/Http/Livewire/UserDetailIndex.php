@@ -17,13 +17,13 @@ class UserDetailIndex extends Component
     public $isEdit = false;
     public $showingMainPage = true;
 
-    public $name, $email, $phone, $address, $department, $roles_id, $user_id;
+    public $name, $email, $phone, $address, $department, $role, $user_id;
 
     public function render()
     {
         return view('livewire.user-detail-index', [
             'detailusers' => DetailUser::paginate(15),
-            'roles' => Role::all(),
+            // 'roles' => Role::all(),
         ])->layout('layouts.admin');
     }
 
@@ -31,7 +31,7 @@ class UserDetailIndex extends Component
     {
         $this->reset();
         $this->showingUser = true;
-        $this->roles_id = 6;
+        // $this->roles_id = 6;
     }
 
     public function closeModal()
@@ -45,6 +45,7 @@ class UserDetailIndex extends Component
                             'name' => $this->name,
                             'email' => $this->email,
                             'password' => Hash::make("haha123"),
+                            'role' => NULL,
                         ]);
 
         DetailUser::create([
@@ -52,7 +53,7 @@ class UserDetailIndex extends Component
             'phone' => $this->phone,
             'address' => $this->address,
             'department' => $this->department,
-            'roles_id' => 1,
+            // 'roles_id' => 1,
         ]);
 
         $this->closeModal();
@@ -71,7 +72,8 @@ class UserDetailIndex extends Component
         $this->phone = DetailUser::where('id','=',$id)->first('phone')->phone;
         $this->address = DetailUser::where('id','=',$id)->first('address')->address;
         $this->department = DetailUser::where('id','=',$id)->first('department')->department;
-        $this->roles_id = DetailUser::where('id','=',$id)->first('roles_id')->roles_id;
+        $this->role = User::where('id','=',$id)->first('role')->role;
+        // $this->roles_id = DetailUser::where('id','=',$id)->first('roles_id')->roles_id;
     }
 
     public function update()
@@ -86,7 +88,7 @@ class UserDetailIndex extends Component
             'phone' => $this->phone,
             'address' => $this->address,
             'department' => $this->department,
-            'roles_id' => $this->roles_id,
+            // 'roles_id' => $this->roles_id,
         ]);
 
         $this->closeModal();

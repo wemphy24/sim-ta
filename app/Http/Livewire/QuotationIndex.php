@@ -24,7 +24,7 @@ class QuotationIndex extends Component
     public $showingMainPage = true;
 
     use WithFileUploads;
-    public $inquiries_id, $quotation_code, $name, $quotation_file, $project, $location,$date, $customers_id, $users_id, $status_id;   
+    public $quotation_code, $name, $inquiry_file, $quotation_file, $project, $location,$date, $customers_id, $users_id, $status_id;   
     public $quotation;
     
     public function render()
@@ -32,7 +32,7 @@ class QuotationIndex extends Component
         return view('livewire.quotation-index', [
             'quotations' => Quotation::with('customer','status')->search(trim($this->search))->orderBy($this->searchBy,$this->orderAsc ? 'asc' : 'desc')->paginate($this->showPage),
             'customers' => Customer::all(),
-            'inquiries' => Inquiry::where('status_id','=',1)->get(),
+            // 'inquiries' => Inquiry::where('status_id','=',1)->get(),
         ])->layout('layouts.admin');
     }
 
@@ -75,9 +75,16 @@ class QuotationIndex extends Component
 
     public function storeQuotation()
     {
+
+        $filename = $this->inquiry_file->getClientOriginalName();
+        if(!empty($this->inquiry_file)) {
+            $this->inquiry_file->storeAs('public/inquiry', $filename);
+        } 
+
         // Store data inquiry
         Quotation::create([
-            'inquiries_id' => $this->inquiries_id,
+            // 'inquiries_id' => $this->inquiries_id,
+            'inquiry_file' => $filename,
             'quotation_code' => $this->quotation_code,
             'name' => $this->name,
             'project' => $this->project,
@@ -88,9 +95,9 @@ class QuotationIndex extends Component
             'users_id' => Auth::user()->id,
         ]);
 
-        Inquiry::where('id','=', $this->inquiries_id)->update([
-            'status_id' => 2,
-        ]);
+        // Inquiry::where('id','=', $this->inquiries_id)->update([
+        //     'status_id' => 2,
+        // ]);
 
         $this->reset();
         $this->closeModal();
@@ -105,7 +112,7 @@ class QuotationIndex extends Component
         $this->showingMainPage = false;
 
         $this->quotation = Quotation::findOrFail($id);
-        $this->inquiries_id = $this->quotation->inquiry['id'];
+        // $this->inquiries_id = $this->quotation->inquiry['id'];
         $this->quotation_code = $this->quotation->quotation_code;
         $this->name = $this->quotation->name;
         $this->project = $this->quotation->project;
@@ -124,10 +131,16 @@ class QuotationIndex extends Component
             $this->quotation_file->storeAs('public/quotation', $filenameQuo);
         } 
 
+        if (!empty($this->inquiry_file)) {
+            $filenameQuo1 = $this->inquiry_file->getClientOriginalName();
+            $this->inquiry_file->storeAs('public/inquiry', $filenameQuo1);
+        }
+
         // Mengupdate data quotation
         $this->quotation->update([
             'name' => $this->name,
             'quotation_file' => $this->quotation_file != NULL ?  $filenameQuo : $this->quotation->quotation_file,
+            'inquiry_file' => $this->inquiry_file != NULL ?  $filenameQuo1 : $this->quotation->inquiry_file,
             'project' => $this->project,
             'date' => $this->date,
             'location' => $this->location,
@@ -159,27 +172,34 @@ class QuotationIndex extends Component
         $this->dispatchBrowserEvent('update-success');
     }
 
-    // public function deleteQuotation($id) 
-    // {
-    //     $quotation = Quotation::find($id);
-    //     $quotation->delete();
-
-    //     $this->dispatchBrowserEvent('delete-success');
-    // }
-
     public function updated($key, $value)
     {
-        if($this->inquiries_id !=NULL) {
-            $this->name = "Penawaran " . substr(Inquiry::where('id','=',$this->inquiries_id)->first('name')->name, 11);
+        if($this->customers_id !=NULL) {
+            $this->name = "Penawaran Harga Panel " . Customer::where('id','=',$this->customers_id)->first('name')->name;
+            $this->location = Customer::where('id','=',$this->customers_id)->first('address')->address;
+        } else {
+            $this->name = NULL;
+            $this->location = NULL;
+        }
+
+        if($this->project !=NULL) {
+            $this->name = "Penawaran Harga Panel " . Customer::where('id','=',$this->customers_id)->first('name')->name . " - " . $this->project;
         } else {
             $this->name = NULL;
         }
+        
 
-        // Realtime update value
-        if($this->inquiries_id != NULL) {
-            $this->customers_id = Inquiry::where('id','=',$this->inquiries_id)->first(['customers_id'])->customers_id;
-        } else {
-            $this->customers_id = NULL;
-        }
+        // if($this->inquiries_id !=NULL) {
+        //     $this->name = "Penawaran " . substr(Inquiry::where('id','=',$this->inquiries_id)->first('name')->name, 11);
+        // } else {
+        //     $this->name = NULL;
+        // }
+
+        // // Realtime update value
+        // if($this->inquiries_id != NULL) {
+        //     $this->customers_id = Inquiry::where('id','=',$this->inquiries_id)->first(['customers_id'])->customers_id;
+        // } else {
+        //     $this->customers_id = NULL;
+        // }
     }
 }

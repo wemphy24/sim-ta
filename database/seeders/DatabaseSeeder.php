@@ -31,7 +31,8 @@ class DatabaseSeeder extends Seeder
             StatusTableSeeder::class,
             SuppliersTableSeeder::class,
             CustomersTableSeeder::class,
-            DetailUsersTableSeeder::class,
+            RolesTableSeeder::class,
+            DetailUsersSeeder::class,
             // QuotationsTableSeeder::class,
         ]);
     }

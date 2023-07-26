@@ -14,6 +14,7 @@ use App\Http\Livewire\MaterialIndex;
 use App\Http\Livewire\CustomerIndex;
 use App\Http\Livewire\DeliveryIndex;
 use App\Http\Livewire\DetailSetGoodIndex;
+use App\Http\Livewire\GoodIndex;
 use App\Http\Livewire\GoodReceiveIndex;
 use App\Http\Livewire\LogisticGoodIndex;
 use App\Http\Livewire\LogisticMaterialIndex;
@@ -22,6 +23,7 @@ use App\Http\Livewire\ProductionIndex;
 use App\Http\Livewire\PurchaseOrderIndex;
 use App\Http\Livewire\PurchaseRequestIndex;
 use App\Http\Livewire\QualityControlIndex;
+use App\Http\Livewire\Rabp1Index;
 use App\Http\Livewire\ReturIndex;
 use App\Http\Livewire\SetGoodIndex;
 use App\Http\Livewire\SupplierIndex;
@@ -53,6 +55,7 @@ Route::group(['middleware' => ['auth:sanctum',config('jetstream.auth_session'), 
     Route::get('/quotation', QuotationIndex::class)->name('quotation');
     Route::get('/setgood', SetGoodIndex::class)->name('setgood');
     Route::get('/rabp', RabpIndex::class)->name('rabp');
+    Route::get('/rabp1', Rabp1Index::class)->name('rabp1');
     Route::get('/contract', ContractIndex::class)->name('contract');
     Route::get('/production', ProductionIndex::class)->name('production');
     Route::get('/logistic', LogisticMaterialIndex::class)->name('logistic');
@@ -75,6 +78,7 @@ function() {
     Route::get('/material', MaterialIndex::class)->name('material');
     Route::get('/supplier', SupplierIndex::class)->name('supplier');
     Route::get('/customer', CustomerIndex::class)->name('customer');
+    Route::get('/good', GoodIndex::class)->name('good');
 });
 
 Route::middleware([

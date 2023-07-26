@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use App\Models\GoodReceive;
 use App\Models\LogisticMaterial;
 use App\Models\Material;
+use App\Models\PurchaseOrder;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -23,7 +24,7 @@ class GoodReceiveIndex extends Component
     public $getGRId, $getMaxReceive;
 
     // Assign ke tabel logistic materials
-    public $logistic_code, $qty_received;
+    public $logistic_code, $qty_received, $qty_order, $qty_accept;
 
     public function render()
     {
@@ -59,6 +60,7 @@ class GoodReceiveIndex extends Component
         // Mengupdate data good receive setelah di approve oleh logistik
         GoodReceive::where('id', '=', $this->getGRId)->update([
             'qty' => GoodReceive::where('id', '=', $this->getGRId)->first('qty')->qty - $this->qty_received,
+            'qty_accept' => GoodReceive::where('id', '=', $this->getGRId)->first('qty_accept')->qty_accept + $this->qty_received,
             'status_id' => 2,
         ]);
 
@@ -80,6 +82,17 @@ class GoodReceiveIndex extends Component
             'stock' => Material::where('id', '=', $getMaterialId)->first('stock')->stock + $this->qty_received,
         ]);
 
+        // Melakukan cek jika stok material lebih besar dari stok minimum pr_status akan "NULL"
+        $minStockMaterial = Material::where('id','=',$getMaterialId)->first('min_stock')->min_stock;
+        $stockMaterial = Material::where('id','=',$getMaterialId)->first('stock')->stock;
+
+        if($stockMaterial >= $minStockMaterial)
+        {
+            Material::where('id', '=', $getMaterialId)->update([
+                'pr_status' => NULL,
+            ]);
+        }
+
         $this->dispatchBrowserEvent('update-success');
         $this->closeModal();
     }
@@ -89,5 +102,14 @@ class GoodReceiveIndex extends Component
         GoodReceive::where('id', '=', $id)->update([
             'status_id' => 3,
         ]);
+
+        $getPOId = GoodReceive::where('id', '=', $id)->first('purchase_orders_id')->purchase_orders_id;
+        PurchaseOrder::where('id', '=', $getPOId)->update([
+            'status_id' => 3,
+            'description' => "Barang Diterima",
+        ]);
+        
+        $this->dispatchBrowserEvent('update-success');
+        $this->closeModal();
     }
 }

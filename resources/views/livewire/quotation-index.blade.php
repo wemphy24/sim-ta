@@ -60,34 +60,34 @@
                     <thead class="bg-zinc-200 text-zinc-800">
                         <tr>
                             <th scope="col" class="py-3 px-4">#</th>
-                            <th scope="col" class="py-3 px-3">Kode Penawaran</th>
-                            <th scope="col" class="py-3 px-3">Nama</th>
-                            <th scope="col" class="py-3 px-3">File Penawaran</th>
-                            <th scope="col" class="py-3 px-3">Proyek</th>
-                            <th scope="col" class="py-3 px-3">Tanggal</th>
-                            <th scope="col" class="py-3 px-3">Customer</th>
-                            <th scope="col" class="py-3 px-3">Status</th>
-                            <th scope="col" class="py-3 px-3">Aksi</th>
+                            <th scope="col" class="py-3 px-2">Kode Penawaran</th>
+                            <th scope="col" class="py-3 px-2">Nama</th>
+                            <th scope="col" class="py-3 px-2">File Penawaran</th>
+                            <th scope="col" class="py-3 px-2">Proyek</th>
+                            <th scope="col" class="py-3 px-2">Tanggal</th>
+                            <th scope="col" class="py-3 px-2">Customer</th>
+                            <th scope="col" class="py-3 px-2">Status</th>
+                            <th scope="col" class="py-3 px-2">Aksi</th>
                         </tr>
                     </thead>
 
                     <tbody>
                         @foreach ($quotations as $quotation)
                         <tr class="bg-white border-b hover:bg-gray-50 hover:text-black text-sm">
-                            <td class="py-1 px-3">{{ ($quotations ->currentpage()-1) * $quotations ->perpage() + $loop->index + 1 }}</td>
-                            <td class="py-1 px-3 font-medium">{{ $quotation->quotation_code }}</td>
-                            <td class="py-1 px-3">{{ $quotation->name }}</td>
+                            <td class="py-1 px-4">{{ ($quotations ->currentpage()-1) * $quotations ->perpage() + $loop->index + 1 }}</td>
+                            <td class="py-1 px-2 font-medium">{{ $quotation->quotation_code }}</td>
+                            <td class="py-1 px-2">{{ $quotation->name }}</td>
                             @if ($quotation->quotation_file == NULL)
-                                <td class="px-3 text-red-700">Belum Tersedia</td>  
+                                <td class="px-2 text-red-700">Belum Tersedia</td>  
                             @else
-                                <td class="px-3">
+                                <td class="px-2">
                                     <a class="text-blue-600" href="{{ url('storage/purchaseorder/'.$quotation->quotation_file) }}">{{ $quotation->quotation_file }}</a>
                                 </td>  
                             @endif
-                            <td class="py-1 px-3">{{ $quotation->project }}</td>
-                            <td class="py-1 px-3">{{ $quotation->date }}</td>
-                            <td class="py-1 px-3">{{ $quotation->customer['name'] }}</td>
-                            <td class="py-1 px-3">
+                            <td class="py-1 px-2">{{ $quotation->project }}</td>
+                            <td class="py-1 px-2">{{ date('d-m-Y', strtotime($quotation->date)) }}</td>
+                            <td class="py-1 px-2">{{ $quotation->customer['name'] }}</td>
+                            <td class="py-1 px-2">
                                 @if ($quotation->status['name'] == "Working")
                                     <div class="bg-yellow-200 w-24 py-1.5 rounded-full font-medium text-center">
                                         {{ $quotation->status['name'] }}
@@ -133,7 +133,7 @@
                     </div>
                     
                     <div class="mt-4">
-                        <div class="flex items-center gap-0 justify-between p-1 flex-wrap sm:gap-2">
+                        {{-- <div class="flex items-center gap-0 justify-between p-1 flex-wrap sm:gap-2">
                             <h1>Kode Inquiry</h1>
                             <select wire:model="inquiries_id" class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm">
                                 <option value="">Pilih Inquiry</option>
@@ -141,6 +141,14 @@
                                     <option value="{{ $inquiry->id }}">{{ $inquiry->inquiry_code }} - {{ $inquiry->customer['name'] }}</option>
                                 @endforeach
                             </select>
+                        </div> --}}
+                        <div class="flex items-center gap-0 justify-between p-1 flex-wrap sm:gap-2">
+                            <h1>File Inquiry</h1>
+                            <label class="text-sm" for="inquiry_file">
+                                <input class="w-96 text-sm rounded-lg border border-gray-300/50" required type="file"
+                                    wire:model="inquiry_file"
+                                >
+                            </label>
                         </div>
                         <div class="flex items-center gap-0 justify-between p-1 flex-wrap sm:gap-2">
                             <h1>Kode Penawaran</h1>
@@ -151,17 +159,27 @@
                             />
                         </div>
                         <div class="flex items-center gap-0 justify-between p-1 flex-wrap sm:gap-2">
-                            <h1>Nama</h1>
-                            <input class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm"
-                                type="text"
-                                wire:model="name"
-                            />
+                            <h1>Customer</h1>
+                            <select wire:model="customers_id" class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm">
+                                <option value="">Pilih Customer</option>
+                                @foreach ($customers as $customer)
+                                    <option value="{{ $customer->id }}">{{ $customer->name }}</option>
+                                @endforeach
+                            </select>
                         </div>
+                        
                         <div class="flex items-center gap-0 justify-between p-1 flex-wrap sm:gap-2">
                             <h1>Proyek</h1>
                             <input class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm"
                                 type="text"
                                 wire:model="project"
+                            />
+                        </div>
+                        <div class="flex items-center gap-0 justify-between p-1 flex-wrap sm:gap-2">
+                            <h1>Nama</h1>
+                            <input class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm bg-gray-100" disabled
+                                type="text"
+                                wire:model="name"
                             />
                         </div>
                         <div class="flex items-center gap-0 justify-between p-1 flex-wrap sm:gap-2">
@@ -174,20 +192,12 @@
                         </div>
                         <div class="flex items-center gap-0 justify-between p-1 flex-wrap sm:gap-2">
                             <h1>Lokasi</h1>
-                            <input class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm"
+                            <input class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm bg-gray-100" disabled
                                 type="text"
                                 wire:model="location"
                             />
                         </div>
-                        <div class="flex items-center gap-0 justify-between p-1 flex-wrap sm:gap-2">
-                            <h1>Customer</h1>
-                            <select wire:model="customers_id" class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm bg-gray-100" disabled>
-                                <option value="">Pilih Customer</option>
-                                @foreach ($customers as $customer)
-                                    <option value="{{ $customer->id }}">{{ $customer->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                        
                     
                         <div class="mt-4">
                             <div class="flex justify-end">
@@ -237,29 +247,36 @@
                             />
                         </div>
                         <div class="md:w-1/2">
-                            <label>Inquiry:</label>
+                            {{-- <label>Inquiry:</label>
                             <select wire:model="inquiries_id" class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-gray-100" disabled>
                                 <option value="">Pilih Inquiry</option>
                                 @foreach ($inquiries as $inquiry)
                                     <option value="{{ $inquiry->id }}">{{ $inquiry->name }}</option>
                                 @endforeach
-                            </select>
-                            {{-- <input class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-gray-100"
+                            </select> --}}
+                            <label>Nama:</label>
+                            <input class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm"
                                 type="text"
-                                wire:model="inquiries_id"
-                                disabled
-                            /> --}}
+                                wire:model="name"
+                            />
                         </div>
                     </div>
 
                     {{--  --}}
                     <div class="md:flex gap-2 form py-1">
                         <div class="md:w-1/2">
-                            <label>Nama:</label>
+                            {{-- <label>Nama:</label>
                             <input class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm"
                                 type="text"
                                 wire:model="name"
-                            />
+                            /> --}}
+                            <label>Customer:</label>
+                            <select wire:model="customers_id" class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-gray-100" disabled>
+                                <option value="">Pilih Customer</option>
+                                @foreach ($customers as $customer)
+                                    <option value="{{ $customer->id }}">{{ $customer->name }}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="md:w-1/2">
                             <label>Proyek:</label>
@@ -273,13 +290,12 @@
                     {{--  --}}
                     <div class="md:flex gap-2 form py-1">
                         <div class="md:w-1/2">
-                            <label>Customer:</label>
-                            <select wire:model="customers_id" class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-gray-100" disabled>
-                                <option value="">Pilih Customer</option>
-                                @foreach ($customers as $customer)
-                                    <option value="{{ $customer->id }}">{{ $customer->name }}</option>
-                                @endforeach
-                            </select>
+                            <label>Dibuat:</label>
+                            <input class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-gray-100" disabled
+                                type="text"
+                                wire:model="users_id"
+                                maxlength="128"
+                            />
                         </div>
                         <div class="md:w-1/2">
                             <label>Lokasi:</label>
@@ -347,6 +363,33 @@
                             </div>
                         </div>
                         <div class="md:w-1/2">
+                            <label for="inquiry_file">File Inquiry:</label>
+                            <input class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-gray-100"
+                                type="file"
+                                wire:model="inquiry_file"
+                            />
+                            <div class="my-2">
+                                @if ($quotation->inquiry_file == NULL)
+                                    <p class="w-full text-red-600">Belum Tersedia</p>
+                                @else
+                                    <div class="border border-gray-300/50 rounded-lg shadow-sm text-center w-24">
+                                    <a href="{{ url('storage/inquiry/'.$quotation->inquiry_file) }}" class="text-blue-600 hover:bg-gray-100">
+                                        <div class="w-24 p-2">
+                                            <img src="{{ asset('/images/pdf_icon.png') }}">
+                                            <p class="truncate">{{ $quotation->inquiry_file }}</p>
+                                        </div>
+                                    </a>
+                                </div> 
+                                @endif
+                            </div>
+                        </div>
+                        
+                    </div>
+
+
+                    {{--  --}}
+                    {{-- <div class="md:flex gap-2 form py-1">
+                        <div class="md:w-1/2">
                             <label>Dibuat:</label>
                             <input class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-gray-100" disabled
                                 type="text"
@@ -354,7 +397,7 @@
                                 maxlength="128"
                             />
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
 

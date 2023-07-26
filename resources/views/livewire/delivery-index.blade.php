@@ -77,11 +77,11 @@
                                 <td class="py-1 px-3">{{ $delivery->name }}</td>
                                 <td class="py-1 px-3">{{ $delivery->contract['name'] }}</td>
                                 <td class="py-1 px-3">{{ $delivery->description }}</td>
-                                <td class="py-1 px-3">{{ $delivery->send_date }}</td>
+                                <td class="py-1 px-3">{{ date('d-m-Y', strtotime($delivery->send_date)) }}</td>
                                 @if ($delivery->received_date == NULL)
                                     <td class="py-1 px-3 text-red-500 font-medium">Belum Diterima</td>
                                 @else
-                                    <td class="py-1 px-3">{{ $delivery->received_date }}</td>
+                                    <td class="py-1 px-3">{{ date('d-m-Y', strtotime($delivery->received_date)) }}</td>
                                 @endif
                                 <td class="py-1 px-3">
                                     @if ($delivery->status['name'] == "Working")
@@ -277,34 +277,35 @@
 
                     {{--  --}}
                     <div class="md:flex gap-2 form py-1">
-                        <div class="md:w-1/2">
+                        
                             <div class="md:w-1/2">
                                 <label>Nomor Kendaraan:</label>
                                 <input class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm" type="text"
                                     wire:model="plate_number" 
                                 />
                             </div>
-                            <label>Status:</label>
-                            @if ($status_id == "Pending")
-                                <input class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-red-200 font-bold"
-                                    type="text"
-                                    wire:model="status_id"
-                                    disabled
-                                />
-                            @elseif ($status_id == "Working")
-                                <input class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-yellow-200 font-bold"
-                                    type="text"
-                                    wire:model="status_id"
-                                    disabled
-                                />
-                            @else
-                                <input class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-green-200 font-bold"
-                                    type="text"
-                                    wire:model="status_id"
-                                    disabled
-                                />
-                            @endif
-                        </div>
+                            <div class="md:w-1/2">
+                                <label>Status:</label>
+                                @if ($status_id == "Pending")
+                                    <input class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-red-200 font-bold"
+                                        type="text"
+                                        wire:model="status_id"
+                                        disabled
+                                    />
+                                @elseif ($status_id == "Working")
+                                    <input class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-yellow-200 font-bold"
+                                        type="text"
+                                        wire:model="status_id"
+                                        disabled
+                                    />
+                                @else
+                                    <input class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-green-200 font-bold"
+                                        type="text"
+                                        wire:model="status_id"
+                                        disabled
+                                    />
+                                @endif
+                            </div>
                     </div>
 
                 </div>
@@ -339,24 +340,24 @@
                         <tbody>
                             @foreach ($detailrabps as $detailrabp)
                                 <tr class="bg-white hover:bg-gray-50 hover:text-black font-medium">
-                                    <td class="py-2 px-6">{{ $detailrabp->set_good['name'] }}</td>
+                                    <td class="py-2 px-6">{{ $detailrabp->good['name'] }}</td>
                                     <td class="py-2 px-6">{{ $detailrabp->qty }}</td>
-                                    <td class="py-2 px-6">{{ $detailrabp->set_good->measurement['name'] }}</td>
-                                    @if ($detailrabp->set_good->status_delivery == NULL)
+                                    <td class="py-2 px-6">{{ $detailrabp->good->measurement['name'] }}</td>
+                                    @if ($detailrabp->good->status_delivery == NULL)
                                         <td class="py-2 px-6 text-red-500">Belum Diambil</td>
                                     @else
-                                        <td class="py-2 px-6">{{ $detailrabp->set_good->status_delivery }}</td>
+                                        <td class="py-2 px-6">{{ $detailrabp->good->status_delivery }}</td>
                                     @endif
                                     <td class="py-2 px-6 text-white">
-                                        @if ($detailrabp->set_good->status_delivery == NULL)
-                                            <button wire:click="printLogistic({{ $detailrabp->set_goods_id }})" class="bg-green-500 px-2 py-1 rounded-md">
+                                        @if ($detailrabp->good->status_delivery == NULL)
+                                            <button wire:click="printLogistic({{ $detailrabp->goods_id }})" class="bg-green-500 px-2 py-1 rounded-md">
                                                 Ambil Barang
                                             </button>
-                                        @elseif ($detailrabp->set_good->status_delivery == "Sedang Diambil")
+                                        @elseif ($detailrabp->good->status_delivery == "Sedang Diambil")
                                             <button wire:click="" class="bg-yellow-500 px-2 py-1 rounded-md" disabled>
                                                 Sedang Diambil
                                             </button>
-                                        @elseif ($detailrabp->set_good->status_delivery == "Sedang Dikirim")
+                                        @elseif ($detailrabp->good->status_delivery == "Sedang Dikirim")
                                             <button wire:click="" class="bg-red-500 px-2 py-1 rounded-md" disabled>
                                                 Selesai
                                             </button>

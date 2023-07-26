@@ -57,34 +57,40 @@
                     <thead class="bg-zinc-200 text-zinc-800">
                         <tr>
                             <th scope="col" class="py-3 px-4">#</th>
-                            <th scope="col" class="py-3 px-3">Kode Logistik</th>
-                            <th scope="col" class="py-3 px-3">Nama</th>
-                            <th scope="col" class="py-3 px-3">Barang Diproduksi</th>
-                            <th scope="col" class="py-3 px-3">Kategori</th>
-                            <th scope="col" class="py-3 px-3">Qty Minta</th>
-                            <th scope="col" class="py-3 px-3">Qty Stok</th>
-                            <th scope="col" class="py-3 px-3">Tipe</th>
-                            <th scope="col" class="py-3 px-3">Status</th>
-                            <th scope="col" class="py-3 px-3">Aksi</th>
+                            <th scope="col" class="py-3 px-2">Kode Logistik</th>
+                            <th scope="col" class="py-3 px-2">Nama</th>
+                            <th scope="col" class="py-3 px-2">Barang Diproduksi</th>
+                            <th scope="col" class="py-3 px-2">Kategori</th>
+                            <th scope="col" class="py-3 px-2">Qty Minta</th>
+                            <th scope="col" class="py-3 px-2">Qty Stok</th>
+                            <th scope="col" class="py-3 px-2">Tipe</th>
+                            <th scope="col" class="py-3 px-2">Tanggal Diambil</th>
+                            <th scope="col" class="py-3 px-2">Status</th>
+                            <th scope="col" class="py-3 px-2">Aksi</th>
                         </tr>
                     </thead>
 
                     <tbody>
                         @foreach ($logistics as $logistic)
                             <tr class="bg-white border-b hover:bg-gray-50 hover:text-black text-sm">
-                                <td class="py-1 px-3">{{ ($logistics ->currentpage()-1) * $logistics ->perpage() + $loop->index + 1 }}</td>
-                                <td class="py-1 px-3 font-medium">{{ $logistic->logistic_code }}</td>
-                                <td class="py-1 px-3">{{ $logistic->material['name'] }}</td>
-                                @if ($logistic->set_goods_id != NULL)
-                                    <td class="py-1 px-3">{{ $logistic->set_good['name'] }}</td>
+                                <td class="py-1 px-4">{{ ($logistics ->currentpage()-1) * $logistics ->perpage() + $loop->index + 1 }}</td>
+                                <td class="py-1 px-2 font-medium">{{ $logistic->logistic_code }}</td>
+                                @if ($logistic->materials_id == NULL)
+                                    <td class="py-1 px-2 text-red-500">-</td>
                                 @else
-                                    <td class="py-1 px-3">-</td>
+                                    <td class="py-1 px-2">{{ $logistic->material['name'] }}</td>
                                 @endif
-                                <td class="py-1 px-3">{{ $logistic->category['name'] }}</td>
-                                <td class="py-1 px-3">{{ $logistic->qty_ask }}</td>
-                                <td class="py-1 px-3">{{ $logistic->qty_stock }}</td>
-                                <td class="py-1 px-3 font-medium">{{ $logistic->type }}</td>
-                                <td class="py-1 px-3">
+                                @if ($logistic->goods_id != NULL)
+                                    <td class="py-1 px-2">{{ $logistic->good['name'] }}</td>
+                                @else
+                                    <td class="py-1 px-2">-</td>
+                                @endif
+                                <td class="py-1 px-2">{{ $logistic->category['name'] }}</td>
+                                <td class="py-1 px-2">{{ $logistic->qty_ask }}</td>
+                                <td class="py-1 px-2">{{ $logistic->qty_stock }}</td>
+                                <td class="py-1 px-2 font-medium">{{ $logistic->type }}</td>
+                                <td class="py-1 px-2 font-medium">{{ $logistic->updated_at->format('d-m-Y') }}</td>
+                                <td class="py-1 px-2">
                                     @if ($logistic->status['name'] == "Working")
                                         <div class="bg-yellow-200 w-24 py-1.5 rounded-full font-medium text-center">
                                             {{ $logistic->status['name'] }}

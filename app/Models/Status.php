@@ -26,11 +26,6 @@ class Status extends Model
         return $this->hasMany('App\Models\Quotation', 'status_id');
     }
 
-    // public function budget_plan()
-    // {
-    //     return $this->hasMany('App\Models\BudgetPlan', 'status_id');
-    // }
-
     public function inquiry()
     {
         return $this->hasMany('App\Models\Inquiry', 'status_id');
@@ -90,4 +85,10 @@ class Status extends Model
     {
         return $this->hasMany('App\Models\Delivery', 'status_id');
     }
+
+    // AFTER REVISION
+    // public function good()
+    // {
+    //     return $this->hasMany('App\Models\Good', 'status_id');
+    // }
 }

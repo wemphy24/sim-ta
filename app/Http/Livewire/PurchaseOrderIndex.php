@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
+use Illuminate\Support\Facades\DB;
 
 class PurchaseOrderIndex extends Component
 {
@@ -31,7 +32,7 @@ class PurchaseOrderIndex extends Component
     public $purchase_order;
 
     // Tabel detail pos
-    public $materials_id, $qty, $price, $total_price_m;
+    public $materials_id, $qty, $price, $total_price_m, $order_date, $received_date;
     public $purchase_orders_id;
 
     // For editing detail po
@@ -48,8 +49,9 @@ class PurchaseOrderIndex extends Component
         return view('livewire.purchase-order-index', [
             'purchaseorders' => PurchaseOrder::with('supplier','status')->search(trim($this->search))->orderBy($this->searchBy,$this->orderAsc ? 'asc' : 'desc')->paginate($this->showPage),
             'suppliers' => Supplier::all(),
-            'materials' =>Material::where('categories_id','=',1)->orWhere('categories_id','=','2')->get(),
-            'detailpos' => DetailPo::all(),
+            // 'materials' => Material::where('categories_id','=',1)->orWhere('categories_id','=','2')->get(),
+            'materials' => DB::select("SELECT * FROM materials WHERE stock <= min_stock"),
+            'detailpos' => DetailPo::where('purchase_orders_id','=',$this->purchase_orders_id)->get(),
             'editdetailpos' => DetailPo::where('id','=',$this->getEditId)->get(),
         ])->layout('layouts.admin');
     }
@@ -76,7 +78,7 @@ class PurchaseOrderIndex extends Component
         } else {
             $getLastPO = PurchaseOrder::all()->last();
             $convertPO = (int)substr($getLastPO->purchase_order_code, -4) + 1;
-            $this->purchase_order_code = 'PO.' . $convertPO;
+            $this->purchase_order_code = 'PO.' . "0" . (Carbon::now()->day) . "." . (Carbon::now()->month) . "." . (Carbon::now()->year) . '.' . $convertPO;
         }
     }
 
@@ -134,9 +136,16 @@ class PurchaseOrderIndex extends Component
 
         $this->qty = 1;
         $this->price = 0;
+        $this->order_date = Carbon::now()->format('Y-m-d');
         $this->real_price = DetailPo::where('purchase_orders_id','=',$this->purchase_orders_id)->sum('total_price');
         $this->total_discount = DetailPo::where('purchase_orders_id','=',$this->purchase_orders_id)->sum('total_price') * ($this->discount * 0.01);
-        $this->total_ppn = $this->total_discount * (11 * 0.01);
+
+        if($this->total_discount == 0) {
+            $this->total_ppn = DetailPo::where('purchase_orders_id','=',$this->purchase_orders_id)->sum('total_price') * (11 * 0.01);
+        } else {
+            $this->total_ppn = $this->total_discount * (11 * 0.01);
+        }
+        // DetailPo::where('purchase_orders_id','=',$this->purchase_orders_id)->sum('total_price') - (($getTotalPrice * ($this->discount * 0.01)) // PPN
     }
 
     public function update()
@@ -159,6 +168,7 @@ class PurchaseOrderIndex extends Component
             'qty' => $this->qty,
             'price' => $this->price,
             'total_price' => $this->total_price_m,
+            'order_date' => $this->order_date,
             'status' => "Menunggu Pesanan",
         ]);
 
@@ -234,6 +244,8 @@ class PurchaseOrderIndex extends Component
             'good_receive_code' => $this->good_receive_code,
             'materials_id' => DetailPo::where('id','=',$id)->first(['materials_id'])->materials_id,
             'qty' => DetailPo::where('id','=',$id)->first(['qty'])->qty,
+            'qty_order' => DetailPo::where('id','=',$id)->first(['qty'])->qty,
+            'qty_accept' => 0,
             'price' => DetailPo::where('id','=',$id)->first(['total_price'])->total_price,
             'print_date' => Carbon::now()->format('Y-m-d'),
             'suppliers_id' => PurchaseOrder::where('id','=',$this->purchase_orders_id)->first(['suppliers_id'])->suppliers_id,
@@ -243,12 +255,9 @@ class PurchaseOrderIndex extends Component
 
         // Mengupdate status material yang sudah di cetak gr
         DetailPo::where('id','=',$id)->update([
-            'status' => "Sudah Cetak"
+            'status' => "Sudah Cetak",
+            'received_date' => Carbon::now()->format('Y-m-d'),
         ]);
-
-        // PurchaseOrder::where('id','=',$this->purchase_orders_id)->update([
-        //     'status_id' => 2,
-        // ]);
 
         $this->dispatchBrowserEvent('update-success');
     }
@@ -262,6 +271,7 @@ class PurchaseOrderIndex extends Component
     {
         PurchaseOrder::where('id', '=', $this->purchase_orders_id)->update([
             'status_id' => 2,
+            // 'description' =>
         ]);
 
         $this->dispatchBrowserEvent('update-success');
@@ -272,7 +282,11 @@ class PurchaseOrderIndex extends Component
     {
         PurchaseOrder::where('id', '=', $this->purchase_orders_id)->update([
             'status_id' => 3,
+            'description' => "Barang Diterima",
         ]);
+
+        $this->dispatchBrowserEvent('update-success');
+        $this->reset();
     }
 
     public function viewPdf()
@@ -304,7 +318,9 @@ class PurchaseOrderIndex extends Component
     {
         // Realtime update value detail pos ketika insert data
         if($this->materials_id != NULL) {
+            $this->price = Material::where('id','=',$this->materials_id)->first('price')->price;
             $this->total_price_m = ($this->qty * $this->price);
+            // $this->matchPrice = 
         } elseif ($this->materials_id_e != NULL) {
             $this->total_price_e = ($this->qty_e * $this->price_e);
         }

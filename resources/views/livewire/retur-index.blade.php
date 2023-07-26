@@ -43,7 +43,7 @@
                         <select wire:model="searchBy" class="border-gray-300/50 rounded-lg text-sm">
                             <option value="retur_code">KODE RETUR</option>
                             <option value="materials_id">NAMA</option>
-                            <option value="retur_date">TANGGAL CETAK</option>
+                            <option value="retur_date">TANGGAL RETUR</option>
                             <option value="status_id">STATUS</option>
                         </select>
                         <select wire:model="orderAsc" class="border-gray-300/50 rounded-lg text-sm">
@@ -72,9 +72,9 @@
                                 <td class="py-1 px-3">{{ ($returs ->currentpage()-1) * $returs ->perpage() + $loop->index + 1 }}</td>
                                 <td class="py-1 px-3 font-medium">{{ $retur->retur_code }}</td>
                                 <td class="py-1 px-3">{{ $retur->material['name'] }}</td>
-                                <td class="py-1 px-3">{{ $retur->set_good['name'] }}</td>
+                                <td class="py-1 px-3">{{ $retur->good['name'] }}</td>
                                 <td class="py-1 px-3">{{ $retur->qty }}</td>
-                                <td class="py-1 px-3">{{ $retur->retur_date }}</td>
+                                <td class="py-1 px-3">{{ date('d-m-Y', strtotime($retur->retur_date)) }}</td>
                                 <td class="py-1 px-3">
                                     @if ($retur->status['name'] == "Pending")
                                         <div class="bg-red-200 w-24 py-1.5 rounded-full font-medium text-center">

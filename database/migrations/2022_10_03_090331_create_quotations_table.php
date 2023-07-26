@@ -15,10 +15,11 @@ return new class extends Migration
     {
         Schema::create('quotations', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('inquiries_id')->constrained('inquiries')->onUpdate('CASCADE');
+            // $table->foreignId('inquiries_id')->constrained('inquiries')->onUpdate('CASCADE'); REVISI
             $table->string('quotation_code')->unique();
             $table->string('name');
             $table->longText('quotation_file')->nullable();
+            $table->longText('inquiry_file')->nullable();
             $table->string('project')->nullable();
             $table->date('date');
             $table->string('location')->nullable();

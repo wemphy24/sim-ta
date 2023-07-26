@@ -16,7 +16,8 @@ class Retur extends Model
     ];
 
     protected $fillable = [
-        'set_goods_id', 
+        // 'set_goods_id', 
+        'goods_id', 
         'retur_code', 
         'materials_id',
         'qty', 
@@ -28,9 +29,14 @@ class Retur extends Model
         'created_at',
     ];
 
-    public function set_good()
+    // public function set_good()
+    // {
+    //     return $this->belongsTo('App\Models\SetGood', 'set_goods_id', 'id');
+    // }
+
+    public function good()
     {
-        return $this->belongsTo('App\Models\SetGood', 'set_goods_id', 'id');
+        return $this->belongsTo('App\Models\Good', 'goods_id', 'id');
     }
 
     public function material()
@@ -55,7 +61,7 @@ class Retur extends Model
             $query->where('retur_code', 'like', $term)
             ->orWhere('retur_date', 'like', $term)
             ->orWhere('qty', 'like', $term)
-            ->orWhereHas('set_good', function($query) use ($term) {
+            ->orWhereHas('good', function($query) use ($term) {
                 $query->where('name', 'like', $term);
             })
             ->orWhereHas('material', function($query) use ($term) {

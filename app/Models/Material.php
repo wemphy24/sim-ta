@@ -22,8 +22,12 @@ class Material extends Model
         'name', 
         'stock', 
         'price', 
+        'old_price', 
+        'change_price', 
         'min_stock', 
         'max_stock', 
+        'pr_status', 
+        'price_approval', 
         'updated_at',
         'created_at',
     ];
@@ -72,6 +76,19 @@ class Material extends Model
     {
         return $this->hasMany('App\Models\Retur', 'materials_id');
     }
+
+    // AFTER REVISION
+    public function billmaterial()
+    {
+        return $this->hasMany('App\Models\BillMaterial', 'materials_id');
+    }
+
+    public function rabp_material()
+    {
+        return $this->hasMany('App\Models\RabpMaterial', 'materials_id');
+    }
+
+    
 
     public function scopeSearch($query, $term)
     {

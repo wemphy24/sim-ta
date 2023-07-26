@@ -13,9 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('roles', function (Blueprint $table) {
+        Schema::create('costs', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->integer('overhead');
+            $table->integer('preliminary');
+            $table->integer('profit');
+            // $table->integer('discount');
+            $table->foreignId('goods_id')->constrained('goods')->onUpdate('CASCADE');
             $table->timestamps();
         });
     }
@@ -27,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('roles');
+        Schema::dropIfExists('costs');
     }
 };

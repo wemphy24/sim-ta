@@ -21,8 +21,12 @@ return new class extends Migration
             $table->string('name');
             $table->integer('stock');
             $table->integer('price')->nullable();
-            $table->integer('min_stock')->nullable();;
-            $table->integer('max_stock')->nullable();;
+            $table->integer('old_price')->nullable();
+            $table->integer('change_price')->nullable();
+            $table->integer('min_stock')->nullable();
+            $table->integer('max_stock')->nullable();
+            $table->string('pr_status')->nullable(); // TAMBAHAN
+            $table->string('price_approval')->nullable(); // TAMBAHAN
             $table->timestamps();
         });
     }

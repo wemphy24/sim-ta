@@ -74,7 +74,7 @@
                                 <td class="py-1 px-3 font-medium">{{ $contract->contract_code }}</td>
                                 <td class="py-1 px-3">{{ $contract->name }}</td>
                                 <td class="py-1 px-3">RP. {{ number_format($contract->contract_value) }}</td>
-                                <td class="py-1 px-3">{{ $contract->finish_date }}</td>
+                                <td class="py-1 px-3">{{ date('d-m-Y', strtotime($contract->finish_date)) }}</td>
                                 <td class="py-1 px-3">
                                     @if ($contract->status['name'] == "Working")
                                         <div class="bg-yellow-200 w-24 py-1.5 rounded-full font-medium text-center">
@@ -229,9 +229,9 @@
                         <tbody>
                             @foreach ($detailrabps as $detailrabp)
                                 <tr class="bg-white hover:bg-gray-50 hover:text-black font-medium">
-                                    <td class="py-2 px-6">{{ $detailrabp->set_good['name'] }}</td>
+                                    <td class="py-2 px-6">{{ $detailrabp->good['name'] }}</td>
                                     <td class="py-2 px-6">{{ $detailrabp->qty }}</td>
-                                    <td class="py-2 px-6">{{ $detailrabp->set_good->measurement['name'] }}</td>
+                                    <td class="py-2 px-6">{{ $detailrabp->good->measurement['name'] }}</td>
                                     {{-- <td class="py-2 px-6">RP. {{ number_format($total_price) }}</td> --}}
                                 </tr>
                             @endforeach

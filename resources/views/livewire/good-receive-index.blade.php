@@ -57,26 +57,30 @@
                     <thead class="bg-zinc-200 text-zinc-800">
                         <tr>
                             <th scope="col" class="py-3 px-4">#</th>
-                            <th scope="col" class="py-3 px-3">Kode GRN</th>
-                            <th scope="col" class="py-3 px-3">Nama</th>
-                            <th scope="col" class="py-3 px-3">Qty</th>
-                            <th scope="col" class="py-3 px-3">Supplier</th>
-                            <th scope="col" class="py-3 px-3">Tanggal Cetak</th>
-                            <th scope="col" class="py-3 px-3">Status</th>
-                            <th scope="col" class="py-3 px-3">Aksi</th>
+                            <th scope="col" class="py-3 px-2">Kode GRN</th>
+                            <th scope="col" class="py-3 px-2">Nama</th>
+                            <th scope="col" class="text-center py-3 px-2">Qty Order</th>
+                            <th scope="col" class="text-center py-3 px-2">Qty Belum Terima</th>
+                            <th scope="col" class="text-center py-3 px-2">Qty Sudah Terima</th>
+                            <th scope="col" class="py-3 px-2">Supplier</th>
+                            <th scope="col" class="py-3 px-2">Tanggal Cetak/Terima</th>
+                            <th scope="col" class="py-3 px-2">Status</th>
+                            <th scope="col" class="py-3 px-2">Aksi</th>
                         </tr>
                     </thead>
 
                     <tbody>
                         @foreach ($goodreceives as $gr)
                             <tr class="bg-white border-b hover:bg-gray-50 hover:text-black text-sm">
-                                <td class="py-1 px-3">{{ ($goodreceives ->currentpage()-1) * $goodreceives ->perpage() + $loop->index + 1 }}</td>
-                                <td class="py-1 px-3 font-medium">{{ $gr->good_receive_code }}</td>
-                                <td class="py-1 px-3">{{ $gr->material['name'] }}</td>
-                                <td class="py-1 px-3">{{ $gr->qty }}</td>
-                                <td class="py-1 px-3">{{ $gr->supplier['name'] }}</td>
-                                <td class="py-1 px-3">{{ $gr->print_date }}</td>
-                                <td class="py-1 px-3">
+                                <td class="py-1 px-4">{{ ($goodreceives ->currentpage()-1) * $goodreceives ->perpage() + $loop->index + 1 }}</td>
+                                <td class="py-1 px-2 font-bold">{{ $gr->good_receive_code }}</td>
+                                <td class="py-1 px-2">{{ $gr->material['name'] }}</td>
+                                <td class="font-medium text-center py-1 px-2">{{ $gr->qty_order }}</td>
+                                <td class="font-medium text-center py-1 px-2">{{ $gr->qty }}</td>
+                                <td class="font-medium text-center py-1 px-2">{{ $gr->qty_accept }}</td>
+                                <td class="py-1 px-2">{{ $gr->supplier['name'] }}</td>
+                                <td class="py-1 px-2">{{ date('d-m-Y', strtotime($gr->print_date)) }}</td>
+                                <td class="py-1 px-2">
                                     @if ($gr->status['name'] == "Pending")
                                         <div class="bg-red-200 w-24 py-1.5 rounded-full font-medium text-center">
                                             {{ $gr->status['name'] }}
@@ -91,7 +95,7 @@
                                         </div>
                                     @endif
                                 </td>
-                                <td class="py-1 px-3">
+                                <td class="py-1 px-2">
                                     <div class="flex items-center gap-4">
                                         @if ($gr->qty == 0 && $gr->status['name'] == "Working")
                                             <button title="Selesai" wire:click="completeGR({{ $gr->id }})" class="text-white bg-green-500 p-2 rounded-lg font-medium hover:scale-105 hover:-translate-x-0 hover:duration-150">
@@ -139,11 +143,18 @@
                     </div>
                     {{-- <p class="text-red-500">Material diterima telah melebihi jumlah maksimal</p> --}}
                     {{-- @error('qty_received') <p class="error text-red-500">Material diterima melebihi jumlah maksimal</p> @enderror --}}
+                    @if ($qty_received > $getMaxReceive)
+                        <h1 class="text-red-500 px-1 font-medium">Material diterima lebih besar dari qty order !</h1>
+                    @endif
                     <div class="mt-4">
                         <div class="flex justify-end">
-                            <button wire:click="store" class="text-white bg-zinc-800 py-2 px-6 rounded-lg hover:scale-105 hover:-translate-x-0 hover:duration-150">
-                                Submit
-                            </button>
+                            @if ($qty_received > $getMaxReceive)
+                                
+                            @else
+                                <button wire:click="store" class="text-white bg-zinc-800 py-2 px-6 rounded-lg hover:scale-105 hover:-translate-x-0 hover:duration-150">
+                                    Submit
+                                </button>
+                            @endif
                         </div>
                     </div>
                 </div>

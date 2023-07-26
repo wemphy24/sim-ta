@@ -45,4 +45,10 @@ class Measurement extends Model
     {
         return $this->hasMany('App\Models\PurchaseRequest', 'measurements_id');
     }
+
+    // AFTER REVISION
+    public function good()
+    {
+        return $this->hasMany('App\Models\Good', 'measurements_id');
+    }
 }

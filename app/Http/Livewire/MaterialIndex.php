@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\BillMaterial;
 use App\Models\Category;
 use App\Models\Material;
 use App\Models\Measurement;
@@ -21,12 +22,14 @@ class MaterialIndex extends Component
 
     public $showingMaterialModal = false;
     public $showingRequest = false;
+    public $showingChangePrice = false;
     public $isEditMode = false;
-    public $categories_id, $measurements_id, $material_code, $name, $stock, $price, $min_stock, $max_stock;
+    public $categories_id, $measurements_id, $material_code, $name, $stock, $price, $old_price, $min_stock, $max_stock, $change_price, $price_approval;
 
     public $material, $getMaterialId;
 
-    public $purchase_request_code, $qty_ask, $deadline;
+    // Tabel purchase_request
+    public $purchase_request_code,$stock_logistci, $qty_ask, $deadline;
 
     public function render()
     {
@@ -47,6 +50,7 @@ class MaterialIndex extends Component
     {
         $this->showingMaterialModal = false;
         $this->showingRequest = false;
+        $this->showingChangePrice = false;
     }
 
     public function storeMaterial()
@@ -60,6 +64,49 @@ class MaterialIndex extends Component
             'price' => $this->price,
             'min_stock' => $this->min_stock,
             'max_stock' => $this->max_stock,
+        ]);
+
+        $this->reset();
+        $this->closeModal();
+
+        $this->dispatchBrowserEvent('store-success');
+    }
+
+    public function showChangePrice($id)
+    {
+        $this->showingChangePrice = true;
+        $this->material = Material::findOrFail($id);
+        $this->change_price = Material::where('id','=', $id)->first('change_price')->change_price;
+        $this->price_approval = Material::where('id','=', $id)->first('price_approval')->price_approval;
+    }
+
+    public function storeChangePrice()
+    {
+        Material::where('id', '=', $this->material->id)->update([
+            'change_price' => $this->change_price,
+            'price_approval' => "Need Approve",
+        ]);
+
+        $this->reset();
+        $this->closeModal();
+
+        $this->dispatchBrowserEvent('store-success');
+    }
+
+    public function approve()
+    {
+        $getOldPrice = Material::where('id', '=', $this->material->id)->first('price')->price;
+        Material::where('id', '=', $this->material->id)->update([
+            'change_price' => $this->change_price,
+            'price_approval' => NULL,
+            'old_price' => $getOldPrice,
+            'price' => $this->change_price,
+        ]);
+
+        // Update bill material/set barang
+        BillMaterial::where('materials_id','=',$this->material->id)->update([
+            'price' => $this->change_price,
+            'total_price' => $this->change_price * BillMaterial::where('materials_id','=',$this->material->id)->first('qty')->qty,
         ]);
 
         $this->reset();
@@ -86,6 +133,7 @@ class MaterialIndex extends Component
 
     public function updateMaterial()
     {
+        // dd($this->material->id);
         $this->material->update([
             'categories_id' => $this->categories_id,
             'measurements_id' => $this->measurements_id,
@@ -95,6 +143,12 @@ class MaterialIndex extends Component
             'price' => $this->price,
             'min_stock' => $this->min_stock,
             'max_stock' => $this->max_stock,
+        ]);
+
+        // Update bill material/set barang
+        BillMaterial::where('materials_id','=',$this->material->id)->update([
+            'price' => $this->price,
+            'total_price' => $this->price * BillMaterial::where('materials_id','=',$this->material->id)->first('qty')->qty,
         ]);
 
         $this->reset();
@@ -111,6 +165,13 @@ class MaterialIndex extends Component
         $this->dispatchBrowserEvent('delete-success');
     }
 
+    public function showRequest($id) 
+    {
+        $this->getMaterialId = $id;
+        $this->showingRequest = true;
+        $this->qty_ask = Material::where('id','=',$id)->first('max_stock')->max_stock - Material::where('id','=',$id)->first('stock')->stock;
+    }
+
     public function createPRCode() 
     {
         // Membuat kode PR
@@ -124,12 +185,6 @@ class MaterialIndex extends Component
         }
     }
 
-    public function showRequest($id) 
-    {
-        $this->getMaterialId = $id;
-        $this->showingRequest = true;
-    }
-
     public function requestPR()
     {
         $this->createPRCode();
@@ -137,6 +192,7 @@ class MaterialIndex extends Component
         PurchaseRequest::create([
             'purchase_request_code' => $this->purchase_request_code,
             'materials_id' => $this->getMaterialId,
+            'stock_logistic' => Material::where('id','=', $this->getMaterialId)->first('stock')->stock,
             'qty_ask' => $this->qty_ask,
             'description' => "Meminta Request",
             'deadline' => $this->deadline,
@@ -144,6 +200,10 @@ class MaterialIndex extends Component
             'measurements_id' => Material::where('id','=', $this->getMaterialId)->first('measurements_id')->measurements_id,
             'status_id' => 1,
             'users_id' => Auth::user()->id,
+        ]);
+
+        Material::where('id','=', $this->getMaterialId)->update([
+            'pr_status' => "PO Berhasil",
         ]);
 
         $this->closeModal();
@@ -179,7 +239,6 @@ class MaterialIndex extends Component
             } else if($this->categories_id == 3) {
                 $this->material_code = "BJ.00" . (int)substr($getLastMaterialCode->material_code, -2) + 1;
             }
-        }
-        
+        } 
     }
 }

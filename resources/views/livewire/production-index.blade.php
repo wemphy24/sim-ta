@@ -28,7 +28,7 @@
                         <span>Download CSV</span>
                     </div> 
                 </button>
-                <button wire:click="showMaterialModal" class="py-2 px-4 text-center text-white rounded-lg border bg-zinc-800">
+                <button wire:click="" class="py-2 px-4 text-center text-white rounded-lg border bg-zinc-800">
                     <div class="flex items-center gap-1">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
                         <span>Buat Produksi</span>
@@ -80,7 +80,7 @@
                                 <td class="py-1 px-6">{{ $production->name }}</td>
                                 <td class="py-1 px-6">{{ $production->rabp['name'] }}</td>
                                 <td class="py-1 px-6">{{ $production->description }}</td>
-                                <td class="py-1 px-6">{{ $production->deadline }}</td>
+                                <td class="py-1 px-6">{{ date('d-m-Y', strtotime($production->deadline)) }}</td>
                                 <td class="py-1 px-3">
                                     @if ($production->status['name'] == "Working")
                                         <div class="bg-yellow-200 w-24 py-1.5 rounded-full font-medium text-center">
@@ -226,43 +226,55 @@
             {{-- SECTION DAFTAR BARANG --}}
             <div class="bg-white overflow-x-auto sm:rounded-lg border border-gray-300/50 mt-6">
                 <div class="py-3 px-6">
-                    <div class="font-medium text-xl mb-3">Daftar Barang</div>
+                    <div class="font-medium text-xl mb-3">Daftar Barang Yang Diproduksi</div>
                     <table class="w-full text-sm text-left text-black">
                         <thead class="bg-zinc-200">
                             <tr>
-                                <th scope="col" class="py-3 px-6">Barang</th>
-                                <th scope="col" class="py-3 px-6">Qty</th>
-                                <th scope="col" class="py-3 px-6">Satuan</th>
-                                <th scope="col" class="py-3 px-6">Status</th>
-                                <th scope="col" class="py-3 px-6">Aksi</th>
+                                <th scope="col" class="py-3 px-2">Barang</th>
+                                <th scope="col" class="py-3 px-2">Qty</th>
+                                <th scope="col" class="py-3 px-2">Satuan</th>
+                                <th scope="col" class="py-3 px-2">Mulai Produksi</th>
+                                <th scope="col" class="py-3 px-2">Finish Produksi</th>
+                                <th scope="col" class="py-3 px-2">Status Barang</th>
+                                <th scope="col" class="py-3 px-2">Aksi</th>
                             </tr>
                         </thead>
                         
                         <tbody>
                             @foreach ($detailrabps as $detailrabp)
                                 <tr class="bg-white hover:bg-gray-50 hover:text-black font-medium">
-                                    <td class="py-2 px-6">{{ $detailrabp->set_good['name'] }}</td>
-                                    <td class="py-2 px-6">{{ $detailrabp->qty }}</td>
-                                    <td class="py-2 px-6">{{ $detailrabp->set_good->measurement['name'] }}</td>
-                                    <td class="py-2 px-6">{{ $detailrabp->set_good->status }}</td>
-                                    <td class="py-2 px-6 text-white">
+                                    <td class="py-2 px-2">{{ $detailrabp->good['name'] }}</td>
+                                    <td class="py-2 px-2">{{ $detailrabp->qty }}</td>
+                                    <td class="py-2 px-2">{{ $detailrabp->good->measurement['name'] }}</td>
+                                    @if ($detailrabp->good->start_prod == NULL)
+                                        <td class="py-2 px-2 text-red-500">Menunggu Produksi</td>
+                                    @else
+                                        <td class="py-2 px-2">{{ date('d-m-Y', strtotime($detailrabp->good->start_prod)) }}</td>
+                                    @endif
+                                    @if ($detailrabp->good->end_prod == NULL)
+                                        <td class="py-2 px-2 text-red-500">-</td>
+                                    @else
+                                        <td class="py-2 px-2">{{ date('d-m-Y', strtotime($detailrabp->good->end_prod)) }}</td>
+                                    @endif
+                                    <td class="py-2 px-2">{{ $detailrabp->good->status_production }}</td>
+                                    <td class="py-2 px-2 text-white">
                                         <div class="flex items-center gap-4">
-                                            <button wire:click="detailMaterial({{ $detailrabp->set_goods_id }})" class="bg-blue-500 px-2 py-1 rounded-md hover:scale-105 hover:-translate-x-0 hover:duration-150">
+                                            <button wire:click="detailMaterial({{ $detailrabp->goods_id }})" class="bg-blue-500 px-2 py-1 rounded-md hover:scale-105 hover:-translate-x-0 hover:duration-150">
                                                 <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 21h7a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v11m0 5l4.879-4.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242z"></path></svg>
                                             </button>
-                                            @if ($detailrabp->set_good->status == "Siap Dirakit")
-                                                <button wire:click="changeProgress({{ $detailrabp->set_goods_id }})" class="bg-green-500 px-2 py-1 rounded-md">
+                                            @if ($detailrabp->good->status_production == "Siap Dirakit")
+                                                <button wire:click="changeProgress({{ $detailrabp->goods_id }})" class="bg-green-500 px-2 py-1 rounded-md hover:scale-105 hover:-translate-x-0 hover:duration-150">
                                                     Mulai Produksi
                                                 </button>
-                                            @elseif ($detailrabp->set_good->status == "Sedang Dirakit")
-                                                <button wire:click="doneProduction({{ $detailrabp->set_goods_id }})" class="bg-yellow-500 px-2 py-1 rounded-md">
+                                            @elseif ($detailrabp->good->status_production == "Sedang Dirakit")
+                                                <button wire:click="doneProduction({{ $detailrabp->goods_id }})" class="bg-yellow-500 px-2 py-1 rounded-md hover:scale-105 hover:-translate-x-0 hover:duration-150">
                                                     Selesai Dirakit
                                                 </button>
-                                            @elseif ($detailrabp->set_good->status == "Selesai Dirakit")
-                                                <button wire:click="startQC({{ $detailrabp->set_goods_id }})" class="bg-yellow-500 px-2 py-1 rounded-md">
+                                            @elseif ($detailrabp->good->status_production == "Selesai Dirakit")
+                                                <button wire:click="startQC({{ $detailrabp->goods_id }})" class="bg-yellow-500 px-2 py-1 rounded-md hover:scale-105 hover:-translate-x-0 hover:duration-150">
                                                     Mulai QC
                                                 </button>
-                                            @elseif ($detailrabp->set_good->status == "Selesai Produksi")
+                                            @elseif ($detailrabp->good->status_production == "Selesai Produksi")
                                                 <button wire:click="" class="bg-red-500 px-2 py-1 rounded-md" disabled>
                                                     Selesai
                                                 </button>
@@ -306,24 +318,24 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($setbillmaterials as $sbm)
+                                @foreach ($rabpmaterials as $rm)
                                     <tr class="bg-white hover:bg-gray-50 hover:text-black font-medium">
-                                        <td class="py-2 px-6">{{ $sbm->material['name'] }}</td>
-                                        <td class="py-2 px-6">{{ $sbm->qty * $count_material }}</td>
-                                        <td class="py-2 px-6">{{ $sbm->material->measurement['name'] }}</td>
-                                        <td class="py-2 px-6">{{ $sbm->qty_received }}</td>
-                                        <td class="py-2 px-6">{{ $sbm->qty_install }}</td>
-                                        <td class="py-2 px-6">{{ $sbm->qty_remaining }}</td>
+                                        <td class="py-2 px-6">{{ $rm->material['name'] }}</td>
+                                        <td class="py-2 px-6">{{ $rm->qty }}</td>
+                                        <td class="py-2 px-6">{{ $rm->material->measurement['name'] }}</td>
+                                        <td class="py-2 px-6">{{ $rm->qty_received }}</td>
+                                        <td class="py-2 px-6">{{ $rm->qty_install }}</td>
+                                        <td class="py-2 px-6">{{ $rm->qty_remaining }}</td>
                                         <td class="py-2 px-6">
                                             <div class="flex items-center gap-4">
-                                                <button class="text-white rounded-md px-2 py-1  bg-blue-500" wire:click="editProgress({{ $sbm->id }})">Edit</button>
-                                                @if ($sbm->status == "Belum Diambil")
-                                                    <button class="text-white rounded-md px-2 py-1 bg-green-500" wire:click="printMaterial({{ $sbm->id }})">Ambil</button>  
-                                                @elseif ($sbm->status == "Sedang Diambil")
+                                                <button class="text-white rounded-md px-2 py-1  bg-blue-500" wire:click="editProgress({{ $rm->id }})">Edit</button>
+                                                @if ($rm->status == "Belum Diambil")
+                                                    <button class="text-white rounded-md px-2 py-1 bg-green-500" wire:click="printMaterial({{ $rm->id }})">Ambil</button>  
+                                                @elseif ($rm->status == "Sedang Diambil")
                                                     <button class="text-white rounded-md px-2 py-1 bg-yellow-500" wire:click="" disabled>Sedang Diambil</button>
-                                                @elseif ($sbm->status == "Sudah Diambil")
+                                                @elseif ($rm->status == "Sudah Diambil")
                                                     <button class="text-white rounded-md px-2 py-1 bg-red-500" wire:click="" disabled>Sudah Diambil</button>
-                                                @elseif ($sbm->status == "Sudah Retur")
+                                                @elseif ($rm->status == "Sudah Retur")
                                                     <button class="text-white rounded-md px-2 py-1 bg-red-500" wire:click="" disabled>Sudah Diambil</button>
                                                 @endif
                                             </div>
@@ -364,16 +376,16 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($editsetbillmaterials as $esbm)
+                                @foreach ($editrabpmaterials as $erm)
                                     <tr class="bg-white hover:bg-gray-50 hover:text-black font-medium">
-                                        <td class="py-2 px-6">{{ $esbm->material['name'] }}</td>
-                                        <td class="py-2 px-6">{{ $esbm->qty * $count_material }}</td>
-                                        <td class="py-2 px-6">{{ $esbm->material->measurement['name'] }}</td>
+                                        <td class="py-2 px-6">{{ $erm->material['name'] }}</td>
+                                        <td class="py-2 px-6">{{ $erm->qty }}</td>
+                                        <td class="py-2 px-6">{{ $erm->material->measurement['name'] }}</td>
                                         <td class="py-2 px-6">
                                             <input wire:model="qty_received" type="number" class="w-24 border-gray-300/50  rounded-lg text-sm text-center bg-gray-100" disabled/>
                                         </td>
                                         <td class="py-2 px-6">
-                                            <input wire:model="qty_install" type="number" class="w-24 border-gray-300/50  rounded-lg text-sm text-center" max="{{ $esbm->qty }}"/>
+                                            <input wire:model="qty_install" type="number" class="w-24 border-gray-300/50  rounded-lg text-sm text-center" max="{{ $erm->qty }}"/>
                                         </td>
                                         <td class="py-2 px-6">
                                             <input wire:model="qty_remaining" type="number" class="w-24 border-gray-300/50  rounded-lg text-sm text-center"/>

@@ -45,10 +45,10 @@ class Inquiry extends Model
         return $this->belongsTo('App\Models\User', 'users_id', 'id');
     }
 
-    public function quotation()
-    {
-        return $this->hasMany('App\Models\Quotation', 'inquiries_id');
-    }
+    // public function quotation()
+    // {
+    //     return $this->hasMany('App\Models\Quotation', 'inquiries_id'); ///////
+    // }
 
     public function scopeSearch($query, $term)
     {

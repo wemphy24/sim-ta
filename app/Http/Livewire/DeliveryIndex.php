@@ -5,10 +5,12 @@ namespace App\Http\Livewire;
 use App\Models\Contract;
 use App\Models\Delivery;
 use App\Models\DetailRabp;
+use App\Models\Good;
 use App\Models\LogisticMaterial;
 use App\Models\Material;
 use App\Models\Quotation;
 use App\Models\Rabp;
+use App\Models\RabpMaterial;
 use App\Models\SetGood;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -39,8 +41,9 @@ class DeliveryIndex extends Component
         return view('livewire.delivery-index', [
             'deliverys' => Delivery::with('contract','status')->search(trim($this->search))->orderBy($this->searchBy,$this->orderAsc ? 'asc' : 'desc')->paginate($this->showPage),
             'detailrabps' => DetailRabp::where('rabps_id','=',$this->rabps_id)->get(),
-            'contracts' => Contract::all(),
-            'rabps' => Rabp::where('status_id','=', 3)->get(),
+            'contracts' => Contract::where('status_id','=',2)->get(),
+            // 'rabps' => Rabp::where('status_id','=', 3)->get(),
+            'rabps' => Rabp::where('description','=', "Sedang Produksi")->get(),
         ])->layout('layouts.admin');
     }
 
@@ -112,6 +115,7 @@ class DeliveryIndex extends Component
         $this->name = $this->delivery->name;
         $this->contracts_id = $this->delivery->contracts_id;
         $this->description = $this->delivery->description;
+        $this->plate_number = $this->delivery->plate_number;
         $this->send_date = $this->delivery->send_date;
         $this->received_date = $this->delivery->received_date;
         $this->status_id = $this->delivery->status['name'];
@@ -183,18 +187,18 @@ class DeliveryIndex extends Component
     {
         $this->createLogisticCode();
 
-        $getMaterialName = SetGood::where('id','=',$id)->first('name')->name;
-        $getMaterialId = Material::where('name','=',$getMaterialName)->first('id')->id;
+        // $getMaterialName = SetGood::where('id','=',$id)->first('name')->name;
+        // $getMaterialId = Material::where('name','=',$getMaterialName)->first('id')->id;
 
         // dd(SetGood::where('name', '=', $getMaterialName)->first('price')->price);
 
         LogisticMaterial::create([
-            'set_goods_id' => $id,
+            'goods_id' => $id,
             'logistic_code' => $this->logistic_code,
-            'materials_id' => $getMaterialId,
-            'qty_ask' => SetGood::where('name', '=', $getMaterialName)->first('qty')->qty,
-            'qty_stock' => Material::where('id', '=', $getMaterialId)->first('stock')->stock,
-            'price' => SetGood::where('name', '=', $getMaterialName)->first('price')->price,
+            'materials_id' => NULL,
+            'qty_ask' => DetailRabp::where('goods_id', '=', $id)->first('qty')->qty,
+            'qty_stock' => Good::where('id', '=', $id)->first('stock')->stock,
+            'price' => DetailRabp::where('goods_id', '=', $id)->first('price')->price,
             'type' => "Barang Keluar",
             'categories_id' => 3,
             'measurements_id' => 3,
@@ -202,7 +206,7 @@ class DeliveryIndex extends Component
             'users_id' => Auth::user()->id,
         ]);
 
-        SetGood::where('id','=',$id)->update([
+        Good::where('id','=',$id)->update([
             'status_delivery' => "Sedang Diambil"
         ]);
 

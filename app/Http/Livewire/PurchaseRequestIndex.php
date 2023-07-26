@@ -22,7 +22,7 @@ class PurchaseRequestIndex extends Component
     public $showingPR = false;
 
     // Tabel purchase requests
-    public $productions_id, $purchase_request_code, $materials_id, $qty_ask, $description, $deadline, $categories_id, $measurements_id, $status_id, $users_id;
+    public $productions_id, $purchase_request_code, $materials_id,$stock_logistic, $qty_ask, $description, $deadline, $categories_id, $measurements_id, $status_id, $users_id;
 
     public function render()
     {
@@ -93,6 +93,8 @@ class PurchaseRequestIndex extends Component
             'status_id' => 3,
             'description' => "Request Diterima",
         ]);
+
+        $this->dispatchBrowserEvent('store-success');
     }
 
     public function detail($id)

@@ -62,7 +62,7 @@
                             <th scope="col" class="py-3 px-3">Nama</th>
                             <th scope="col" class="py-3 px-3">Keterangan</th>
                             <th scope="col" class="py-3 px-3">Supplier</th>
-                            <th scope="col" class="py-3 px-3">Tanggal</th>
+                            <th scope="col" class="py-3 px-3">Tanggal Dibuat</th>
                             <th scope="col" class="py-3 px-3">Status</th>
                             <th scope="col" class="py-3 px-3">Aksi</th>
                         </tr>
@@ -72,11 +72,11 @@
                         @foreach ($purchaseorders as $po)
                             <tr class="bg-white border-b hover:bg-gray-50 hover:text-black text-sm">
                                 <td class="py-1 px-3">{{ ($purchaseorders ->currentpage()-1) * $purchaseorders ->perpage() + $loop->index + 1 }}</td>
-                                <td class="py-1 px-3 font-medium">{{ $po->purchase_order_code }}</td>
+                                <td class="py-1 px-3 font-bold">{{ $po->purchase_order_code }}</td>
                                 <td class="py-1 px-3">{{ $po->name }}</td>
                                 <td class="py-1 px-3">{{ $po->description }}</td>
                                 <td class="py-1 px-3">{{ $po->supplier['name'] }}</td>
-                                <td class="py-1 px-3">{{ $po->po_date }}</td>
+                                <td class="py-1 px-3">{{ date('d-m-Y', strtotime($po->po_date)) }}</td>
                                 <td class="py-1 px-3">
                                     @if ($po->status['name'] == "Working")
                                         <div class="bg-yellow-200 w-24 py-1.5 rounded-full font-medium text-center">
@@ -150,7 +150,7 @@
                             </select>
                         </div>
                         <div class="flex items-center gap-0 justify-between p-1 flex-wrap sm:gap-2">
-                            <h1>Tanggal</h1>
+                            <h1>Tanggal Dibuat</h1>
                             <input class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm bg-gray-100" type="date" disabled
                                 wire:model.lazy="po_date"
                             />
@@ -230,7 +230,7 @@
                     {{--  --}}
                     <div class="md:flex gap-2 form py-1">
                         <div class="md:w-1/2">
-                            <label>Tanggal:</label>
+                            <label>Tanggal Dibuat:</label>
                             <input class="w-full border border-gray-300/50 rounded-lg shadow-sm text-sm bg-gray-100" type="date" disabled
                                 wire:model="po_date"
                             />
@@ -294,36 +294,48 @@
             {{-- SECTION DAFTAR MATERIAL --}}
             <div class="bg-white overflow-x-auto sm:rounded-lg border border-gray-300/50 mt-6">
                 <div class="py-3 px-6">
-                    <div class="font-medium text-xl mb-3">Daftar Material</div>
+                    <div class="font-medium text-xl mb-3">Daftar Material Sedang PO</div>
                     <table class="w-full text-sm text-left text-black">
                         <thead class="bg-zinc-200">
                             <tr>
-                                <th scope="col" class="py-3 px-6">Material</th>
-                                <th scope="col" class="py-3 px-6">Qty</th>
-                                <th scope="col" class="py-3 px-6">Harga</th>
-                                <th scope="col" class="py-3 px-6">Sub Total</th>
-                                <th scope="col" class="py-3 px-6">Aksi</th>
+                                <th scope="col" class="py-3 px-2">Material</th>
+                                <th scope="col" class="py-3 px-2">Qty Order</th>
+                                <th scope="col" class="py-3 px-2">Harga</th>
+                                <th scope="col" class="py-3 px-2">Sub Total</th>
+                                <th scope="col" class="py-3 px-2">Tanggal Dipesan</th>
+                                <th scope="col" class="py-3 px-2">Tanggal Diterima</th>
+                                <th scope="col" class="py-3 px-2">Aksi</th>
                             </tr>
                         </thead>
                         
                         <tbody>
                             @foreach ($detailpos as $dp)
                                 <tr class="bg-white hover:bg-gray-50 hover:text-black font-medium">
-                                    <td class="py-1 px-6">{{ $dp->material['name'] }}</td>
-                                    <td class="py-1 px-6">{{ $dp->qty }}</td>
-                                    <td class="py-1 px-6">Rp. {{ number_format($dp->price) }}</td>
-                                    <td class="py-1 px-6">Rp. {{ number_format($dp->total_price) }}</td>
-                                    <td class="py-1 px-6 text-white">
+                                    <td class="py-1 px-2">{{ $dp->material['name'] }}</td>
+                                    <td class="py-1 px-2">{{ $dp->qty }}</td>
+                                    <td class="py-1 px-2">Rp. {{ number_format($dp->price) }}</td>
+                                    <td class="py-1 px-2">Rp. {{ number_format($dp->total_price) }}</td>
+                                    <td class="py-1 px-2">{{ date('d-m-Y', strtotime($dp->order_date)) }}</td>
+                                    @if ($dp->received_date == NULL)
+                                        <td class="py-1 px-2 text-red-500">Belum Datang</td>
+                                    @else
+                                        <td class="py-1 px-2">{{ date('d-m-Y', strtotime($dp->received_date)) }}</td>
+                                    @endif
+                                    <td class="py-1 px-2 text-white">
                                         <div class="flex items-center gap-4">
                                             
-                                            @if ($dp->status == "Menunggu Pesanan")
+                                            @if($status_id == "Pending")
                                                 <button wire:click="editOrderPO({{ $dp->id }})" class="bg-yellow-500 px-2 py-1 rounded-md hover:scale-105 hover:-translate-x-0 hover:duration-150">
                                                     <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"></path></svg>
                                                 </button>
+                                                <button wire:click="" class="bg-red-500 px-2 py-1 rounded-md" disabled>
+                                                    Cetak GRN
+                                                </button>
+                                            @elseif ($status_id == "Working" && $dp->status == "Menunggu Pesanan")
                                                 <button wire:click="printGRN({{ $dp->id }})" class="bg-green-500 px-2 py-1 rounded-md hover:scale-105 hover:-translate-x-0 hover:duration-150">
                                                     Cetak GRN
                                                 </button>
-                                            @else
+                                            @elseif($dp->status == "Sudah Cetak")
                                                 <button wire:click="" class="bg-red-500 px-2 py-1 rounded-md" disabled>
                                                     Sudah Cetak
                                                 </button>
@@ -348,28 +360,35 @@
                                     </select>
                                 </td>
                                 <td class="py-2 px-2">
-                                    <input
-                                        wire:model="qty"
-                                        class="border-gray-300/50 rounded-xl text-sm w-20 text-center"
-                                        type="number"
-                                        min="1"
+                                    <input class="border-gray-300/50 rounded-xl text-sm w-20 text-center" type="number" min="1"
+                                        wire:model="qty" 
                                     />
                                 </td>
-                                <td class="py-2 px-2">
-                                    <input
+                                <td class="py-2 px-2"> 
+                                    <input class="border-gray-300/50  rounded-xl text-sm w-36 text-center" type="number" min="0"
                                         wire:model="price"
-                                        class="border-gray-300/50  rounded-xl text-sm w-36 text-center"
-                                        type="number"
-                                        min="0"
                                     />
                                 </td>
                                 <td class="py-2 px-2">
-                                    <input
-                                        wire:model="total_price_m"
-                                        class="border-gray-300/50  rounded-xl bg-gray-100 text-sm w-36 text-center"
-                                        type="number"
-                                        disabled
+                                    <input class="border-gray-300/50  rounded-xl bg-gray-100 text-sm w-36 text-center" type="number" disabled
+                                        wire:model="total_price_m"  
                                     />
+                                </td>
+                                <td class="py-2 px-2">
+                                    <input class="border-gray-300/50  rounded-xl bg-gray-100 text-sm w-36 text-center" type="date" disabled
+                                        wire:model="order_date"   
+                                    />
+                                </td>
+                                <td class="py-2 px-2">
+                                    @if ($this->received_date == NULL)
+                                        <input class="border-gray-300/50  rounded-xl bg-gray-100 text-sm w-36 text-center" type="text" disabled placeholder="-"
+                                            wire:model="" 
+                                        />
+                                    @else
+                                        <input class="border-gray-300/50  rounded-xl bg-gray-100 text-sm w-36 text-center" type="text" disabled
+                                            wire:model="received_date" 
+                                        />
+                                    @endif
                                 </td>
                                 <td class="py-2 px-6">
                                     <button class="bg-zinc-800 px-2 py-1 rounded-md hover:scale-105 hover:-translate-x-0 hover:duration-150" wire:click="storeOrderPO">

@@ -81,7 +81,7 @@
                             <td class="py-1 px-3">{{ $user->department }}</td>
                             <td class="py-1 px-3">
                                 <div class="bg-yellow-200 w-24 py-1.5 rounded-full font-medium text-center">
-                                    {{ $user->role['name'] }}
+                                    {{ $user->user['role'] }}
                                 </div>
                             </td>
                             <td class="py-1 px-3">
@@ -156,6 +156,17 @@
                         </div>
                         <div class="flex items-center gap-0 justify-between p-1 flex-wrap sm:gap-2">
                             <h1>Role</h1>
+                            <select wire:model="role" class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm">
+                                <option value="">Pilih Role</option>
+                                    <option value="Direktur">Direktur</option>
+                                    <option value="Marketing">Marketing</option>
+                                    <option value="QS">QS</option>
+                                    <option value="Produksi">Produksi</option>
+                                    <option value="Purchasing">Purchasing</option>
+                            </select>
+                        </div>
+                        {{-- <div class="flex items-center gap-0 justify-between p-1 flex-wrap sm:gap-2">
+                            <h1>Role</h1>
                             @if ($isEdit)
                                 <select wire:model="roles_id" class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm">
                                     <option value="">Pilih Role</option>
@@ -171,7 +182,7 @@
                                     @endforeach
                                 </select>
                             @endif                          
-                        </div>
+                        </div> --}}
                     
                         <div class="mt-4">
                             <div class="flex justify-end">

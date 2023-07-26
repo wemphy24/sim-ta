@@ -17,10 +17,11 @@ class DetailRabp extends Model
 
     protected $fillable = [
         'rabps_id', 
-        'set_goods_id', 
+        'goods_id', 
+        // 'set_goods_id', REVISI
         'qty',
         'price',
-        // 'total_price',
+        'total_price', // TAMBAHAN
         'quality',
         'updated_at',
         'created_at',
@@ -31,8 +32,13 @@ class DetailRabp extends Model
         return $this->belongsTo('App\Models\Rabp', 'rabps_id', 'id');
     }
 
-    public function set_good()
+    // public function set_good()
+    // {
+    //     return $this->belongsTo('App\Models\SetGood', 'set_goods_id', 'id'); REVISI
+    // }
+
+    public function good()
     {
-        return $this->belongsTo('App\Models\SetGood', 'set_goods_id', 'id');
+        return $this->belongsTo('App\Models\Good', 'goods_id', 'id');
     }
 }
