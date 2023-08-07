@@ -20,7 +20,7 @@ return new class extends Migration
             $table->foreignId('materials_id')->constrained('materials')->onUpdate('CASCADE');
             $table->integer('qty');
             $table->integer('qty_order');
-            $table->integer('qty_received');
+            $table->integer('qty_accept');
             $table->integer('price');
             $table->date('print_date');
             $table->foreignId('suppliers_id')->constrained('suppliers')->onUpdate('CASCADE');

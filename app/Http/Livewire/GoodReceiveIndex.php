@@ -103,11 +103,11 @@ class GoodReceiveIndex extends Component
             'status_id' => 3,
         ]);
 
-        $getPOId = GoodReceive::where('id', '=', $id)->first('purchase_orders_id')->purchase_orders_id;
-        PurchaseOrder::where('id', '=', $getPOId)->update([
-            'status_id' => 3,
-            'description' => "Barang Diterima",
-        ]);
+        // $getPOId = GoodReceive::where('id', '=', $id)->first('purchase_orders_id')->purchase_orders_id;
+        // PurchaseOrder::where('id', '=', $getPOId)->update([
+        //     'status_id' => 3,
+        //     'description' => "Barang Diterima",
+        // ]);
         
         $this->dispatchBrowserEvent('update-success');
         $this->closeModal();

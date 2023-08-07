@@ -23,7 +23,7 @@ class QualityControlIndex extends Component
     use WithPagination;
     public $search = '';
     public $showPage = 15;
-    public $searchBy = 'name';
+    public $searchBy = 'quality_control_code';
     public $orderAsc = true;
 
     public $showingMainPage = true;
@@ -184,11 +184,11 @@ class QualityControlIndex extends Component
     public function createLogisticCode()
     {
         // Membuat kode logistik good
-        $countLogistic = LogisticMaterial::count();
+        $countLogistic = LogisticGood::count();
         if($countLogistic == 0) {
             $this->logistic_good_code = 'LOG.BARANG.' . 1001;
         } else {
-            $getLastLog = LogisticMaterial::all()->last();
+            $getLastLog = LogisticGood::all()->last();
             $convertLog = (int)substr($getLastLog->logistic_good_code, -4) + 1;
             $this->logistic_good_code = 'LOG.BARANG.' . $convertLog;
         }
@@ -202,7 +202,6 @@ class QualityControlIndex extends Component
     public function doneRetur($id)
     {
         $this->createLogisticCode();
-
         // $getMaterialName = Good::where('id','=',$id)->first('name')->name; ///
         // $getMaterialId = Material::where('name','=',$getMaterialName)->first('id')->id; ///
 

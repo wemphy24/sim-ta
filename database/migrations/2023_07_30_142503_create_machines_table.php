@@ -13,14 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('detail_users', function (Blueprint $table) {
+        Schema::create('machines', function (Blueprint $table) {
             $table->id();
+            $table->string('machine_code');
+            $table->string('name');
+            $table->integer('cost');
+            $table->enum('status', ['Baik', 'Rusak', 'Perbaikan']);
             $table->foreignId('users_id')->constrained('users')->onUpdate('CASCADE');
-            $table->string('phone')->nullable();
-            $table->longText('address')->nullable();
-            $table->longText('photo')->nullable();
-            $table->string('department')->nullable();
-            // $table->foreignId('roles_id')->constrained('roles')->onUpdate('CASCADE');
             $table->timestamps();
         });
     }
@@ -32,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('detail_users');
+        Schema::dropIfExists('machines');
     }
 };

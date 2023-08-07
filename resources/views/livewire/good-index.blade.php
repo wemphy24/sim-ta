@@ -60,29 +60,29 @@
                 <table class="w-full text-sm text-left text-black">
                     <thead class="bg-zinc-200 text-zinc-800">
                         <tr>
-                            <th scope="col" class="py-3 px-6">#</th>
-                            <th scope="col" class="py-3 px-6">Kode Barang</th>
-                            <th scope="col" class="py-3 px-6">Nama</th>
-                            <th scope="col" class="py-3 px-6">Kategori</th>
-                            <th scope="col" class="py-3 px-6">Harga Pokok</th>
-                            <th scope="col" class="py-3 px-6">Harga Jual</th>
-                            <th scope="col" class="py-3 px-6">Stok</th>
-                            <th scope="col" class="py-3 px-6">Satuan</th>
-                            <th scope="col" class="py-3 px-6">Aksi</th>
+                            <th scope="col" class="py-3 px-4">#</th>
+                            <th scope="col" class="py-3 px-2">Kode Barang</th>
+                            <th scope="col" class="py-3 px-2">Nama</th>
+                            <th scope="col" class="py-3 px-2">Kategori</th>
+                            <th scope="col" class="py-3 px-2">Harga Pokok</th>
+                            <th scope="col" class="py-3 px-2">Harga Jual</th>
+                            <th scope="col" class="text-center py-3 px-2">Stok</th>
+                            <th scope="col" class="py-3 px-2">Satuan</th>
+                            <th scope="col" class="py-3 px-2">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($goods as $g)
-                            <tr class="bg-white border-b hover:bg-gray-100 hover:text-black font-medium">
-                                <td class="py-4 px-6">{{ ($goods ->currentpage()-1) * $goods ->perpage() + $loop->index + 1 }}</td>
-                                <td class="py-4 px-6">{{ $g->good_code }}</td>
-                                <td class="py-4 px-6">{{ $g->name }}</td>
-                                <td class="py-4 px-6">{{ $g->category['name'] }}</td>
-                                <td class="py-4 px-6">Rp. {{ number_format($g->price) }}</td>
-                                <td class="py-4 px-6">Rp. {{ number_format($g->sell_price) }}</td>
-                                <td class="py-4 px-6">{{ $g->stock }}</td>
-                                <td class="py-4 px-6">{{ $g->measurement['name'] }}</td>
-                                <td class="py-4 px-6">
+                            <tr class="bg-white border-b hover:bg-gray-100 hover:text-black text-sm">
+                                <td class="py-2 px-4">{{ ($goods ->currentpage()-1) * $goods ->perpage() + $loop->index + 1 }}</td>
+                                <td class="font-bold py-4 px-2">{{ $g->good_code }}</td>
+                                <td class="py-2 px-2">{{ $g->name }}</td>
+                                <td class="py-2 px-2">{{ $g->category['name'] }}</td>
+                                <td class="font-medium py-2 px-2">Rp. {{ number_format($g->price) }}</td>
+                                <td class="font-medium py-2 px-2">Rp. {{ number_format($g->sell_price) }}</td>
+                                <td class="font-medium text-center py-4 px-2">{{ $g->stock }}</td>
+                                <td class="py-2 px-2">{{ $g->measurement['name'] }}</td>
+                                <td class="py-2 px-2">
                                     <div class="flex items-center gap-4">
                                         <div class="flex items-center gap-4">
                                             <button wire:click="detail({{ $g->id }})" class="bg-blue-500 px-2 py-1 rounded-md hover:scale-105 hover:-translate-x-0 hover:duration-150">

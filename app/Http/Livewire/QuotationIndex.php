@@ -123,6 +123,15 @@ class QuotationIndex extends Component
         $this->users_id = $this->quotation->user['name'];
     }
 
+    public function approvee($id)
+    {
+        Quotation::where('id', '=', $id)->update([
+            'status_id' => 2,
+        ]);
+
+        $this->dispatchBrowserEvent('store-success');
+    }
+
     public function updateQuotation()
     {
         // Cek jika quotation_file NOT NULL dan tidak sama dengan PATHFILE

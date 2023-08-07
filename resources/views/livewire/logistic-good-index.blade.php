@@ -57,15 +57,16 @@
                     <thead class="bg-zinc-200 text-zinc-800">
                         <tr>
                             <th scope="col" class="py-3 px-4">#</th>
-                            <th scope="col" class="py-3 px-3">Kode Logistik</th>
-                            <th scope="col" class="py-3 px-3">Nama</th>
+                            <th scope="col" class="py-3 px-2">Kode Logistik</th>
+                            <th scope="col" class="py-3 px-2">Nama</th>
                             {{-- <th scope="col" class="py-3 px-3">Barang Diproduksi</th> --}}
                             <th scope="col" class="py-3 px-3">Kategori</th>
-                            <th scope="col" class="py-3 px-3">Qty Terima</th>
-                            <th scope="col" class="py-3 px-3">Qty Stok</th>
-                            <th scope="col" class="py-3 px-3">Tipe</th>
-                            <th scope="col" class="py-3 px-3">Status</th>
-                            <th scope="col" class="py-3 px-3">Aksi</th>
+                            <th scope="col" class="text-center py-3 px-2">Qty Terima</th>
+                            <th scope="col" class="text-center py-3 px-2">Qty Stok</th>
+                            <th scope="col" class="py-3 px-2">Tipe</th>
+                            <th scope="col" class="py-3 px-2">Tgl Keluar</th>
+                            <th scope="col" class="py-3 px-2">Status</th>
+                            <th scope="col" class="py-3 px-2">Aksi</th>
                         </tr>
                     </thead>
 
@@ -73,18 +74,23 @@
                         @foreach ($logistics as $logistic)
                             <tr class="bg-white border-b hover:bg-gray-50 hover:text-black text-sm">
                                 <td class="py-1 px-3">{{ ($logistics ->currentpage()-1) * $logistics ->perpage() + $loop->index + 1 }}</td>
-                                <td class="py-1 px-3 font-medium">{{ $logistic->logistic_good_code }}</td>
-                                <td class="py-1 px-3">{{ $logistic->good['name'] }}</td>
+                                <td class="py-1 px-2 font-bold">{{ $logistic->logistic_good_code }}</td>
+                                <td class="py-1 px-2">{{ $logistic->good['name'] }}</td>
                                 {{-- @if ($logistic->set_goods_id != NULL)
                                     <td class="py-1 px-3">{{ $logistic->set_good['name'] }}</td>
                                 @else
                                     <td class="py-1 px-3">-</td>
                                 @endif --}}
                                 <td class="py-1 px-3">{{ $logistic->category['name'] }}</td>
-                                <td class="py-1 px-3">{{ $logistic->qty_ask }}</td>
-                                <td class="py-1 px-3">{{ $logistic->qty_stock }}</td>
-                                <td class="py-1 px-3 font-medium">{{ $logistic->type }}</td>
-                                <td class="py-1 px-3">
+                                <td class="text-center font-medium py-1 px-2">{{ $logistic->qty_ask }}</td>
+                                <td class="text-center font-medium py-1 px-2">{{ $logistic->qty_stock }}</td>
+                                <td class="py-1 px-2 font-medium">{{ $logistic->type }}</td>
+                                @if ($logistic->out_date == NULL)
+                                    <td class="py-1 px-2 font-medium text-red-500">Belum Diambil</td>
+                                @else
+                                    <td class="py-1 px-2 font-medium">{{ date('d-m-Y', strtotime($logistic->out_date)) }}</td>
+                                @endif
+                                <td class="py-1 px-2">
                                     @if ($logistic->status['name'] == "Working")
                                         <div class="bg-yellow-200 w-24 py-1.5 rounded-full font-medium text-center">
                                             {{ $logistic->status['name'] }}
@@ -99,7 +105,7 @@
                                         </div>
                                     @endif
                                 </td>
-                                <td class="py-1 px-3">
+                                <td class="py-1 px-2">
                                     <div class="flex items-center gap-4">
                                         @if ($logistic->status['name'] == "Pending")
                                             <button title="Approve" wire:click="approve({{ $logistic->id }})" class="text-white bg-green-500 p-2 rounded-lg font-medium hover:scale-105 hover:-translate-x-0 hover:duration-150">

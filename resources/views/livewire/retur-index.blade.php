@@ -56,26 +56,26 @@
                     <thead class="bg-zinc-200 text-zinc-800">
                         <tr>
                             <th scope="col" class="py-3 px-4">#</th>
-                            <th scope="col" class="py-3 px-3">Kode Retur</th>
-                            <th scope="col" class="py-3 px-3">Nama Material</th>
-                            <th scope="col" class="py-3 px-3">Nama Barang</th>
-                            <th scope="col" class="py-3 px-3">Qty</th>
-                            <th scope="col" class="py-3 px-3">Tanggal Retur</th>
-                            <th scope="col" class="py-3 px-3">Status</th>
-                            <th scope="col" class="py-3 px-3">Aksi</th>
+                            <th scope="col" class="py-3 px-2">Kode Retur</th>
+                            <th scope="col" class="py-3 px-2">Nama Material</th>
+                            <th scope="col" class="py-3 px-2">Nama Barang</th>
+                            <th scope="col" class="text-center py-3 px-2">Qty</th>
+                            <th scope="col" class="py-3 px-2">Tanggal Retur</th>
+                            <th scope="col" class="py-3 px-2">Status</th>
+                            <th scope="col" class="py-3 px-2">Aksi</th>
                         </tr>
                     </thead>
 
                     <tbody>
                         @foreach ($returs as $retur)
                             <tr class="bg-white border-b hover:bg-gray-50 hover:text-black text-sm">
-                                <td class="py-1 px-3">{{ ($returs ->currentpage()-1) * $returs ->perpage() + $loop->index + 1 }}</td>
-                                <td class="py-1 px-3 font-medium">{{ $retur->retur_code }}</td>
-                                <td class="py-1 px-3">{{ $retur->material['name'] }}</td>
-                                <td class="py-1 px-3">{{ $retur->good['name'] }}</td>
-                                <td class="py-1 px-3">{{ $retur->qty }}</td>
-                                <td class="py-1 px-3">{{ date('d-m-Y', strtotime($retur->retur_date)) }}</td>
-                                <td class="py-1 px-3">
+                                <td class="py-1 px-4">{{ ($returs ->currentpage()-1) * $returs ->perpage() + $loop->index + 1 }}</td>
+                                <td class="py-1 px-2 font-bold">{{ $retur->retur_code }}</td>
+                                <td class="py-1 px-2">{{ $retur->material['name'] }}</td>
+                                <td class="py-1 px-2">{{ $retur->good['name'] }}</td>
+                                <td class="text-center font-medium py-1 px-2">{{ $retur->qty }}</td>
+                                <td class="py-1 px-2">{{ date('d-m-Y', strtotime($retur->retur_date)) }}</td>
+                                <td class="py-1 px-2">
                                     @if ($retur->status['name'] == "Pending")
                                         <div class="bg-red-200 w-24 py-1.5 rounded-full font-medium text-center">
                                             {{ $retur->status['name'] }}

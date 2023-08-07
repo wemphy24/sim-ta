@@ -21,7 +21,7 @@ return new class extends Migration
             $table->integer('qty')->nullable();
             $table->integer('price')->nullable();
             $table->integer('total_price')->nullable(); // Tambahan
-            $table->integer('quality')->nullable(); // Tambahan
+            $table->enum('is_lock', ['Yes'])->nullable(); // Tambahan
             $table->timestamps();
         });
     }

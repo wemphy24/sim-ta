@@ -18,6 +18,7 @@ use App\Http\Livewire\GoodIndex;
 use App\Http\Livewire\GoodReceiveIndex;
 use App\Http\Livewire\LogisticGoodIndex;
 use App\Http\Livewire\LogisticMaterialIndex;
+use App\Http\Livewire\MachineIndex;
 use App\Http\Livewire\PlanningCostIndex;
 use App\Http\Livewire\ProductionIndex;
 use App\Http\Livewire\PurchaseOrderIndex;
@@ -79,6 +80,7 @@ function() {
     Route::get('/supplier', SupplierIndex::class)->name('supplier');
     Route::get('/customer', CustomerIndex::class)->name('customer');
     Route::get('/good', GoodIndex::class)->name('good');
+    // Route::get('/machine', MachineIndex::class)->name('machine');
 });
 
 Route::middleware([

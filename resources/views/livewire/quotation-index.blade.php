@@ -25,12 +25,15 @@
                         <span>Download CSV</span>
                     </div> 
                 </button>
-                <button wire:click="showQuotation" class="py-2 px-4 text-center text-white rounded-lg border bg-zinc-800 hover:scale-105 hover:-translate-x-0 hover:duration-150">
-                    <div class="flex items-center gap-1">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
-                        <span>Buat Penawaran</span>
-                    </div>
-                </button> 
+                @if (Auth::user()->role == "Marketing")
+                    <button wire:click="showQuotation" class="py-2 px-4 text-center text-white rounded-lg border bg-zinc-800 hover:scale-105 hover:-translate-x-0 hover:duration-150">
+                        <div class="flex items-center gap-1">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                            <span>Buat Penawaran</span>
+                        </div>
+                    </button> 
+                @endif
+                
             </div>  
 
             <div class="bg-white overflow-x-auto shadow-sm sm:rounded-lg border border-gray-300/50">
@@ -74,9 +77,9 @@
                     <tbody>
                         @foreach ($quotations as $quotation)
                         <tr class="bg-white border-b hover:bg-gray-50 hover:text-black text-sm">
-                            <td class="py-1 px-4">{{ ($quotations ->currentpage()-1) * $quotations ->perpage() + $loop->index + 1 }}</td>
-                            <td class="py-1 px-2 font-medium">{{ $quotation->quotation_code }}</td>
-                            <td class="py-1 px-2">{{ $quotation->name }}</td>
+                            <td class="py-2 px-4">{{ ($quotations ->currentpage()-1) * $quotations ->perpage() + $loop->index + 1 }}</td>
+                            <td class="font-bold py-2 px-2">{{ $quotation->quotation_code }}</td>
+                            <td class="py-2 px-2">{{ $quotation->name }}</td>
                             @if ($quotation->quotation_file == NULL)
                                 <td class="px-2 text-red-700">Belum Tersedia</td>  
                             @else
@@ -84,10 +87,10 @@
                                     <a class="text-blue-600" href="{{ url('storage/purchaseorder/'.$quotation->quotation_file) }}">{{ $quotation->quotation_file }}</a>
                                 </td>  
                             @endif
-                            <td class="py-1 px-2">{{ $quotation->project }}</td>
-                            <td class="py-1 px-2">{{ date('d-m-Y', strtotime($quotation->date)) }}</td>
-                            <td class="py-1 px-2">{{ $quotation->customer['name'] }}</td>
-                            <td class="py-1 px-2">
+                            <td class="py-2 px-2">{{ $quotation->project }}</td>
+                            <td class="py-2 px-2">{{ date('d-m-Y', strtotime($quotation->date)) }}</td>
+                            <td class="py-2 px-2">{{ $quotation->customer['name'] }}</td>
+                            <td class="py-2 px-2">
                                 @if ($quotation->status['name'] == "Working")
                                     <div class="bg-yellow-200 w-24 py-1.5 rounded-full font-medium text-center">
                                         {{ $quotation->status['name'] }}
@@ -107,6 +110,20 @@
                                     <button wire:click="showDetail({{ $quotation->id }})" class="bg-blue-500 px-2 py-1 rounded-md hover:scale-105 hover:-translate-x-0 hover:duration-150">
                                         <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 21h7a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v11m0 5l4.879-4.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242z"></path></svg>
                                     </button>
+
+                                    @if ($quotation->status['name'] == "Pending" && Auth::user()->role == "Direktur")
+                                        <button wire:click="approvee({{ $quotation->id }})" class="text-white bg-green-500 p-2 rounded-lg font-medium hover:scale-105 hover:-translate-x-0 hover:duration-150">
+                                            Approve
+                                        </button>
+                                    @elseif ($quotation->status['name'] == "Pending" && Auth::user()->role != "Direktur")
+                                        <button class="text-white bg-red-500 p-2 rounded-lg font-medium" disabled>
+                                            Perlu Approve Direktur
+                                        </button>
+                                    @else
+                                        <button wire:click="" class="text-white bg-red-500 p-2 rounded-lg font-medium" disabled>
+                                            Approved
+                                        </button>
+                                    @endif
                                 </div>
                             </td>
                         </tr>
@@ -408,16 +425,22 @@
                         Simpan
                     </button>
                     @if ($quotation->status['name'] == "Pending")
-                        <button wire:click="approve" class="py-2 px-6 my-2 text-center rounded-lg bg-green-500 text-white hover:scale-105 hover:-translate-x-0 hover:duration-150">
-                            Approve
-                        </button>
+                        @if(Auth::user()->role == "Direktur")
+                            <button wire:click="approve" class="py-2 px-6 my-2 text-center rounded-lg bg-green-500 text-white hover:scale-105 hover:-translate-x-0 hover:duration-150">
+                                Approve
+                            </button>
+                        @else
+                            <button wire:click="" class="py-2 px-6 my-2 text-center rounded-lg bg-red-500 text-white" disabled>
+                                Perlu Approve Direktur
+                            </button>
+                        @endif
                     @elseif ($quotation->status['name'] == "Working")
                         <button wire:click="completeQO" class="py-2 px-6 my-2 text-center rounded-lg bg-green-500 text-white hover:scale-105 hover:-translate-x-0 hover:duration-150">
                             Selesai
                         </button>
                     @else
                         <button wire:click="" class="py-2 px-6 my-2 text-center rounded-lg bg-red-500 text-white" disabled>
-                             Penawaran Selesai
+                            Penawaran Selesai
                         </button>
                     @endif             
                 </div>

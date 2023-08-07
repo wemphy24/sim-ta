@@ -122,6 +122,16 @@ class DeliveryIndex extends Component
     }
     // END --------------------------------
 
+    public function approvee($id)
+    {
+        Delivery::where('id', '=', $id)->update([
+            'status_id' => 2,
+            'description' => "Sedang Dikirim",
+        ]);
+
+        $this->dispatchBrowserEvent('store-success');
+    }
+
     public function update()
     {
         $this->delivery->update([
@@ -173,6 +183,7 @@ class DeliveryIndex extends Component
         $this->delivery->update([
             'status_id' => 3,
             'received_date' => $this->received_date,
+            'description' => "Sudah Diterima",
         ]);
 
         Contract::where('id','=', $this->contracts_id)->update([
@@ -251,7 +262,7 @@ class DeliveryIndex extends Component
     {
         // Realtime update value set good ketika insert data
         if($this->contracts_id !=NULL) {
-            $this->name = substr(Contract::where('id','=',$this->contracts_id)->first('name')->name, 8);
+            $this->name = substr(Contract::where('id','=',$this->contracts_id)->first('name')->name, 13);
         } else {
             $this->name = NULL;
         }

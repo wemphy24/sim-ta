@@ -26,6 +26,7 @@ class LogisticGood extends Model
         'qty_stock', 
         'price', 
         'type', 
+        'out_date', 
         'users_id', 
         'status_id', 
         'updated_at',

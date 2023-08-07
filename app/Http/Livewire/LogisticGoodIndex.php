@@ -6,6 +6,7 @@ use App\Models\Good;
 use App\Models\LogisticGood;
 use App\Models\Material;
 use App\Models\SetBillMaterial;
+use Illuminate\Support\Carbon;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -42,6 +43,7 @@ class LogisticGoodIndex extends Component
         LogisticGood::where('id', '=', $id)->update([
             'status_id' => 3,
             'qty_stock' => LogisticGood::where('id', '=', $id)->first('qty_stock')->qty_stock + LogisticGood::where('id', '=', $id)->first('qty_ask')->qty_ask,
+            'out_date' => Carbon::now()->format('Y-m-d'),
         ]);
 
         // Menambah stok pada master data

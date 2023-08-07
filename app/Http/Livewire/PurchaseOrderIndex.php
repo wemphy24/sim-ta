@@ -148,6 +148,15 @@ class PurchaseOrderIndex extends Component
         // DetailPo::where('purchase_orders_id','=',$this->purchase_orders_id)->sum('total_price') - (($getTotalPrice * ($this->discount * 0.01)) // PPN
     }
 
+    public function approvee($id)
+    {
+        PurchaseOrder::where('id', '=', $id)->update([
+            'status_id' => 2,
+        ]);
+
+        $this->dispatchBrowserEvent('store-success');
+    }
+
     public function update()
     {
         // Mengupdate data po

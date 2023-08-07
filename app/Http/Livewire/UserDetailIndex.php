@@ -45,7 +45,7 @@ class UserDetailIndex extends Component
                             'name' => $this->name,
                             'email' => $this->email,
                             'password' => Hash::make("haha123"),
-                            'role' => NULL,
+                            'role' => $this->role,
                         ]);
 
         DetailUser::create([
@@ -53,7 +53,7 @@ class UserDetailIndex extends Component
             'phone' => $this->phone,
             'address' => $this->address,
             'department' => $this->department,
-            // 'roles_id' => 1,
+            'roles_id' => NULL,
         ]);
 
         $this->closeModal();
@@ -81,6 +81,7 @@ class UserDetailIndex extends Component
         User::where('id','=',$this->user_id->id)->update([
             'name' => $this->name,
             'email' => $this->email,
+            'role' => $this->role,
         ]);
 
         DetailUser::where('id','=',$this->user_id->id)->update([

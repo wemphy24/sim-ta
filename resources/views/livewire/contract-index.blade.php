@@ -58,24 +58,24 @@
                     <thead class="bg-zinc-200 text-zinc-800">
                         <tr>
                             <th scope="col" class="py-3 px-4">#</th>
-                            <th scope="col" class="py-3 px-3">Kode Kontrak</th>
-                            <th scope="col" class="py-3 px-3">Nama</th>
-                            <th scope="col" class="py-3 px-3">Jumlah Kontrak</th>
-                            <th scope="col" class="py-3 px-3">Selesai</th>
-                            <th scope="col" class="py-3 px-3">Status</th>
-                            <th scope="col" class="py-3 px-3">Aksi</th>
+                            <th scope="col" class="py-3 px-2">Kode Kontrak</th>
+                            <th scope="col" class="py-3 px-2">Nama</th>
+                            <th scope="col" class="py-3 px-2">Jumlah Kontrak</th>
+                            <th scope="col" class="py-3 px-2">Selesai</th>
+                            <th scope="col" class="py-3 px-2">Status</th>
+                            <th scope="col" class="py-3 px-2">Aksi</th>
                         </tr>
                     </thead>
 
                     <tbody>
                         @foreach ($contracts as $contract)
                             <tr class="bg-white border-b hover:bg-gray-50 hover:text-black text-sm">
-                                <td class="py-1 px-3">{{ ($contracts ->currentpage()-1) * $contracts ->perpage() + $loop->index + 1 }}</td>
-                                <td class="py-1 px-3 font-medium">{{ $contract->contract_code }}</td>
-                                <td class="py-1 px-3">{{ $contract->name }}</td>
-                                <td class="py-1 px-3">RP. {{ number_format($contract->contract_value) }}</td>
-                                <td class="py-1 px-3">{{ date('d-m-Y', strtotime($contract->finish_date)) }}</td>
-                                <td class="py-1 px-3">
+                                <td class="py-2 px-2">{{ ($contracts ->currentpage()-1) * $contracts ->perpage() + $loop->index + 1 }}</td>
+                                <td class="py-2 px-2 font-bold">{{ $contract->contract_code }}</td>
+                                <td class="py-2 px-2">{{ $contract->name }}</td>
+                                <td class="font-medium py-2 px-2">RP. {{ number_format($contract->contract_value) }}</td>
+                                <td class="py-2 px-2">{{ date('d-m-Y', strtotime($contract->finish_date)) }}</td>
+                                <td class="py-2 px-2">
                                     @if ($contract->status['name'] == "Working")
                                         <div class="bg-yellow-200 w-24 py-1.5 rounded-full font-medium text-center">
                                             {{ $contract->status['name'] }}

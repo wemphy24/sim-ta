@@ -62,26 +62,26 @@
                 <table class="w-full text-sm text-left text-black">
                     <thead class="bg-zinc-200 text-zinc-800">
                         <tr>
-                            <th scope="col" class="py-3 px-6">#</th>
-                            <th scope="col" class="py-3 px-3">Kode Produksi</th>
-                            <th scope="col" class="py-3 px-3">Nama Produksi</th>
-                            <th scope="col" class="py-3 px-6">Nama RABP</th>
-                            <th scope="col" class="py-3 px-3">Keterangan</th>
-                            <th scope="col" class="py-3 px-3">Deadline</th>
-                            <th scope="col" class="py-3 px-3">Status</th>
-                            <th scope="col" class="py-3 px-3">Aksi</th>
+                            <th scope="col" class="py-3 px-4">#</th>
+                            <th scope="col" class="py-3 px-2">Kode Produksi</th>
+                            <th scope="col" class="py-3 px-2">Nama Produksi</th>
+                            <th scope="col" class="py-3 px-2">Nama RABP</th>
+                            <th scope="col" class="py-3 px-2">Keterangan</th>
+                            <th scope="col" class="py-3 px-2">Deadline</th>
+                            <th scope="col" class="py-3 px-2">Status</th>
+                            <th scope="col" class="py-3 px-2">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($productions as $production)
                             <tr class="bg-white border-b hover:bg-gray-50 hover:text-black text-sm">
-                                <td class="py-1 px-6">{{ ($productions ->currentpage()-1) * $productions ->perpage() + $loop->index + 1 }}</td>
-                                <td class="py-1 px-6 font-medium">{{ $production->production_code }}</td>
-                                <td class="py-1 px-6">{{ $production->name }}</td>
-                                <td class="py-1 px-6">{{ $production->rabp['name'] }}</td>
-                                <td class="py-1 px-6">{{ $production->description }}</td>
-                                <td class="py-1 px-6">{{ date('d-m-Y', strtotime($production->deadline)) }}</td>
-                                <td class="py-1 px-3">
+                                <td class="py-2 px-4">{{ ($productions ->currentpage()-1) * $productions ->perpage() + $loop->index + 1 }}</td>
+                                <td class="py-2 px-2 font-bold">{{ $production->production_code }}</td>
+                                <td class="py-2 px-2">{{ $production->name }}</td>
+                                <td class="py-2 px-2">{{ $production->rabp['name'] }}</td>
+                                <td class="py-2 px-2">{{ $production->description }}</td>
+                                <td class="py-2 px-2">{{ date('d-m-Y', strtotime($production->deadline)) }}</td>
+                                <td class="py-2 px-2">
                                     @if ($production->status['name'] == "Working")
                                         <div class="bg-yellow-200 w-24 py-1.5 rounded-full font-medium text-center">
                                             {{ $production->status['name'] }}

@@ -23,6 +23,7 @@ return new class extends Migration
             $table->integer('qty_stock');
             $table->integer('price');
             $table->string('type'); //Berubah
+            $table->date('out_date'); //Berubah
             $table->foreignId('categories_id')->constrained('categories')->onUpdate('CASCADE');
             $table->foreignId('measurements_id')->constrained('measurements')->onUpdate('CASCADE');
             $table->foreignId('users_id')->constrained('users')->onUpdate('CASCADE');

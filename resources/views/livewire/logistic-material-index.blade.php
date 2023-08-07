@@ -74,7 +74,7 @@
                         @foreach ($logistics as $logistic)
                             <tr class="bg-white border-b hover:bg-gray-50 hover:text-black text-sm">
                                 <td class="py-1 px-4">{{ ($logistics ->currentpage()-1) * $logistics ->perpage() + $loop->index + 1 }}</td>
-                                <td class="py-1 px-2 font-medium">{{ $logistic->logistic_code }}</td>
+                                <td class="py-1 px-2 font-bold">{{ $logistic->logistic_code }}</td>
                                 @if ($logistic->materials_id == NULL)
                                     <td class="py-1 px-2 text-red-500">-</td>
                                 @else
@@ -86,8 +86,8 @@
                                     <td class="py-1 px-2">-</td>
                                 @endif
                                 <td class="py-1 px-2">{{ $logistic->category['name'] }}</td>
-                                <td class="py-1 px-2">{{ $logistic->qty_ask }}</td>
-                                <td class="py-1 px-2">{{ $logistic->qty_stock }}</td>
+                                <td class="font-medium text-center py-1 px-2">{{ $logistic->qty_ask }}</td>
+                                <td class="font-medium text-center py-1 px-2">{{ $logistic->qty_stock }}</td>
                                 <td class="py-1 px-2 font-medium">{{ $logistic->type }}</td>
                                 <td class="py-1 px-2 font-medium">{{ $logistic->updated_at->format('d-m-Y') }}</td>
                                 <td class="py-1 px-2">

@@ -26,12 +26,14 @@
                         <span>Download CSV</span>
                     </div> 
                 </button>
-                <button wire:click="showMaterialModal" class="py-2 px-4 text-center text-white rounded-lg border bg-zinc-800 hover:scale-105 hover:-translate-x-0 hover:duration-150">
-                    <div class="flex items-center gap-1">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
-                        <span>Buat Material</span>
-                    </div>
-                </button> 
+                @if (Auth::user()->role == "Direktur")
+                    <button wire:click="showMaterialModal" class="py-2 px-4 text-center text-white rounded-lg border bg-zinc-800 hover:scale-105 hover:-translate-x-0 hover:duration-150">
+                        <div class="flex items-center gap-1">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                            <span>Buat Material</span>
+                        </div>
+                    </button> 
+                @endif               
             </div> 
 
             <div class="bg-white overflow-x-auto shadow-sm sm:rounded-lg border border-gray-300/50">
@@ -66,6 +68,7 @@
                             <th scope="col" class="py-3 px-2">Kategori</th>
                             <th scope="col" class="py-3 px-2">Harga</th>
                             <th scope="col" class="py-3 px-2">Harga Lama</th>
+                            <th scope="col" class="py-3 px-2">Req Ubah Harga</th>
                             <th scope="col" class="py-3 px-2">Stok</th>
                             <th scope="col" class="py-3 px-2">Min Stok</th>
                             <th scope="col" class="py-3 px-2">Max Stok</th>
@@ -77,18 +80,23 @@
                     <tbody>
                         @foreach ($materials as $material)
                             <tr class="bg-white border-b hover:bg-gray-100 hover:text-black text-sm">
-                                <td class="py-4 px-6">{{ ($materials ->currentpage()-1) * $materials ->perpage() + $loop->index + 1 }}</td>
-                                <td class="py-4 px-2 font-bold">{{ $material->material_code }}</td>
-                                <td class="py-4 px-2">{{ $material->name }}</td>
-                                <td class="py-4 px-2">{{ $material->category['name'] }}</td>
-                                <td class="font-medium py-4 px-2">Rp. {{ number_format($material->price) }}</td>
-                                <td class="font-medium py-4 px-2">Rp. {{ number_format($material->old_price) }}</td>
-                                <td class="text-center font-medium py-4 px-2">{{ $material->stock }}</td>
-                                <td class="text-center font-medium py-4 px-2">{{ $material->min_stock }}</td>
-                                <td class="text-center font-medium py-4 px-2">{{ $material->max_stock }}</td>
-                                <td class="py-4 px-2">{{ $material->measurement['name'] }}</td>
-                                <td class="py-4 px-2">{{ $material->updated_at->format('d-m-Y') }}</td>
-                                <td class="py-4 px-2">
+                                <td class="py-3 px-6">{{ ($materials ->currentpage()-1) * $materials ->perpage() + $loop->index + 1 }}</td>
+                                <td class="py-3 px-2 font-bold">{{ $material->material_code }}</td>
+                                <td class="py-3 px-2">{{ $material->name }}</td>
+                                <td class="py-3 px-2">{{ $material->category['name'] }}</td>
+                                <td class="font-medium py-3 px-2">Rp. {{ number_format($material->price) }}</td>
+                                <td class="font-medium py-3 px-2">Rp. {{ number_format($material->old_price) }}</td>
+                                @if ($material->price == $material->change_price)
+                                    <td class="font-medium py-3 px-2">Rp. {{ number_format($material->change_price) }}</td>
+                                @else
+                                    <td class="font-medium py-3 px-2 text-red-500">Rp. {{ number_format($material->change_price) }}</td>
+                                @endif
+                                <td class="text-center font-medium py-3 px-2">{{ $material->stock }}</td>
+                                <td class="text-center font-medium py-3 px-2">{{ $material->min_stock }}</td>
+                                <td class="text-center font-medium py-3 px-2">{{ $material->max_stock }}</td>
+                                <td class="py-3 px-2">{{ $material->measurement['name'] }}</td>
+                                <td class="py-3 px-2">{{ $material->updated_at->format('d-m-Y') }}</td>
+                                <td class="py-3 px-2">
                                     <div class="flex items-center gap-4">
                                         <button class="hover:scale-110 hover:-translate-x-0 hover:duration-150" title="Edit" wire:click="showMaterialEditModal( {{ $material->id }} )">
                                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
@@ -97,25 +105,28 @@
                                             <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                                         </button>
                                         @if (Auth::user()->role == "Direktur" && $material->price_approval == "Need Approve")
-                                            <button wire:click="showChangePrice({{ $material->id }})" class="text-white bg-green-500 p-2 rounded-lg font-medium hover:scale-105 hover:-translate-x-0 hover:duration-150">
+                                            <button wire:click="showChangePrice({{ $material->id }})" class="text-white font-medium bg-green-500 px-2 py-1 rounded-md hover:scale-105 hover:-translate-x-0 hover:duration-150">
                                                 Approve
                                             </button>
                                         @elseif ($material->price_approval != "Need Approve")
-                                            <button wire:click="showChangePrice({{ $material->id }})" class="text-white bg-yellow-500 p-2 rounded-lg font-medium hover:scale-105 hover:-translate-x-0 hover:duration-150">
+                                            <button wire:click="showChangePrice({{ $material->id }})" class="text-white font-medium bg-yellow-500 px-2 py-1 rounded-md hover:scale-105 hover:-translate-x-0 hover:duration-150">
                                                 Ubah Harga
-                                            </button>   
+                                            </button>  
                                         @elseif (Auth::user()->role != "Direktur" && $material->price_approval == "Need Approve")
-                                            <button wire:click="showChangePrice({{ $material->id }})" class="text-white bg-yellow-500 p-2 rounded-lg font-medium hover:scale-105 hover:-translate-x-0 hover:duration-150">
+                                            {{-- <button wire:click="showChangePrice({{ $material->id }})" class="text-white bg-yellow-500 p-2 rounded-lg font-medium hover:scale-105 hover:-translate-x-0 hover:duration-150">
                                                 Ubah Harga
+                                            </button>  --}}
+                                            <button wire:click="" class="text-white bg-red-500 p-2 rounded-lg font-medium" disabled>
+                                                Perlu Approve Direktur
                                             </button> 
                                         @endif
                                         
                                         @if ($material->stock <= $material->min_stock && $material->pr_status == "Menunggu")
-                                            <button title="Request PR" wire:click="showRequest({{ $material->id }})" class="text-white bg-yellow-500 p-2 rounded-lg font-medium hover:scale-105 hover:-translate-x-0 hover:duration-150">
+                                            <button title="Request PR" wire:click="showRequest({{ $material->id }})" class="text-white font-medium bg-yellow-500 px-2 py-1 rounded-md hover:scale-105 hover:-translate-x-0 hover:duration-150">
                                                 Request PR
                                             </button> 
                                         @elseif ($material->stock <= $material->min_stock && $material->pr_status == "PO Berhasil")
-                                            <button title="Sedang PO" wire:click="" class="text-white bg-red-500 p-2 rounded-lg font-medium" disabled>
+                                            <button title="Sedang PO" wire:click="" class="text-white font-medium bg-red-500 px-2 py-1 rounded-md hover:scale-105 hover:-translate-x-0 hover:duration-150" disabled>
                                                 Sedang PO
                                             </button> 
                                         @endif
@@ -172,12 +183,22 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="flex items-center gap-0 justify-between p-1 flex-wrap sm:gap-2">
-                            <h1>Harga</h1>
-                            <input class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm bg-gray-100" type="number" placeholder="Harga" disabled
-                                wire:model="price"
-                            />
-                        </div>
+                        @if ($isEditMode)
+                            <div class="flex items-center gap-0 justify-between p-1 flex-wrap sm:gap-2">
+                                <h1>Harga</h1>
+                                <input class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm bg-gray-100" type="number" placeholder="Harga" disabled
+                                    wire:model="price"
+                                />
+                            </div>
+                        @else
+                            <div class="flex items-center gap-0 justify-between p-1 flex-wrap sm:gap-2">
+                                <h1>Harga</h1>
+                                <input class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm" type="number" placeholder="Harga"
+                                    wire:model="price"
+                                />
+                            </div>
+                        @endif
+                        
                         <div class="flex items-center gap-0 justify-between p-1 flex-wrap sm:gap-2">
                             <h1>Stok</h1>
                             <input class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm" type="number" placeholder="Stok"

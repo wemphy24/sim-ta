@@ -25,12 +25,14 @@
                         <span>Download CSV</span>
                     </div> 
                 </button>
-                <button wire:click="showUser" class="py-2 px-4 text-center text-white rounded-lg border bg-zinc-800 hover:scale-105 hover:-translate-x-0 hover:duration-150">
-                    <div class="flex items-center gap-1">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
-                        <span>Buat User</span>
-                    </div>
-                </button> 
+                @if (Auth::user()->role == "Direktur")
+                    <button wire:click="showUser" class="py-2 px-4 text-center text-white rounded-lg border bg-zinc-800 hover:scale-105 hover:-translate-x-0 hover:duration-150">
+                        <div class="flex items-center gap-1">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                            <span>Buat User</span>
+                        </div>
+                    </button> 
+                @endif
             </div>  
 
             <div class="bg-white overflow-x-auto shadow-sm sm:rounded-lg border border-gray-300/50">
@@ -60,38 +62,45 @@
                     <thead class="bg-zinc-200 text-zinc-800">
                         <tr>
                             <th scope="col" class="py-3 px-4">#</th>
-                            <th scope="col" class="py-3 px-3">Nama</th>
-                            <th scope="col" class="py-3 px-3">Email</th>
-                            <th scope="col" class="py-3 px-3">Telepon</th>
-                            <th scope="col" class="py-3 px-3">Alamat</th>
-                            <th scope="col" class="py-3 px-3">Departemen</th>
-                            <th scope="col" class="py-3 px-3">Role</th>
-                            <th scope="col" class="py-3 px-3">Aksi</th>
+                            <th scope="col" class="py-3 px-2">Nama</th>
+                            <th scope="col" class="py-3 px-2">Email</th>
+                            <th scope="col" class="py-3 px-2">Telepon</th>
+                            <th scope="col" class="py-3 px-2">Alamat</th>
+                            <th scope="col" class="py-3 px-2">Departemen</th>
+                            <th scope="col" class="py-3 px-2">Role</th>
+                            <th scope="col" class="py-3 px-2">Last Seen</th>
+                            <th scope="col" class="py-3 px-2">Status</th>
+                            <th scope="col" class="py-3 px-2">Aksi</th>
                         </tr>
                     </thead>
 
                     <tbody>
                         @foreach ($detailusers as $user)
                         <tr class="bg-white border-b hover:bg-gray-50 hover:text-black text-sm">
-                            <td class="py-1 px-3">{{ ($detailusers ->currentpage()-1) * $detailusers ->perpage() + $loop->index + 1 }}</td>
-                            <td class="py-1 px-3 font-medium">{{ $user->user['name'] }}</td>
-                            <td class="py-1 px-3">{{ $user->user['email'] }}</td>
-                            <td class="py-1 px-3">{{ $user->phone }}</td>
-                            <td class="py-1 px-3">{{ $user->address }}</td>
-                            <td class="py-1 px-3">{{ $user->department }}</td>
-                            <td class="py-1 px-3">
+                            <td class="py-2 px-2">{{ ($detailusers ->currentpage()-1) * $detailusers ->perpage() + $loop->index + 1 }}</td>
+                            <td class="py-2 px-2 font-medium">{{ $user->user['name'] }}</td>
+                            <td class="py-2 px-2">{{ $user->user['email'] }}</td>
+                            <td class="py-2 px-2">{{ $user->phone }}</td>
+                            <td class="py-2 px-2">{{ $user->address }}</td>
+                            <td class="py-2 px-2">{{ $user->department }}</td>
+                            <td class="py-2 px-2">
                                 <div class="bg-yellow-200 w-24 py-1.5 rounded-full font-medium text-center">
                                     {{ $user->user['role'] }}
                                 </div>
                             </td>
-                            <td class="py-1 px-3">
+                            <td class="py-2 px-2">{{ Carbon\Carbon::parse($user->user['last_seen'])->diffForHumans() }}</td>
+                            <td class="py-2 px-2">
+                                <div class="bg-{{ $user->user['last_seen'] >= now()->subMinutes(2) ? 'green' : 'red' }}-500 w-24 py-1.5 rounded-full font-medium text-center text-white">
+                                    {{ $user->user['last_seen'] >= now()->subMinutes(2) ? 'Online' : 'Offline' }}
+                                </div>
+                            </td>
+                            <td class="py-2 px-2">
                                 <div class="flex items-center gap-4 text-white font-medium">
-                                    <button wire:click="showDetail({{ $user->id }})" class="bg-blue-500 px-2 py-1 rounded-md hover:scale-105 hover:-translate-x-0 hover:duration-150">
-                                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 21h7a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v11m0 5l4.879-4.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242z"></path></svg>
-                                    </button>
-                                    <button wire:click="edit({{ $user->id }})" class="bg-yellow-500 px-2 py-1 rounded-md hover:scale-105 hover:-translate-x-0 hover:duration-150">
-                                        Edit
-                                    </button>
+                                    @if (Auth::user()->id == $user->id)
+                                        <button wire:click="edit({{ $user->id }})" class="bg-yellow-500 px-2 py-1 rounded-md hover:scale-105 hover:-translate-x-0 hover:duration-150">
+                                            Edit
+                                        </button>
+                                    @endif
                                 </div>
                             </td>
                         </tr>
@@ -161,6 +170,7 @@
                                     <option value="Direktur">Direktur</option>
                                     <option value="Marketing">Marketing</option>
                                     <option value="QS">QS</option>
+                                    <option value="Logistik">Logistik</option>
                                     <option value="Produksi">Produksi</option>
                                     <option value="Purchasing">Purchasing</option>
                             </select>

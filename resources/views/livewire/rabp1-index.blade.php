@@ -24,12 +24,15 @@
                             <span>Download CSV</span>
                         </div> 
                     </button>
-                    <button wire:click="showRabp" class="py-2 px-4 text-center text-white rounded-lg border bg-zinc-800 hover:scale-105 hover:-translate-x-0 hover:duration-150">
-                        <div class="flex items-center gap-1">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
-                            <span>Buat RABP</span>
-                        </div>
-                    </button> 
+                    @if (Auth::user()->role == "QS")
+                        <button wire:click="showRabp" class="py-2 px-4 text-center text-white rounded-lg border bg-zinc-800 hover:scale-105 hover:-translate-x-0 hover:duration-150">
+                            <div class="flex items-center gap-1">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                                <span>Buat RABP</span>
+                            </div>
+                        </button> 
+                    @endif
+                    
                 </div>  
 
                 <div class="bg-white overflow-x-auto shadow-sm sm:rounded-lg border border-gray-300/50">
@@ -73,18 +76,18 @@
                         <tbody>
                             @foreach ($rabps as $rabp)
                             <tr class="bg-white border-b hover:bg-gray-50 hover:text-black text-sm">
-                                <td class="py-1 px-4">{{ ($rabps->currentpage()-1) * $rabps ->perpage() + $loop->index + 1 }}</td>
-                                <td class="py-1 px-2 font-medium">{{ $rabp->rabp_code }}</td>
-                                <td class="py-1 px-2">{{ $rabp->name }}</td>
+                                <td class="py-2 px-4">{{ ($rabps->currentpage()-1) * $rabps ->perpage() + $loop->index + 1 }}</td>
+                                <td class="py-2 px-2 font-bold">{{ $rabp->rabp_code }}</td>
+                                <td class="py-2 px-2">{{ $rabp->name }}</td>
                                 {{-- <td class="py-1 px-2">{{ $rabp->quotation['name'] }}</td> --}}
                                 @if ($this->rabp_value == NULL)      
-                                    <td class="py-1 px-3">Rp. {{ number_format($rabp->rabp_value) }}</td>
+                                    <td class="py-2 px-3">Rp. {{ number_format($rabp->rabp_value) }}</td>
                                 @else
-                                    <td class="py-1 px-2 text-red-500">Belum Tersedia</td>
+                                    <td class="py-2 px-2 text-red-500">Belum Tersedia</td>
                                 @endif
-                                <td class="py-1 px-2">{{ $rabp->description }}</td>
-                                <td class="py-1 px-2">{{ date('d-m-Y', strtotime($rabp->date)) }}</td>
-                                <td class="py-1 px-2">
+                                <td class="py-2 px-2">{{ $rabp->description }}</td>
+                                <td class="py-2 px-2">{{ date('d-m-Y', strtotime($rabp->date)) }}</td>
+                                <td class="py-2 px-2">
                                     @if ($rabp->status['name'] == "Working")
                                         <div class="bg-yellow-200 w-24 py-1.5 rounded-full font-medium text-center">
                                             {{ $rabp->status['name'] }}
@@ -159,7 +162,7 @@
                             @error('name')<div class="text-red-600 text-sm">{{ $message }}</div>@enderror
                             <div class="flex items-center gap-0 justify-between p-1 flex-wrap sm:gap-2">
                                 <h1>Nama</h1>
-                                <input wire:model="name" type="text" class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm" required placeholder="Nama RABP" maxlength="128"/>
+                                <input wire:model="nameadd" type="text" class="w-96 border border-gray-300/50 rounded-lg p-2 shadow-sm mt-1 text-sm" required placeholder="Nama RABP" maxlength="128"/>
                             </div>
                             <div class="flex items-center gap-0 justify-between p-1 flex-wrap sm:gap-2">
                                 <h1>Keterangan</h1>
@@ -303,9 +306,16 @@
                                             <td class="py-2 px-6">Rp. {{ number_format($dr->price) }}</td>
                                             <td class="py-2 px-6">Rp. {{ number_format($dr->price * $dr->qty) }}</td>
                                             <td class="py-2 px-6">
-                                                <button wire:click="editGood({{ $dr->id }})" class="bg-yellow-500 px-2 py-1 rounded-md hover:scale-105 hover:-translate-x-0 hover:duration-150">
-                                                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"></path></svg>
-                                                </button>
+                                                @if ($rabp->status['name'] == "Complete")
+                                                    <button wire:click="" class="bg-red-500 px-2 py-1 rounded-md" disabled>
+                                                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"></path></svg>
+                                                    </button>
+                                                @else
+                                                    <button wire:click="editGood({{ $dr->id }})" class="bg-yellow-500 px-2 py-1 rounded-md hover:scale-105 hover:-translate-x-0 hover:duration-150">
+                                                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"></path></svg>
+                                                    </button>
+                                                @endif
+                                                
                                                 {{-- <button wire:click="printPdf({{ $detailrabp->set_goods_id }})" class="bg-zinc-500 px-2 py-1 rounded-md hover:scale-105 hover:-translate-x-0 hover:duration-150">
                                                     <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6.72 13.829c-.24.03-.48.062-.72.096m.72-.096a42.415 42.415 0 0110.56 0m-10.56 0L6.34 18m10.94-4.171c.24.03.48.062.72.096m-.72-.096L17.66 18m0 0l.229 2.523a1.125 1.125 0 01-1.12 1.227H7.231c-.662 0-1.18-.568-1.12-1.227L6.34 18m11.318 0h1.091A2.25 2.25 0 0021 15.75V9.456c0-1.081-.768-2.015-1.837-2.175a48.055 48.055 0 00-1.913-.247M6.34 18H5.25A2.25 2.25 0 013 15.75V9.456c0-1.081.768-2.015 1.837-2.175a48.041 48.041 0 011.913-.247m10.5 0a48.536 48.536 0 00-10.5 0m10.5 0V3.375c0-.621-.504-1.125-1.125-1.125h-8.25c-.621 0-1.125.504-1.125 1.125v3.659M18 10.5h.008v.008H18V10.5zm-3 0h.008v.008H15V10.5z"></path></svg>
                                                 </button> --}}
@@ -443,13 +453,25 @@
                                 </button>
                             @endif
                             @if ($status_id == 'Pending')
-                                <button wire:click="approve1" class="py-2 px-6 my-2 text-center rounded-lg bg-green-500 text-white hover:scale-105 hover:-translate-x-0 hover:duration-150">
-                                    Approve 1
-                                </button>
+                                @if(Auth::user()->role == "Direktur")
+                                    <button wire:click="approve1" class="py-2 px-6 my-2 text-center rounded-lg bg-green-500 text-white hover:scale-105 hover:-translate-x-0 hover:duration-150">
+                                        Approve 1
+                                    </button>
+                                @else
+                                    <button wire:click="" class="py-2 px-6 my-2 text-center rounded-lg bg-red-500 text-white" disabled>
+                                        Perlu Approve Direktur
+                                    </button>
+                                @endif
                             @elseif ($status_id == 'Working')
-                                <button wire:click="approve2" class="py-2 px-6 my-2 text-center rounded-lg bg-green-500 text-white hover:scale-105 hover:-translate-x-0 hover:duration-150">
-                                    Approve 2
-                                </button>
+                                @if(Auth::user()->role == "Direktur")
+                                    <button wire:click="approve2" class="py-2 px-6 my-2 text-center rounded-lg bg-green-500 text-white hover:scale-105 hover:-translate-x-0 hover:duration-150">
+                                        Approve 2
+                                    </button>
+                                @else
+                                    <button wire:click="" class="py-2 px-6 my-2 text-center rounded-lg bg-red-500 text-white" disabled>
+                                        Perlu Approve Direktur
+                                    </button>
+                                @endif
                             @else
                                 <button wire:click="" class="py-2 px-6 my-2 text-center rounded-lg bg-red-500 text-white" disabled>
                                     Approved

@@ -29,6 +29,7 @@ class Rabp1Index extends Component
     public $showingMainPage = true;
     public $showingProduction = false;
     public $showingRevision = false;
+    public $showedDetail = false;
     public $isEdited = false;
     
     // Tabel rabps
@@ -69,6 +70,7 @@ class Rabp1Index extends Component
         // Menutup detail page dan menampilkan main page
         $this->showingDetail = false;
         $this->showingMainPage = true;
+        $this->showedDetail = false;
     }
 
     public function createRabpCode() 
@@ -117,26 +119,36 @@ class Rabp1Index extends Component
 
     public function recalculate()
     {
-        $getGoodsId = DetailRabp::where('rabps_id','=',$this->rabps_id)->first('goods_id')->goods_id;
-        DetailRabp::where('goods_id','=',$getGoodsId)->update([
-            'total_price' => Good::where('id','=', $getGoodsId)->first('sell_price')->sell_price * DetailRabp::where('rabps_id','=',$this->rabps_id)->first('qty')->qty,
-        ]);
+        // $getGoodsId = DetailRabp::where('rabps_id','=',$this->rabps_id)->first('goods_id')->goods_id;
+        $getGoodsId = DetailRabp::select('goods_id')
+                                ->where('rabps_id','=',$this->rabps_id)->exists();
+        if ($getGoodsId) {
+            DetailRabp::where('goods_id','=',$getGoodsId)->where('is_lock','=', NULL)->update([
+                'price' => Good::where('id','=', $getGoodsId)->first('sell_price')->sell_price,
+                'total_price' => Good::where('id','=', $getGoodsId)->first('sell_price')->sell_price * DetailRabp::where('rabps_id','=',$this->rabps_id)->first('qty')->qty,
+            ]);
 
-        $hitungTotalSemuaBarang = DetailRabp::where('rabps_id','=',$this->rabps_id)->sum('total_price'); //TOTAL SEMUA
-        $hitungTotalDiskon = $hitungTotalSemuaBarang * ($this->discount * 0.01); // TOTAL DISKON
-        $hitungSetelahDiskon = $hitungTotalSemuaBarang - $hitungTotalDiskon;
-        $hitungTotalPPN = $hitungSetelahDiskon * 0.11;
-        $hitungRabpValue = $hitungSetelahDiskon + $hitungTotalPPN;
+            $hitungTotalSemuaBarang = DetailRabp::where('rabps_id','=',$this->rabps_id)->sum('total_price'); //TOTAL SEMUA
+            $hitungTotalDiskon = $hitungTotalSemuaBarang * ($this->discount * 0.01); // TOTAL DISKON
+            $hitungSetelahDiskon = $hitungTotalSemuaBarang - $hitungTotalDiskon;
+            $hitungTotalPPN = $hitungSetelahDiskon * 0.11;
+            $hitungRabpValue = $hitungSetelahDiskon + $hitungTotalPPN;
 
-        Rabp::where('id','=',$this->rabps_id)->update([
-            'discount' => $this->discount,
-            'rabp_value' => $hitungRabpValue,
-        ]);
-        $this->dispatchBrowserEvent('store-success');
+            Rabp::where('id','=',$this->rabps_id)->update([
+                'discount' => $this->discount,
+                'rabp_value' => $hitungRabpValue,
+            ]);
+            $this->dispatchBrowserEvent('store-success');
+        } else {
+            "";
+        }
+        
     }
 
     public function showDetail($id)
     {
+        $this->showedDetail = true;
+
         $this->showingDetail = true;
         $this->showingMainPage = false;
         $this->rabps_id = $id;
@@ -165,7 +177,7 @@ class Rabp1Index extends Component
 
         // Hitung ulang setelah revisi, jika sudah ada item bill materialnya maka akan menghitung ulang kembali
         // if (DetailRabp::where('rabps_id','=',$this->rabps_id)->first('goods_id')->goods_id != NULL) {
-        //     $this->recalculate();
+            $this->recalculate();
         // } else {
         //     "";
         // }
@@ -175,6 +187,7 @@ class Rabp1Index extends Component
     {
         Rabp::where('id','=',$this->rabps_id)->update([
             'discount' => $this->discount,
+            'name' => $this->name,
         ]);
 
         $hitungTotalSemuaBarang = DetailRabp::where('rabps_id','=',$this->rabps_id)->sum('total_price'); //TOTAL SEMUA
@@ -312,6 +325,10 @@ class Rabp1Index extends Component
             'description' => "Siap Produksi",
         ]);
 
+        DetailRabp::where('rabps_id','=',$this->rabps_id)->update([
+            'is_lock' => "Yes"
+        ]);
+
         $this->reset();
         $this->dispatchBrowserEvent('update-success');
     }
@@ -432,11 +449,16 @@ class Rabp1Index extends Component
     public function updated($key, $value)
     {
         // Realtime update value 
-        // if($this->quotations_id != NULL) {
-        //     $this->name = "RABP" . substr(Quotation::where('id','=',$this->quotations_id)->first(['name'])->name, 9);
-        // } else {
-        //     $this->name = NULL;
-        // }
+        if ($this->showedDetail != true) {
+            if($this->quotations_id != NULL) {
+                $this->name = "RABP" . substr(Quotation::where('id','=',$this->quotations_id)->first(['name'])->name, 9);
+            } else {
+                $this->name = NULL;
+            }
+        } else {
+            "";
+        }
+        
 
         // Realtime update value 
         if($this->goods_id != NULL) {

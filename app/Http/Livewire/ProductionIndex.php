@@ -22,7 +22,7 @@ class ProductionIndex extends Component
     use WithPagination;
     public $search = '';
     public $showPage = 15;
-    public $searchBy = 'name';
+    public $searchBy = 'deadline';
     public $orderAsc = true;
 
     public $showingMainPage = true;

@@ -22,7 +22,7 @@ class DetailRabp extends Model
         'qty',
         'price',
         'total_price', // TAMBAHAN
-        'quality',
+        'is_lock',
         'updated_at',
         'created_at',
     ];

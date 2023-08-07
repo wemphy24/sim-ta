@@ -61,32 +61,32 @@
                 <table class="w-full text-sm text-left text-black">
                     <thead class="bg-zinc-200 text-zinc-800">
                         <tr>
-                            <th scope="col" class="py-3 px-6">#</th>
-                            <th scope="col" class="py-3 px-3">Kode QC</th>
-                            <th scope="col" class="py-3 px-3">Nama Produksi</th>
-                            <th scope="col" class="py-3 px-3">Nama QC</th>
-                            <th scope="col" class="py-3 px-3">Keterangan</th>
-                            <th scope="col" class="py-3 px-3">Mulai QC</th>
-                            <th scope="col" class="py-3 px-3">Finish QC</th>
-                            <th scope="col" class="py-3 px-3">Status</th>
-                            <th scope="col" class="py-3 px-3">Aksi</th>
+                            <th scope="col" class="py-3 px-4">#</th>
+                            <th scope="col" class="py-3 px-2">Kode QC</th>
+                            <th scope="col" class="py-3 px-2">Nama Produksi</th>
+                            <th scope="col" class="py-3 px-2">Nama QC</th>
+                            <th scope="col" class="py-3 px-2">Keterangan</th>
+                            <th scope="col" class="py-3 px-2">Mulai QC</th>
+                            <th scope="col" class="py-3 px-2">Finish QC</th>
+                            <th scope="col" class="py-3 px-2">Status</th>
+                            <th scope="col" class="py-3 px-2">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($qualitycontrols as $qc)
                             <tr class="bg-white border-b hover:bg-gray-50 hover:text-black text-sm">
-                                <td class="py-1 px-3">{{ ($qualitycontrols ->currentpage()-1) * $qualitycontrols ->perpage() + $loop->index + 1 }}</td>
-                                <td class="py-1 px-3 font-medium">{{ $qc->quality_control_code }}</td>
-                                <td class="py-1 px-3">{{ $qc->production['name'] }}</td>
-                                <td class="py-1 px-3">{{ $qc->name }}</td>
-                                <td class="py-1 px-3">{{ $qc->description }}</td>
-                                <td class="py-1 px-3">{{ date('d-m-Y', strtotime($qc->start_qc)) }}</td>
+                                <td class="py-2 px-4">{{ ($qualitycontrols ->currentpage()-1) * $qualitycontrols ->perpage() + $loop->index + 1 }}</td>
+                                <td class="py-2 px-2 font-bold">{{ $qc->quality_control_code }}</td>
+                                <td class="py-2 px-2">{{ $qc->production['name'] }}</td>
+                                <td class="py-2 px-2">{{ $qc->name }}</td>
+                                <td class="py-2 px-2">{{ $qc->description }}</td>
+                                <td class="py-2 px-2">{{ date('d-m-Y', strtotime($qc->start_qc)) }}</td>
                                 @if ($qc->end_qc == NULL)
-                                    <td class="py-1 px-3">Belum Diketahui</td>
+                                    <td class="py-2 px-3">Belum Diketahui</td>
                                 @else
-                                    <td class="py-1 px-3">{{ date('d-m-Y', strtotime($qc->end_qc)) }}</td>
+                                    <td class="py-2 px-3">{{ date('d-m-Y', strtotime($qc->end_qc)) }}</td>
                                 @endif
-                                <td class="py-1 px-3">
+                                <td class="py-2 px-3">
                                 @if ($qc->status['name'] == "Working")
                                     <div class="bg-yellow-200 w-24 py-1.5 rounded-full font-medium text-center">
                                         {{ $qc->status['name'] }}
@@ -101,7 +101,7 @@
                                     </div>
                                 @endif
                                 </td>
-                                <td class="py-1 px-3">
+                                <td class="py-2 px-3">
                                     <div class="flex items-center gap-4">
                                         <button wire:click="detail( {{ $qc->id }} )" class="bg-blue-500 px-2 py-1 rounded-md hover:scale-105 hover:-translate-x-0 hover:duration-150">
                                             <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 21h7a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v11m0 5l4.879-4.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242z"></path></svg>

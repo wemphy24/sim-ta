@@ -58,32 +58,32 @@
                     <thead class="bg-zinc-200 text-zinc-800">
                         <tr>
                             <th scope="col" class="py-3 px-4">#</th>
-                            <th scope="col" class="py-3 px-3">Kode Pengiriman</th>
-                            <th scope="col" class="py-3 px-3">Nama Pengiriman</th>
-                            <th scope="col" class="py-3 px-3">Nama Kontrak</th>
-                            <th scope="col" class="py-3 px-3">Keterangan</th>
-                            <th scope="col" class="py-3 px-3">Tanggal Dikirim</th>
-                            <th scope="col" class="py-3 px-3">Tanggal Diterima</th>
-                            <th scope="col" class="py-3 px-3">Status</th>
-                            <th scope="col" class="py-3 px-3">Aksi</th>
+                            <th scope="col" class="py-3 px-2">Kode Pengiriman</th>
+                            <th scope="col" class="py-3 px-2">Nama Pengiriman</th>
+                            <th scope="col" class="py-3 px-2">Nama Kontrak</th>
+                            <th scope="col" class="py-3 px-2">Keterangan</th>
+                            <th scope="col" class="py-3 px-2">Tanggal Dikirim</th>
+                            <th scope="col" class="py-3 px-2">Tanggal Diterima</th>
+                            <th scope="col" class="py-3 px-2">Status</th>
+                            <th scope="col" class="py-3 px-2">Aksi</th>
                         </tr>
                     </thead>
 
                     <tbody>
                         @foreach ($deliverys as $delivery)
                             <tr class="bg-white border-b hover:bg-gray-50 hover:text-black text-sm">
-                                <td class="py-1 px-3">{{ ($deliverys ->currentpage()-1) * $deliverys ->perpage() + $loop->index + 1 }}</td>
-                                <td class="py-1 px-3 font-medium">{{ $delivery->delivery_code }}</td>
-                                <td class="py-1 px-3">{{ $delivery->name }}</td>
-                                <td class="py-1 px-3">{{ $delivery->contract['name'] }}</td>
-                                <td class="py-1 px-3">{{ $delivery->description }}</td>
-                                <td class="py-1 px-3">{{ date('d-m-Y', strtotime($delivery->send_date)) }}</td>
+                                <td class="py-2 px-4">{{ ($deliverys ->currentpage()-1) * $deliverys ->perpage() + $loop->index + 1 }}</td>
+                                <td class="py-2 px-2 font-bold">{{ $delivery->delivery_code }}</td>
+                                <td class="py-2 px-2">{{ $delivery->name }}</td>
+                                <td class="py-2 px-2">{{ $delivery->contract['name'] }}</td>
+                                <td class="py-2 px-2">{{ $delivery->description }}</td>
+                                <td class="py-2 px-2">{{ date('d-m-Y', strtotime($delivery->send_date)) }}</td>
                                 @if ($delivery->received_date == NULL)
-                                    <td class="py-1 px-3 text-red-500 font-medium">Belum Diterima</td>
+                                    <td class="py-2 px-2 text-red-500 font-medium">Belum Diterima</td>
                                 @else
-                                    <td class="py-1 px-3">{{ date('d-m-Y', strtotime($delivery->received_date)) }}</td>
+                                    <td class="py-2 px-2">{{ date('d-m-Y', strtotime($delivery->received_date)) }}</td>
                                 @endif
-                                <td class="py-1 px-3">
+                                <td class="py-2 px-2">
                                     @if ($delivery->status['name'] == "Working")
                                         <div class="bg-yellow-200 w-24 py-1.5 rounded-full font-medium text-center">
                                             {{ $delivery->status['name'] }}
@@ -98,11 +98,21 @@
                                         </div>
                                     @endif
                                 </td>
-                                <td class="py-1 px-3">
+                                <td class="py-2 px-2">
                                     <div class="flex items-center gap-4">
                                         <button wire:click="detail({{ $delivery->id }})" class="bg-blue-500 px-2 py-1 rounded-md hover:scale-105 hover:-translate-x-0 hover:duration-150">
                                             <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 21h7a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v11m0 5l4.879-4.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242z"></path></svg>
                                         </button>
+
+                                        @if ($delivery->status['name'] == "Pending")
+                                            <button wire:click="approvee({{ $delivery->id }})" class="text-white bg-green-500 p-2 rounded-lg font-medium hover:scale-105 hover:-translate-x-0 hover:duration-150">
+                                                Approve
+                                            </button>
+                                        @else
+                                            <button wire:click="" class="text-white bg-red-500 p-2 rounded-lg font-medium" disabled>
+                                                Approved
+                                            </button>
+                                        @endif
                                     </div>
                                 </td>
                             </tr>
@@ -388,9 +398,15 @@
                     
                     <div class="flex gap-4">
                         @if ($this->status_id == "Pending")
-                            <button wire:click="approve" class="py-2 px-6 my-2 text-center rounded-lg bg-green-500 text-white hover:scale-105 hover:-translate-x-0 hover:duration-150">
-                                Approve  
-                            </button>
+                            @if(Auth::user()->role == "Direktur")
+                                <button wire:click="approve" class="py-2 px-6 my-2 text-center rounded-lg bg-green-500 text-white hover:scale-105 hover:-translate-x-0 hover:duration-150">
+                                    Approve  
+                                </button>
+                            @else
+                                <button wire:click="" class="py-2 px-6 my-2 text-center rounded-lg bg-red-500 text-white" disabled>
+                                    Perlu Approve Direktur 
+                                </button>
+                            @endif
                         @elseif ($this->status_id == "Working")
                             <button wire:click="showReceived" class="py-2 px-6 my-2 text-center rounded-lg bg-green-500 text-white hover:scale-105 hover:-translate-x-0 hover:duration-150">
                                 Selesai  
