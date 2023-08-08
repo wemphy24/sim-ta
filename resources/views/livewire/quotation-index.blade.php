@@ -25,7 +25,7 @@
                         <span>Download CSV</span>
                     </div> 
                 </button>
-                @if (Auth::user()->role == "Marketing")
+                @if (Auth::user()->role == "Marketing" || Auth::user()->role == "Direktur")
                     <button wire:click="showQuotation" class="py-2 px-4 text-center text-white rounded-lg border bg-zinc-800 hover:scale-105 hover:-translate-x-0 hover:duration-150">
                         <div class="flex items-center gap-1">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
